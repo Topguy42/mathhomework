@@ -496,17 +496,12 @@ body {
 	font-size: 6rem;
 	font-weight: 900;
 	font-family: "Inter", system-ui, -apple-system, sans-serif;
-	background: linear-gradient(
-		135deg,
-		#ffffff 0%,
-		var(--primary-color) 50%,
-		var(--secondary-color) 100%
-	);
-	background-clip: text;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	text-shadow: 0 0 30px rgba(0, 212, 170, 0.3);
-	filter: drop-shadow(0 2px 4px rgba(0, 212, 170, 0.2));
+	color: var(--primary-color);
+	text-shadow:
+		0 4px 8px rgba(0, 0, 0, 0.5),
+		0 8px 16px rgba(0, 0, 0, 0.3),
+		0 12px 24px rgba(0, 0, 0, 0.2),
+		0 0 40px rgba(0, 212, 170, 0.4);
 	letter-spacing: -0.04em;
 	text-transform: none;
 }
