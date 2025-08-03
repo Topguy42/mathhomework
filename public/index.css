@@ -1963,22 +1963,25 @@ body.frame-active .main-container {
 
 @media (max-width: 480px) {
 	.tools-grid {
-		grid-template-columns: repeat(2, 1fr);
-		gap: 0.5rem;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 0.25rem;
+		max-width: 100%;
 	}
 
 	.tool-card {
-		padding: 0.75rem 0.5rem;
-		min-height: 70px;
+		padding: 0.5rem 0.2rem;
+		min-height: 65px;
+		border-radius: 8px;
 	}
 
 	.tool-icon svg {
-		width: 20px;
-		height: 20px;
+		width: 18px;
+		height: 18px;
 	}
 
 	.tool-label {
-		font-size: 0.7rem;
+		font-size: 0.6rem;
+		line-height: 1;
 	}
 
 	.tool-interface {
