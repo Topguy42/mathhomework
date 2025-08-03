@@ -293,7 +293,7 @@ body {
 	gap: 0.5rem;
 	background: var(--glass-bg-light);
 	border: 1px solid var(--glass-border);
-	border-radius: 16px;
+	border-radius: 25px;
 	padding: 0.25rem;
 	backdrop-filter: blur(20px);
 	box-shadow:
