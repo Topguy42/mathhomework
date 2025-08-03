@@ -57,23 +57,23 @@ form.addEventListener("submit", async (event) => {
 // Tab switching functionality
 function switchTab(tabName) {
 	// Hide all sections
-	const sections = document.querySelectorAll('.tab-section');
-	sections.forEach(section => section.style.display = 'none');
+	const sections = document.querySelectorAll(".tab-section");
+	sections.forEach((section) => (section.style.display = "none"));
 
 	// Remove active class from all tabs
-	const tabs = document.querySelectorAll('.nav-tab');
-	tabs.forEach(tab => tab.classList.remove('active'));
+	const tabs = document.querySelectorAll(".nav-tab");
+	tabs.forEach((tab) => tab.classList.remove("active"));
 
 	// Show selected section
-	const targetSection = document.getElementById(tabName + '-section');
+	const targetSection = document.getElementById(tabName + "-section");
 	if (targetSection) {
-		targetSection.style.display = 'block';
+		targetSection.style.display = "block";
 	}
 
 	// Add active class to clicked tab
 	const activeTab = document.querySelector(`[data-tab="${tabName}"]`);
 	if (activeTab) {
-		activeTab.classList.add('active');
+		activeTab.classList.add("active");
 	}
 }
 
@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	// Tab navigation
-	const navTabs = document.querySelectorAll('.nav-tab');
+	const navTabs = document.querySelectorAll(".nav-tab");
 	navTabs.forEach((tab) => {
 		tab.addEventListener("click", (event) => {
 			event.preventDefault();
@@ -157,139 +157,152 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	// Games search functionality
-	const gamesSearch = document.getElementById('games-search');
-	const gamesSearchClear = document.getElementById('games-search-clear');
-	const allGameCards = document.querySelectorAll('.game-card');
+	const gamesSearch = document.getElementById("games-search");
+	const gamesSearchClear = document.getElementById("games-search-clear");
+	const allGameCards = document.querySelectorAll(".game-card");
 
 	function filterGames(searchTerm) {
 		const term = searchTerm.toLowerCase().trim();
 
-		allGameCards.forEach(card => {
-			const title = card.querySelector('.game-title').textContent.toLowerCase();
-			const category = card.querySelector('.game-category').textContent.toLowerCase();
-			const description = card.querySelector('.game-description').textContent.toLowerCase();
+		allGameCards.forEach((card) => {
+			const title = card.querySelector(".game-title").textContent.toLowerCase();
+			const category = card
+				.querySelector(".game-category")
+				.textContent.toLowerCase();
+			const description = card
+				.querySelector(".game-description")
+				.textContent.toLowerCase();
 
-			const isMatch = title.includes(term) ||
-							category.includes(term) ||
-							description.includes(term);
+			const isMatch =
+				title.includes(term) ||
+				category.includes(term) ||
+				description.includes(term);
 
-			if (isMatch || term === '') {
-				card.style.display = 'block';
+			if (isMatch || term === "") {
+				card.style.display = "block";
 			} else {
-				card.style.display = 'none';
+				card.style.display = "none";
 			}
 		});
 
 		// Show/hide clear button
 		if (term.length > 0) {
-			gamesSearchClear.style.display = 'block';
+			gamesSearchClear.style.display = "block";
 		} else {
-			gamesSearchClear.style.display = 'none';
+			gamesSearchClear.style.display = "none";
 		}
 	}
 
 	if (gamesSearch) {
-		gamesSearch.addEventListener('input', (event) => {
+		gamesSearch.addEventListener("input", (event) => {
 			filterGames(event.target.value);
 		});
 
-		gamesSearch.addEventListener('keydown', (event) => {
-			if (event.key === 'Escape') {
-				gamesSearch.value = '';
-				filterGames('');
+		gamesSearch.addEventListener("keydown", (event) => {
+			if (event.key === "Escape") {
+				gamesSearch.value = "";
+				filterGames("");
 				gamesSearch.blur();
 			}
 		});
 	}
 
 	if (gamesSearchClear) {
-		gamesSearchClear.addEventListener('click', () => {
-			gamesSearch.value = '';
-			filterGames('');
+		gamesSearchClear.addEventListener("click", () => {
+			gamesSearch.value = "";
+			filterGames("");
 			gamesSearch.focus();
 		});
 	}
 
 	// Apps search functionality
-	const appsSearch = document.getElementById('apps-search');
-	const appsSearchClear = document.getElementById('apps-search-clear');
-	const allAppCards = document.querySelectorAll('.app-card');
+	const appsSearch = document.getElementById("apps-search");
+	const appsSearchClear = document.getElementById("apps-search-clear");
+	const allAppCards = document.querySelectorAll(".app-card");
 
 	function filterApps(searchTerm) {
 		const term = searchTerm.toLowerCase().trim();
 
-		allAppCards.forEach(card => {
-			const title = card.querySelector('.app-title').textContent.toLowerCase();
-			const category = card.querySelector('.app-category').textContent.toLowerCase();
-			const description = card.querySelector('.app-description').textContent.toLowerCase();
+		allAppCards.forEach((card) => {
+			const title = card.querySelector(".app-title").textContent.toLowerCase();
+			const category = card
+				.querySelector(".app-category")
+				.textContent.toLowerCase();
+			const description = card
+				.querySelector(".app-description")
+				.textContent.toLowerCase();
 
-			const isMatch = title.includes(term) ||
-							category.includes(term) ||
-							description.includes(term);
+			const isMatch =
+				title.includes(term) ||
+				category.includes(term) ||
+				description.includes(term);
 
-			if (isMatch || term === '') {
-				card.style.display = 'block';
+			if (isMatch || term === "") {
+				card.style.display = "block";
 			} else {
-				card.style.display = 'none';
+				card.style.display = "none";
 			}
 		});
 
 		// Show/hide clear button
 		if (term.length > 0) {
-			appsSearchClear.style.display = 'block';
+			appsSearchClear.style.display = "block";
 		} else {
-			appsSearchClear.style.display = 'none';
+			appsSearchClear.style.display = "none";
 		}
 	}
 
 	if (appsSearch) {
-		appsSearch.addEventListener('input', (event) => {
+		appsSearch.addEventListener("input", (event) => {
 			filterApps(event.target.value);
 		});
 
-		appsSearch.addEventListener('keydown', (event) => {
-			if (event.key === 'Escape') {
-				appsSearch.value = '';
-				filterApps('');
+		appsSearch.addEventListener("keydown", (event) => {
+			if (event.key === "Escape") {
+				appsSearch.value = "";
+				filterApps("");
 				appsSearch.blur();
 			}
 		});
 	}
 
 	if (appsSearchClear) {
-		appsSearchClear.addEventListener('click', () => {
-			appsSearch.value = '';
-			filterApps('');
+		appsSearchClear.addEventListener("click", () => {
+			appsSearch.value = "";
+			filterApps("");
 			appsSearch.focus();
 		});
 	}
 
 	// Close frame functionality
-	const closeFrameButton = document.getElementById('close-frame');
+	const closeFrameButton = document.getElementById("close-frame");
 	if (closeFrameButton) {
-		closeFrameButton.addEventListener('click', () => {
-			const frameContainer = document.getElementById('frame-container');
-			const frame = document.getElementById('uv-frame');
+		closeFrameButton.addEventListener("click", () => {
+			const frameContainer = document.getElementById("frame-container");
+			const frame = document.getElementById("uv-frame");
 
 			// Hide frame and restore background
-			frameContainer.style.display = 'none';
-			frame.src = '';
-			document.body.classList.remove('frame-active');
+			frameContainer.style.display = "none";
+			frame.src = "";
+			document.body.classList.remove("frame-active");
 		});
 	}
 
 	// Also allow ESC key to close frame
-	document.addEventListener('keydown', (event) => {
-		if (event.key === 'Escape' && document.body.classList.contains('frame-active')) {
-			const frameContainer = document.getElementById('frame-container');
-			const frame = document.getElementById('uv-frame');
+	document.addEventListener("keydown", (event) => {
+		if (
+			event.key === "Escape" &&
+			document.body.classList.contains("frame-active")
+		) {
+			const frameContainer = document.getElementById("frame-container");
+			const frame = document.getElementById("uv-frame");
 
-			frameContainer.style.display = 'none';
-			frame.src = '';
-			document.body.classList.remove('frame-active');
+			frameContainer.style.display = "none";
+			frame.src = "";
+			document.body.classList.remove("frame-active");
 		}
 	});
 
 	// Initialize with proxy tab active
-	switchTab('proxy');
+	switchTab("proxy");
 });

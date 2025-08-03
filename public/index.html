@@ -171,187 +171,199 @@
 			<!-- Proxy Section -->
 			<div id="proxy-section" class="tab-section">
 				<!-- Header Section -->
-			<header class="header-section">
-				<div class="brand-logo">
-					<h1 class="brand-title">Vortex</h1>
-				</div>
-			</header>
+				<header class="header-section">
+					<div class="brand-logo">
+						<h1 class="brand-title">Vortex</h1>
+					</div>
+				</header>
 
-			<!-- Search Section -->
-			<section class="search-section">
-				<div class="search-container">
-					<form id="uv-form" class="search-form">
-						<input
-							id="uv-search-engine"
-							value="https://www.google.com/search?q=%s"
-							type="hidden"
-						/>
-						<div class="input-container">
-							<div class="input-icon">
-								<svg
-									viewBox="0 0 24 24"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z"
-										stroke="currentColor"
-										stroke-width="2"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-									/>
-								</svg>
-							</div>
+				<!-- Search Section -->
+				<section class="search-section">
+					<div class="search-container">
+						<form id="uv-form" class="search-form">
 							<input
-								id="uv-address"
-								type="text"
-								placeholder="Enter URL or search term..."
-								autocomplete="off"
-								spellcheck="false"
+								id="uv-search-engine"
+								value="https://www.google.com/search?q=%s"
+								type="hidden"
 							/>
-							<button type="submit" class="search-button">
-								<span>Go</span>
-								<svg
-									viewBox="0 0 24 24"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										d="M5 12H19M19 12L12 5M19 12L12 19"
-										stroke="currentColor"
-										stroke-width="2"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-									/>
-								</svg>
-							</button>
+							<div class="input-container">
+								<div class="input-icon">
+									<svg
+										viewBox="0 0 24 24"
+										fill="none"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/>
+									</svg>
+								</div>
+								<input
+									id="uv-address"
+									type="text"
+									placeholder="Enter URL or search term..."
+									autocomplete="off"
+									spellcheck="false"
+								/>
+								<button type="submit" class="search-button">
+									<span>Go</span>
+									<svg
+										viewBox="0 0 24 24"
+										fill="none"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M5 12H19M19 12L12 5M19 12L12 19"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/>
+									</svg>
+								</button>
+							</div>
+						</form>
+
+						<div class="error-container">
+							<p id="uv-error" class="error-message"></p>
+							<pre id="uv-error-code" class="error-code"></pre>
 						</div>
-					</form>
-
-					<div class="error-container">
-						<p id="uv-error" class="error-message"></p>
-						<pre id="uv-error-code" class="error-code"></pre>
 					</div>
-				</div>
-			</section>
+				</section>
 
-			<!-- Quick Access Section -->
-			<section class="quick-access-section">
-				<div class="quick-access-container">
-					<h2 class="quick-access-title">Quick Access</h2>
-					<p class="quick-access-description">
-						Jump to your favorite websites instantly
-					</p>
+				<!-- Quick Access Section -->
+				<section class="quick-access-section">
+					<div class="quick-access-container">
+						<h2 class="quick-access-title">Quick Access</h2>
+						<p class="quick-access-description">
+							Jump to your favorite websites instantly
+						</p>
 
-					<div class="quick-access-grid">
-						<a
-							href="#"
-							class="quick-access-item"
-							data-url="https://youtube.com"
-						>
-							<div class="quick-access-icon youtube">
-								<svg
-									viewBox="0 0 24 24"
-									fill="currentColor"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										d="M23.498 6.186c-.276-1.062-1.09-1.9-2.132-2.181C19.506 3.546 12 3.546 12 3.546s-7.506 0-9.366.459c-1.042.281-1.856 1.119-2.132 2.181C0 8.074 0 12 0 12s0 3.926.502 5.814c.276 1.062 1.09 1.9 2.132 2.181C4.494 20.454 12 20.454 12 20.454s7.506 0 9.366-.459c1.042-.281 1.856-1.119 2.132-2.181C24 15.926 24 12 24 12s0-3.926-.502-5.814zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"
-									/>
-								</svg>
-							</div>
-							<span class="quick-access-label">YouTube</span>
-						</a>
+						<div class="quick-access-grid">
+							<a
+								href="#"
+								class="quick-access-item"
+								data-url="https://youtube.com"
+							>
+								<div class="quick-access-icon youtube">
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M23.498 6.186c-.276-1.062-1.09-1.9-2.132-2.181C19.506 3.546 12 3.546 12 3.546s-7.506 0-9.366.459c-1.042.281-1.856 1.119-2.132 2.181C0 8.074 0 12 0 12s0 3.926.502 5.814c.276 1.062 1.09 1.9 2.132 2.181C4.494 20.454 12 20.454 12 20.454s7.506 0 9.366-.459c1.042-.281 1.856-1.119 2.132-2.181C24 15.926 24 12 24 12s0-3.926-.502-5.814zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"
+										/>
+									</svg>
+								</div>
+								<span class="quick-access-label">YouTube</span>
+							</a>
 
-						<a href="#" class="quick-access-item" data-url="https://reddit.com">
-							<div class="quick-access-icon reddit">
-								<svg
-									viewBox="0 0 24 24"
-									fill="currentColor"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.568 8.16c-.169-.394-.468-.729-.859-.958-.049-.028-.103-.051-.158-.071.077-.315.113-.643.106-.973-.014-.53-.141-1.051-.374-1.531-.233-.48-.574-.91-.995-1.258-.421-.348-.914-.615-1.442-.781-.528-.166-1.087-.23-1.644-.187-.528.041-1.046.182-1.524.416-.478.234-.91.574-1.258.995-.348.421-.615.914-.781 1.442-.166.528-.23 1.087-.187 1.644.041.528.182 1.046.416 1.524.234.478.574.91.995 1.258.421.348.914.615 1.442.781.528.166 1.087.23 1.644.187.528-.041 1.046-.182 1.524-.416.478-.234.91-.574 1.258-.995.348-.421.615-.914.781-1.442.166-.528.23-1.087.187-1.644-.041-.528-.182-1.046-.416-1.524zM12 18.5c-3.584 0-6.5-2.916-6.5-6.5s2.916-6.5 6.5-6.5 6.5 2.916 6.5 6.5-2.916 6.5-6.5 6.5z"
-									/>
-								</svg>
-							</div>
-							<span class="quick-access-label">Reddit</span>
-						</a>
+							<a
+								href="#"
+								class="quick-access-item"
+								data-url="https://reddit.com"
+							>
+								<div class="quick-access-icon reddit">
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.568 8.16c-.169-.394-.468-.729-.859-.958-.049-.028-.103-.051-.158-.071.077-.315.113-.643.106-.973-.014-.53-.141-1.051-.374-1.531-.233-.48-.574-.91-.995-1.258-.421-.348-.914-.615-1.442-.781-.528-.166-1.087-.23-1.644-.187-.528.041-1.046.182-1.524.416-.478.234-.91.574-1.258.995-.348.421-.615.914-.781 1.442-.166.528-.23 1.087-.187 1.644.041.528.182 1.046.416 1.524.234.478.574.91.995 1.258.421.348.914.615 1.442.781.528.166 1.087.23 1.644.187.528-.041 1.046-.182 1.524-.416.478-.234.91-.574 1.258-.995.348-.421.615-.914.781-1.442.166-.528.23-1.087.187-1.644-.041-.528-.182-1.046-.416-1.524zM12 18.5c-3.584 0-6.5-2.916-6.5-6.5s2.916-6.5 6.5-6.5 6.5 2.916 6.5 6.5-2.916 6.5-6.5 6.5z"
+										/>
+									</svg>
+								</div>
+								<span class="quick-access-label">Reddit</span>
+							</a>
 
-						<a
-							href="#"
-							class="quick-access-item"
-							data-url="https://discord.com"
-						>
-							<div class="quick-access-icon discord">
-								<svg
-									viewBox="0 0 24 24"
-									fill="currentColor"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										d="M20.317 4.37c-1.53-.69-3.17-1.2-4.885-1.47a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 2.9c-1.714.27-3.354.78-4.885 1.47a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 2.98.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-2.981.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"
-									/>
-								</svg>
-							</div>
-							<span class="quick-access-label">Discord</span>
-						</a>
+							<a
+								href="#"
+								class="quick-access-item"
+								data-url="https://discord.com"
+							>
+								<div class="quick-access-icon discord">
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M20.317 4.37c-1.53-.69-3.17-1.2-4.885-1.47a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 2.9c-1.714.27-3.354.78-4.885 1.47a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 2.98.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-2.981.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"
+										/>
+									</svg>
+								</div>
+								<span class="quick-access-label">Discord</span>
+							</a>
 
-						<a href="#" class="quick-access-item" data-url="https://github.com">
-							<div class="quick-access-icon github">
-								<svg
-									viewBox="0 0 24 24"
-									fill="currentColor"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-									/>
-								</svg>
-							</div>
-							<span class="quick-access-label">GitHub</span>
-						</a>
+							<a
+								href="#"
+								class="quick-access-item"
+								data-url="https://github.com"
+							>
+								<div class="quick-access-icon github">
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+										/>
+									</svg>
+								</div>
+								<span class="quick-access-label">GitHub</span>
+							</a>
 
-						<a
-							href="#"
-							class="quick-access-item"
-							data-url="https://instagram.com"
-						>
-							<div class="quick-access-icon instagram">
-								<svg
-									viewBox="0 0 24 24"
-									fill="currentColor"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
-									/>
-								</svg>
-							</div>
-							<span class="quick-access-label">Instagram</span>
-						</a>
+							<a
+								href="#"
+								class="quick-access-item"
+								data-url="https://instagram.com"
+							>
+								<div class="quick-access-icon instagram">
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+										/>
+									</svg>
+								</div>
+								<span class="quick-access-label">Instagram</span>
+							</a>
 
-						<a href="#" class="quick-access-item" data-url="https://tiktok.com">
-							<div class="quick-access-icon tiktok">
-								<svg
-									viewBox="0 0 24 24"
-									fill="currentColor"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"
-									/>
-								</svg>
-							</div>
-							<span class="quick-access-label">TikTok</span>
-						</a>
+							<a
+								href="#"
+								class="quick-access-item"
+								data-url="https://tiktok.com"
+							>
+								<div class="quick-access-icon tiktok">
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"
+										/>
+									</svg>
+								</div>
+								<span class="quick-access-label">TikTok</span>
+							</a>
+						</div>
 					</div>
-				</div>
 				</section>
 			</div>
 
 			<!-- Games Section -->
-			<div id="games-section" class="tab-section" style="display: none;">
+			<div id="games-section" class="tab-section" style="display: none">
 				<section class="games-section">
 					<div class="games-container">
 						<h2 class="games-title">Popular Games</h2>
@@ -362,8 +374,18 @@
 						<div class="games-search-container">
 							<div class="games-search-bar">
 								<div class="games-search-icon">
-									<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="none"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/>
 									</svg>
 								</div>
 								<input
@@ -373,9 +395,23 @@
 									autocomplete="off"
 									spellcheck="false"
 								/>
-								<div class="games-search-clear" id="games-search-clear" style="display: none;">
-									<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+								<div
+									class="games-search-clear"
+									id="games-search-clear"
+									style="display: none"
+								>
+									<svg
+										viewBox="0 0 24 24"
+										fill="none"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M18 6L6 18M6 6L18 18"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/>
 									</svg>
 								</div>
 							</div>
@@ -399,7 +435,10 @@
 								</button>
 							</div>
 
-							<div class="game-card" data-url="https://slope-game.github.io/slope/">
+							<div
+								class="game-card"
+								data-url="https://slope-game.github.io/slope/"
+							>
 								<div class="game-card-header">
 									<h3 class="game-title">Slope</h3>
 									<span class="game-category">Action</span>
@@ -416,7 +455,10 @@
 								</button>
 							</div>
 
-							<div class="game-card" data-url="https://www.google.com/fbx?fbx=snake_arcade">
+							<div
+								class="game-card"
+								data-url="https://www.google.com/fbx?fbx=snake_arcade"
+							>
 								<div class="game-card-header">
 									<h3 class="game-title">Snake</h3>
 									<span class="game-category">Arcade</span>
@@ -671,7 +713,10 @@
 								</button>
 							</div>
 
-							<div class="game-card" data-url="https://coolmathgames.com/0-run-3">
+							<div
+								class="game-card"
+								data-url="https://coolmathgames.com/0-run-3"
+							>
 								<div class="game-card-header">
 									<h3 class="game-title">Run 3</h3>
 									<span class="game-category">Arcade</span>
@@ -812,7 +857,7 @@
 			</div>
 
 			<!-- Apps Section -->
-			<div id="apps-section" class="tab-section" style="display: none;">
+			<div id="apps-section" class="tab-section" style="display: none">
 				<section class="apps-section">
 					<div class="apps-container">
 						<h2 class="apps-title">Popular Apps</h2>
@@ -823,8 +868,18 @@
 						<div class="apps-search-container">
 							<div class="apps-search-bar">
 								<div class="apps-search-icon">
-									<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="none"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/>
 									</svg>
 								</div>
 								<input
@@ -834,9 +889,23 @@
 									autocomplete="off"
 									spellcheck="false"
 								/>
-								<div class="apps-search-clear" id="apps-search-clear" style="display: none;">
-									<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+								<div
+									class="apps-search-clear"
+									id="apps-search-clear"
+									style="display: none"
+								>
+									<svg
+										viewBox="0 0 24 24"
+										fill="none"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M18 6L6 18M6 6L18 18"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/>
 									</svg>
 								</div>
 							</div>
@@ -848,7 +917,9 @@
 									<h3 class="app-title">Discord</h3>
 									<span class="app-category">Communication</span>
 								</div>
-								<p class="app-description">Voice, video, and text communication platform</p>
+								<p class="app-description">
+									Voice, video, and text communication platform
+								</p>
 								<div class="app-rating">
 									<span class="star">★</span>
 									<span class="rating-value">4.8</span>
@@ -865,7 +936,9 @@
 									<h3 class="app-title">WhatsApp Web</h3>
 									<span class="app-category">Communication</span>
 								</div>
-								<p class="app-description">Messaging app for desktop browsers</p>
+								<p class="app-description">
+									Messaging app for desktop browsers
+								</p>
 								<div class="app-rating">
 									<span class="star">★</span>
 									<span class="rating-value">4.7</span>
@@ -882,7 +955,9 @@
 									<h3 class="app-title">Spotify Web Player</h3>
 									<span class="app-category">Music</span>
 								</div>
-								<p class="app-description">Stream millions of songs and podcasts</p>
+								<p class="app-description">
+									Stream millions of songs and podcasts
+								</p>
 								<div class="app-rating">
 									<span class="star">★</span>
 									<span class="rating-value">4.9</span>
@@ -899,7 +974,9 @@
 									<h3 class="app-title">Netflix</h3>
 									<span class="app-category">Entertainment</span>
 								</div>
-								<p class="app-description">Movies, TV shows, and original content</p>
+								<p class="app-description">
+									Movies, TV shows, and original content
+								</p>
 								<div class="app-rating">
 									<span class="star">★</span>
 									<span class="rating-value">4.6</span>
@@ -916,7 +993,9 @@
 									<h3 class="app-title">Google Docs</h3>
 									<span class="app-category">Productivity</span>
 								</div>
-								<p class="app-description">Online document editing and collaboration</p>
+								<p class="app-description">
+									Online document editing and collaboration
+								</p>
 								<div class="app-rating">
 									<span class="star">★</span>
 									<span class="rating-value">4.8</span>
@@ -950,7 +1029,9 @@
 									<h3 class="app-title">Google Slides</h3>
 									<span class="app-category">Productivity</span>
 								</div>
-								<p class="app-description">Create and present slide presentations</p>
+								<p class="app-description">
+									Create and present slide presentations
+								</p>
 								<div class="app-rating">
 									<span class="star">★</span>
 									<span class="rating-value">4.6</span>
@@ -984,7 +1065,9 @@
 									<h3 class="app-title">Outlook</h3>
 									<span class="app-category">Email</span>
 								</div>
-								<p class="app-description">Microsoft's web-based email client</p>
+								<p class="app-description">
+									Microsoft's web-based email client
+								</p>
 								<div class="app-rating">
 									<span class="star">★</span>
 									<span class="rating-value">4.4</span>
@@ -1018,7 +1101,9 @@
 									<h3 class="app-title">Canva</h3>
 									<span class="app-category">Design</span>
 								</div>
-								<p class="app-description">Graphic design and visual content creation</p>
+								<p class="app-description">
+									Graphic design and visual content creation
+								</p>
 								<div class="app-rating">
 									<span class="star">★</span>
 									<span class="rating-value">4.7</span>
@@ -1035,7 +1120,9 @@
 									<h3 class="app-title">Figma</h3>
 									<span class="app-category">Design</span>
 								</div>
-								<p class="app-description">Collaborative interface design tool</p>
+								<p class="app-description">
+									Collaborative interface design tool
+								</p>
 								<div class="app-rating">
 									<span class="star">★</span>
 									<span class="rating-value">4.9</span>
@@ -1052,7 +1139,9 @@
 									<h3 class="app-title">Notion</h3>
 									<span class="app-category">Productivity</span>
 								</div>
-								<p class="app-description">All-in-one workspace for notes and docs</p>
+								<p class="app-description">
+									All-in-one workspace for notes and docs
+								</p>
 								<div class="app-rating">
 									<span class="star">★</span>
 									<span class="rating-value">4.6</span>
@@ -1086,7 +1175,9 @@
 									<h3 class="app-title">Slack</h3>
 									<span class="app-category">Communication</span>
 								</div>
-								<p class="app-description">Team communication and collaboration</p>
+								<p class="app-description">
+									Team communication and collaboration
+								</p>
 								<div class="app-rating">
 									<span class="star">★</span>
 									<span class="rating-value">4.4</span>
@@ -1137,7 +1228,9 @@
 									<h3 class="app-title">Reddit</h3>
 									<span class="app-category">Social</span>
 								</div>
-								<p class="app-description">Online community and discussion platform</p>
+								<p class="app-description">
+									Online community and discussion platform
+								</p>
 								<div class="app-rating">
 									<span class="star">★</span>
 									<span class="rating-value">4.5</span>
@@ -1154,7 +1247,9 @@
 									<h3 class="app-title">Google Calendar</h3>
 									<span class="app-category">Productivity</span>
 								</div>
-								<p class="app-description">Schedule management and event planning</p>
+								<p class="app-description">
+									Schedule management and event planning
+								</p>
 								<div class="app-rating">
 									<span class="star">★</span>
 									<span class="rating-value">4.6</span>
@@ -1192,7 +1287,13 @@
 		<div id="frame-container" style="display: none">
 			<button id="close-frame" class="close-frame-button">
 				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					<path
+						d="M18 6L6 18M6 6L18 18"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
 				</svg>
 				Close
 			</button>
