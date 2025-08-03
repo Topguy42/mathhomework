@@ -862,7 +862,6 @@ body {
   }
 
   .quick-access-grid {
-    grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
   }
 
@@ -874,10 +873,6 @@ body {
   .quick-access-icon svg {
     width: 28px;
     height: 28px;
-  }
-
-  .footer-links {
-    gap: 1.5rem;
   }
 
   .floating-orb {
