@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>NeoProxy | Advanced Web Gateway</title>
+    <meta
+      name="description"
+      content="NeoProxy is a cutting-edge web gateway that provides secure and anonymous internet browsing through advanced proxy technology."
+    />
+    <meta
+      name="keywords"
+      content="proxy, web proxy, neoproxy, secure browsing, anonymous browsing, web gateway, unblock websites, privacy, internet freedom"
+    />
+    <meta name="theme-color" content="#6366f1" />
+    <meta name="googlebot" content="index, follow, snippet" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="baremux/index.js" defer></script>
+    <script src="epoxy/index.js" defer></script>
+    <script src="uv/uv.bundle.js" defer></script>
+    <script src="uv/uv.config.js" defer></script>
+    <script src="register-sw.js" defer></script>
+    <script src="search.js" defer></script>
+    <script src="index.js" defer></script>
+  </head>
+
+  <body>
+    <!-- Animated Background -->
+    <div class="background-animation">
+      <div class="floating-orb orb-1"></div>
+      <div class="floating-orb orb-2"></div>
+      <div class="floating-orb orb-3"></div>
+      <div class="floating-orb orb-4"></div>
+      <div class="floating-orb orb-5"></div>
+      <div class="gradient-overlay"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+      <!-- Header Section -->
+      <header class="header-section">
+        <div class="brand-logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="currentColor"/>
+              <path d="M12 8C14.21 8 16 9.79 16 12C16 14.21 14.21 16 12 16C9.79 16 8 14.21 8 12C8 9.79 9.79 8 12 8Z" fill="currentColor" opacity="0.6"/>
+            </svg>
+          </div>
+          <h1 class="brand-title">NeoProxy</h1>
+        </div>
+        <p class="brand-subtitle">Advanced Web Gateway</p>
+      </header>
+
+      <!-- Search Section -->
+      <section class="search-section">
+        <div class="search-container">
+          <h2 class="search-title">Browse the web freely</h2>
+          <p class="search-description">
+            Experience secure and anonymous browsing with our next-generation proxy technology
+          </p>
+          
+          <form id="uv-form" class="search-form">
+            <input
+              id="uv-search-engine"
+              value="https://www.google.com/search?q=%s"
+              type="hidden"
+            />
+            <div class="input-container">
+              <div class="input-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <input 
+                id="uv-address" 
+                type="text" 
+                placeholder="Enter URL or search term..." 
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <button type="submit" class="search-button">
+                <span>Go</span>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </form>
+
+          <div class="error-container">
+            <p id="uv-error" class="error-message"></p>
+            <pre id="uv-error-code" class="error-code"></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="features-section">
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Secure</h3>
+            <p>Advanced encryption and privacy protection</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Fast</h3>
+            <p>Lightning-fast browsing experience</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1L13.5 2.5L16.17 5.17L10.58 10.76C10.22 10.54 9.8 10.38 9.35 10.35L8.99 10.33C8.45 10.33 7.93 10.51 7.5 10.83L2 16.33L3.41 17.74L8.91 12.24C9.27 12.09 9.66 12 10.07 12C10.07 12 10.08 12 10.09 12H10.19C10.83 12.02 11.43 12.25 11.91 12.63L21 3.41L19.59 2L14.76 6.83C14.22 6.31 13.63 5.9 12.97 5.64L13.93 4.68L15.83 6.58L21 1.41L19.59 0L12.97 6.62C12.32 6.62 11.69 6.8 11.16 7.16L5.83 1.83L4.41 3.24L9.74 8.57C9.35 9.11 9.1 9.77 9.1 10.5C9.1 11.6 10.0 12.5 11.1 12.5C12.2 12.5 13.1 11.6 13.1 10.5C13.1 9.4 12.2 8.5 11.1 8.5C10.8 8.5 10.5 8.6 10.3 8.7L15 4H17L21 8V10H19L15.83 6.83L14.41 8.24L17.17 11H21V9Z" fill="currentColor"/>
+              </svg>
+            </div>
+            <h3>Anonymous</h3>
+            <p>Complete privacy and anonymity online</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="https://github.com/titaniumnetwork-dev" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://discord.gg/unblock" target="_blank" rel="noopener">Discord</a>
+          <a href="https://github.com/tomphttp" target="_blank" rel="noopener">TompHTTP</a>
+          <a href="credits.html">Credits</a>
+        </div>
+        <div class="footer-copyright">
+          <span>NeoProxy &copy; 2024 | Powered by Ultraviolet Technology</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Hidden Frame -->
+    <iframe style="display: none;" id="uv-frame"></iframe>
+  </body>
+</html>
