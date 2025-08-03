@@ -619,36 +619,76 @@ body {
   margin-top: 0.5rem;
 }
 
-/* Features Section */
-.features-section {
+/* Quick Access Section */
+.quick-access-section {
   padding: 3rem 2rem;
 }
 
-.features-grid {
+.quick-access-container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.quick-access-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-glass);
+  text-shadow: 0 2px 10px rgba(99, 102, 241, 0.2);
+  letter-spacing: -0.02em;
+}
+
+.quick-access-description {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  margin-bottom: 3rem;
+  opacity: 0.9;
+}
+
+.quick-access-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  max-width: 1000px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1.5rem;
+  max-width: 600px;
   margin: 0 auto;
 }
 
-.feature-card {
-  background: var(--glass-bg);
+.quick-access-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.quick-access-item:hover {
+  transform: translateY(-4px);
+}
+
+.quick-access-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  background: var(--glass-bg-strong);
   border: 1px solid var(--glass-border);
-  border-radius: 24px;
-  padding: 2rem;
-  text-align: center;
   backdrop-filter: blur(25px);
   box-shadow:
     0 8px 32px var(--glass-shadow),
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     0 1px 0 rgba(255, 255, 255, 0.05);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
 }
 
-.feature-card::before {
+.quick-access-icon::before {
   content: '';
   position: absolute;
   top: 0;
@@ -660,63 +700,59 @@ body {
   transition: opacity 0.3s ease;
 }
 
-.feature-card:hover::before {
+.quick-access-item:hover .quick-access-icon {
+  background: var(--glass-bg-light);
+  border-color: var(--glass-border-light);
+  box-shadow:
+    0 12px 40px var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 2px 0 rgba(255, 255, 255, 0.08);
+  transform: scale(1.05);
+}
+
+.quick-access-item:hover .quick-access-icon::before {
   opacity: 1;
 }
 
-.feature-card:hover {
-  transform: translateY(-6px) scale(1.02);
-  border-color: var(--glass-border-light);
-  background: var(--glass-bg-light);
-  box-shadow:
-    0 16px 40px rgba(99, 102, 241, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    0 2px 0 rgba(255, 255, 255, 0.08),
-    0 0 0 1px rgba(99, 102, 241, 0.1);
+.quick-access-icon svg {
+  width: 32px;
+  height: 32px;
 }
 
-.feature-icon {
-  width: 60px;
-  height: 60px;
-  background: var(--gradient-secondary);
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1.5rem;
-  color: white;
-  border: 1px solid var(--glass-border);
-  box-shadow:
-    0 4px 20px rgba(6, 182, 212, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    0 1px 0 rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+.quick-access-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
-.feature-card:hover .feature-icon {
-  transform: scale(1.1);
-  box-shadow:
-    0 6px 25px rgba(6, 182, 212, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 2px 0 rgba(255, 255, 255, 0.1);
-}
-
-.feature-icon svg {
-  width: 28px;
-  height: 28px;
-}
-
-.feature-card h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+.quick-access-item:hover .quick-access-label {
   color: var(--text-primary);
 }
 
-.feature-card p {
-  color: var(--text-secondary);
-  line-height: 1.5;
+/* Brand-specific icon colors */
+.quick-access-icon.youtube {
+  color: #ff0000;
+}
+
+.quick-access-icon.reddit {
+  color: #ff4500;
+}
+
+.quick-access-icon.discord {
+  color: #5865f2;
+}
+
+.quick-access-icon.github {
+  color: #ffffff;
+}
+
+.quick-access-icon.instagram {
+  color: #e4405f;
+}
+
+.quick-access-icon.tiktok {
+  color: #000000;
 }
 
 /* Footer */
