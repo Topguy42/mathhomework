@@ -125,6 +125,60 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	});
 
+	// Games search functionality
+	const gamesSearch = document.getElementById('games-search');
+	const gamesSearchClear = document.getElementById('games-search-clear');
+	const allGameCards = document.querySelectorAll('.game-card');
+
+	function filterGames(searchTerm) {
+		const term = searchTerm.toLowerCase().trim();
+
+		allGameCards.forEach(card => {
+			const title = card.querySelector('.game-title').textContent.toLowerCase();
+			const category = card.querySelector('.game-category').textContent.toLowerCase();
+			const description = card.querySelector('.game-description').textContent.toLowerCase();
+
+			const isMatch = title.includes(term) ||
+							category.includes(term) ||
+							description.includes(term);
+
+			if (isMatch || term === '') {
+				card.style.display = 'block';
+			} else {
+				card.style.display = 'none';
+			}
+		});
+
+		// Show/hide clear button
+		if (term.length > 0) {
+			gamesSearchClear.style.display = 'block';
+		} else {
+			gamesSearchClear.style.display = 'none';
+		}
+	}
+
+	if (gamesSearch) {
+		gamesSearch.addEventListener('input', (event) => {
+			filterGames(event.target.value);
+		});
+
+		gamesSearch.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape') {
+				gamesSearch.value = '';
+				filterGames('');
+				gamesSearch.blur();
+			}
+		});
+	}
+
+	if (gamesSearchClear) {
+		gamesSearchClear.addEventListener('click', () => {
+			gamesSearch.value = '';
+			filterGames('');
+			gamesSearch.focus();
+		});
+	}
+
 	// Initialize with proxy tab active
 	switchTab('proxy');
 });
