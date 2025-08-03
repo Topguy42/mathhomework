@@ -1145,6 +1145,17 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Load settings on page load
 	loadSettings();
 
+	// Add immediate trigger for about:blank mode
+	const aboutBlankToggle = document.getElementById("aboutblank-mode");
+	if (aboutBlankToggle) {
+		aboutBlankToggle.addEventListener("change", (e) => {
+			if (e.target.checked) {
+				// Immediately open about:blank tab when toggled on
+				enableAboutBlankMode();
+			}
+		});
+	}
+
 	// Theme preview functionality - always visible now
 	if (themePreviewBtn) {
 		themePreviewBtn.addEventListener("click", () => {
