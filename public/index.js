@@ -1621,7 +1621,16 @@ document.addEventListener("DOMContentLoaded", () => {
 							await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
 						}
 
-						const finalUrl = url.startsWith('http') ? url : 'https://' + url;
+						// Use the same search logic as the main proxy
+						const searchEngine = "https://www.google.com/search?q=%s";
+						let finalUrl;
+						if (url.startsWith('http://') || url.startsWith('https://')) {
+							finalUrl = url;
+						} else if (url.includes('.') && !url.includes(' ')) {
+							finalUrl = 'https://' + url;
+						} else {
+							finalUrl = searchEngine.replace('%s', encodeURIComponent(url));
+						}
 						const proxyUrl = __uv$config.prefix + __uv$config.encodeUrl(finalUrl);
 
 						document.getElementById('proxyFrame').src = proxyUrl;
