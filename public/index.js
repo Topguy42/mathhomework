@@ -87,11 +87,26 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	});
 
-	// Game items functionality
-	gameItems.forEach((item) => {
-		item.addEventListener("click", async (event) => {
+	// Game cards functionality
+	const gameCards = document.querySelectorAll(".game-card");
+	gameCards.forEach((card) => {
+		card.addEventListener("click", async (event) => {
 			event.preventDefault();
-			const url = item.getAttribute("data-url");
+			const url = card.getAttribute("data-url");
+			if (url) {
+				await loadUrl(url);
+			}
+		});
+	});
+
+	// Play button functionality
+	const playButtons = document.querySelectorAll(".play-button");
+	playButtons.forEach((button) => {
+		button.addEventListener("click", async (event) => {
+			event.preventDefault();
+			event.stopPropagation();
+			const card = button.closest(".game-card");
+			const url = card.getAttribute("data-url");
 			if (url) {
 				await loadUrl(url);
 			}
