@@ -647,11 +647,11 @@ body {
 }
 
 .quick-access-grid {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .quick-access-item {
