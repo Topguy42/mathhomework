@@ -1399,9 +1399,9 @@ body.frame-active .main-container {
 /* Tools Grid */
 .tools-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-	gap: 1rem;
-	max-width: 800px;
+	grid-template-columns: repeat(8, 1fr);
+	gap: 0.75rem;
+	max-width: 900px;
 	margin: 0 auto 3rem;
 }
 
