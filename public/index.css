@@ -758,10 +758,24 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: space-between;
 	text-decoration: none;
 	color: var(--text-primary);
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	cursor: pointer;
+	width: 80px;
+	height: 110px;
+	background: rgba(6, 182, 212, 0.15);
+	border: 1px solid rgba(6, 182, 212, 0.3);
+	border-radius: 20px;
+	backdrop-filter: blur(25px);
+	padding: 1rem 0.5rem 0.75rem;
+	box-shadow:
+		0 4px 20px rgba(6, 182, 212, 0.15),
+		inset 0 1px 0 rgba(6, 182, 212, 0.2),
+		0 1px 0 rgba(6, 182, 212, 0.1);
+	position: relative;
+	overflow: hidden;
 }
 
 .quick-access-item:hover {
@@ -769,24 +783,12 @@ body {
 }
 
 .quick-access-icon {
-	width: 80px;
-	height: 110px;
-	border-radius: 20px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-bottom: -25px;
-	background: rgba(6, 182, 212, 0.15);
-	border: 1px solid rgba(6, 182, 212, 0.3);
-	backdrop-filter: blur(25px);
 	color: var(--accent-color);
-	box-shadow:
-		0 4px 20px rgba(6, 182, 212, 0.15),
-		inset 0 1px 0 rgba(6, 182, 212, 0.2),
-		0 1px 0 rgba(6, 182, 212, 0.1);
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-	position: relative;
-	overflow: hidden;
+	flex: 1;
 }
 
 .quick-access-icon::before {
@@ -801,15 +803,18 @@ body {
 	transition: opacity 0.3s ease;
 }
 
-.quick-access-item:hover .quick-access-icon {
+.quick-access-item:hover {
 	background: rgba(6, 182, 212, 0.25);
 	border-color: rgba(6, 182, 212, 0.5);
-	color: #ffffff;
 	box-shadow:
 		0 8px 30px rgba(6, 182, 212, 0.3),
 		inset 0 1px 0 rgba(6, 182, 212, 0.3),
 		0 2px 0 rgba(6, 182, 212, 0.2);
-	transform: scale(1.05);
+	transform: translateY(-4px) scale(1.05);
+}
+
+.quick-access-item:hover .quick-access-icon {
+	color: #ffffff;
 }
 
 .quick-access-item:hover .quick-access-icon::before {
@@ -822,17 +827,16 @@ body {
 }
 
 .quick-access-label {
-	font-size: 0.875rem;
+	font-size: 0.75rem;
 	font-weight: 500;
 	color: var(--text-secondary);
 	transition: color 0.3s ease;
 	text-align: center;
-	position: relative;
-	z-index: 10;
+	line-height: 1;
 }
 
 .quick-access-item:hover .quick-access-label {
-	color: var(--accent-color);
+	color: #ffffff;
 }
 
 /* Hidden Frame */
