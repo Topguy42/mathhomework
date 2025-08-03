@@ -820,45 +820,73 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .nav-container {
+    padding: 0.5rem 1rem;
+    gap: 1rem;
+  }
+
+  .nav-tagline {
+    display: none;
+  }
+
+  .nav-tabs {
+    gap: 0.25rem;
+    padding: 0.2rem;
+  }
+
+  .nav-tab {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .nav-tab svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .main-container {
+    padding-top: 4rem;
+  }
+
   .brand-title {
     font-size: 2.5rem;
   }
-  
+
   .brand-subtitle {
     font-size: 1rem;
   }
-  
+
   .search-title {
     font-size: 1.5rem;
   }
-  
+
   .search-description {
     font-size: 1rem;
   }
-  
+
   .input-container {
     border-radius: 12px;
   }
-  
+
   #uv-address {
     font-size: 1rem;
     padding: 1rem 1rem 1rem 3rem;
   }
-  
+
   .search-button {
     padding: 0.75rem 1.25rem;
     font-size: 0.875rem;
   }
-  
+
   .features-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .footer-links {
     gap: 1.5rem;
   }
-  
+
   .floating-orb {
     opacity: 0.05;
   }
