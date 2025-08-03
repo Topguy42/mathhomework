@@ -702,19 +702,73 @@ document.addEventListener("DOMContentLoaded", () => {
 		return `Referrer Policy Applied: ${policy}\n\n${currentPolicy}\n\n🔒 This setting affects how your browsing history is shared with websites.\n\nNote: Changes take effect for new page loads.`;
 	}
 
-	function activateCloaking(hideIP, spoofUserAgent, blockTracking, clearCookies) {
-		const features = [];
+	function applyCloaking(title, faviconUrl) {
+		const changes = [];
 
-		if (hideIP) features.push("✅ IP Address Hidden - Using proxy routing");
-		if (spoofUserAgent) features.push("✅ User Agent Spoofed - Appears as different browser");
-		if (blockTracking) features.push("✅ Tracking Scripts Blocked - Enhanced privacy");
-		if (clearCookies) features.push("✅ Cookies Cleared - Fresh session started");
-
-		if (features.length === 0) {
-			return "❌ No cloaking features selected. Please enable at least one option.";
+		// Change page title
+		if (title) {
+			document.title = title;
+			changes.push(`✅ Page title changed to: "${title}"`);
 		}
 
-		return `🕵️ Cloaking Activated!\n\nActive Features:\n${features.join('\n')}\n\n🛡️ Your digital footprint is now minimized.\n\nNote: Some websites may not function properly with aggressive cloaking enabled.`;
+		// Change favicon
+		if (faviconUrl) {
+			// Remove existing favicon
+			const existingFavicons = document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
+			existingFavicons.forEach(favicon => favicon.remove());
+
+			// Add new favicon
+			const newFavicon = document.createElement('link');
+			newFavicon.rel = 'icon';
+			newFavicon.type = 'image/x-icon';
+			newFavicon.href = faviconUrl;
+			document.head.appendChild(newFavicon);
+
+			changes.push(`✅ Favicon changed to: ${faviconUrl}`);
+		}
+
+		if (changes.length === 0) {
+			return "❌ No changes applied. Please provide a title or favicon URL.";
+		}
+
+		return `🕵️ Cloaking Applied Successfully!\n\n${changes.join('\n')}\n\n😎 Your browser tab now appears as a different website for privacy.\n\n⚠️ Remember to restore the original settings when you're done to avoid confusion.`;
+	}
+
+	function restoreOriginal() {
+		const changes = [];
+
+		// Restore original title
+		if (document.title !== originalTitle) {
+			document.title = originalTitle;
+			changes.push(`✅ Page title restored to: "${originalTitle}"`);
+		}
+
+		// Restore original favicon
+		const currentFavicons = document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
+		currentFavicons.forEach(favicon => favicon.remove());
+
+		if (originalFavicon) {
+			const restoredFavicon = document.createElement('link');
+			restoredFavicon.rel = 'icon';
+			restoredFavicon.type = 'image/x-icon';
+			restoredFavicon.href = originalFavicon;
+			document.head.appendChild(restoredFavicon);
+			changes.push(`✅ Favicon restored to original`);
+		} else {
+			// Add default favicon if none existed
+			const defaultFavicon = document.createElement('link');
+			defaultFavicon.rel = 'icon';
+			defaultFavicon.type = 'image/x-icon';
+			defaultFavicon.href = '/favicon.ico';
+			document.head.appendChild(defaultFavicon);
+			changes.push(`✅ Default favicon restored`);
+		}
+
+		if (changes.length === 0) {
+			return "ℹ️ No changes to restore. The page is already in its original state.";
+		}
+
+		return `🔄 Original Settings Restored!\n\n${changes.join('\n')}\n\n✅ Your browser tab has been restored to its original appearance.`;
 	}
 
 	async function anonymousSearch(query, provider) {
