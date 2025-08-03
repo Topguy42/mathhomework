@@ -1141,12 +1141,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Load settings on page load
 	loadSettings();
 
-	// Theme preview functionality
+	// Theme preview functionality - always visible now
 	if (themePreviewBtn) {
 		themePreviewBtn.addEventListener("click", () => {
-			const isVisible = themePreviewGrid.style.display !== "none";
-			themePreviewGrid.style.display = isVisible ? "none" : "grid";
-			themePreviewBtn.textContent = isVisible ? "Preview" : "Hide";
+			// Quick scroll to theme grid
+			themePreviewGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
 		});
 	}
 
