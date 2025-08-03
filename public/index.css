@@ -1519,6 +1519,37 @@ body {
 		padding: 0.6rem;
 		font-size: 0.8rem;
 	}
+
+	.apps-section {
+		padding: 1rem;
+	}
+
+	.apps-grid {
+		grid-template-columns: 1fr;
+		gap: 1rem;
+	}
+
+	.app-card {
+		padding: 1rem;
+	}
+
+	.app-title {
+		font-size: 1.2rem;
+	}
+
+	.app-category {
+		font-size: 0.65rem;
+		padding: 0.2rem 0.5rem;
+	}
+
+	.app-description {
+		font-size: 0.85rem;
+	}
+
+	.launch-button {
+		padding: 0.6rem;
+		font-size: 0.8rem;
+	}
 }
 
 /* Loading Animation */
