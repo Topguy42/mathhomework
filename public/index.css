@@ -669,20 +669,21 @@ body {
 }
 
 .quick-access-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 18px;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.75rem;
-  background: var(--glass-bg-strong);
-  border: 1px solid var(--glass-border);
+  margin-bottom: 0.5rem;
+  background: rgba(6, 182, 212, 0.15);
+  border: 1px solid rgba(6, 182, 212, 0.3);
   backdrop-filter: blur(25px);
+  color: var(--accent-color);
   box-shadow:
-    0 8px 32px var(--glass-shadow),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 1px 0 rgba(255, 255, 255, 0.05);
+    0 4px 20px rgba(6, 182, 212, 0.15),
+    inset 0 1px 0 rgba(6, 182, 212, 0.2),
+    0 1px 0 rgba(6, 182, 212, 0.1);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
