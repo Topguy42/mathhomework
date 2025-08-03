@@ -494,16 +494,10 @@ body {
 
 .brand-title {
 	font-size: 6rem;
-	font-weight: 900;
-	font-family: "Inter", system-ui, -apple-system, sans-serif;
+	font-weight: 800;
+	font-family: "Arial Black", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	color: var(--primary-color);
-	text-shadow:
-		0 4px 8px rgba(0, 0, 0, 0.5),
-		0 8px 16px rgba(0, 0, 0, 0.3),
-		0 12px 24px rgba(0, 0, 0, 0.2),
-		0 0 40px rgba(0, 212, 170, 0.4);
-	letter-spacing: -0.04em;
-	text-transform: none;
+	letter-spacing: -0.02em;
 }
 
 .brand-subtitle {
