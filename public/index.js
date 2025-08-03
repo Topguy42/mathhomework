@@ -21,9 +21,7 @@ const error = document.getElementById("uv-error");
 const errorCode = document.getElementById("uv-error-code");
 const connection = new BareMux.BareMuxConnection("/baremux/worker.js")
 
-form.addEventListener("submit", async (event) => {
-	event.preventDefault();
-
+async function loadUrl(url) {
 	try {
 		await registerSW();
 	} catch (err) {
@@ -32,8 +30,6 @@ form.addEventListener("submit", async (event) => {
 		throw err;
 	}
 
-	const url = search(address.value, searchEngine.value);
-
 	let frame = document.getElementById("uv-frame");
 	frame.style.display = "block";
 	let wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
@@ -41,4 +37,25 @@ form.addEventListener("submit", async (event) => {
 		await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
 	}
 	frame.src = __uv$config.prefix + __uv$config.encodeUrl(url);
+}
+
+form.addEventListener("submit", async (event) => {
+	event.preventDefault();
+	const url = search(address.value, searchEngine.value);
+	await loadUrl(url);
+});
+
+// Quick Access functionality
+document.addEventListener("DOMContentLoaded", () => {
+	const quickAccessItems = document.querySelectorAll(".quick-access-item");
+
+	quickAccessItems.forEach(item => {
+		item.addEventListener("click", async (event) => {
+			event.preventDefault();
+			const url = item.getAttribute("data-url");
+			if (url) {
+				await loadUrl(url);
+			}
+		});
+	});
 });
