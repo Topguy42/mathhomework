@@ -824,11 +824,13 @@ body {
 }
 
 .quick-access-label {
-	font-size: 0.875rem;
-	font-weight: 500;
-	color: var(--text-secondary);
+	font-size: 0.75rem;
+	font-weight: 600;
+	color: var(--accent-color);
 	transition: color 0.3s ease;
 	text-align: center;
+	margin: 0;
+	line-height: 1;
 }
 
 .quick-access-item:hover .quick-access-label {
