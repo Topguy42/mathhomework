@@ -1918,22 +1918,23 @@ body.frame-active .main-container {
 	}
 
 	.tools-grid {
-		grid-template-columns: repeat(4, 1fr);
-		gap: 0.75rem;
+		grid-template-columns: repeat(8, 1fr);
+		gap: 0.5rem;
+		max-width: 100%;
 	}
 
 	.tool-card {
-		padding: 1rem 0.5rem;
-		min-height: 80px;
+		padding: 0.75rem 0.25rem;
+		min-height: 75px;
 	}
 
 	.tool-icon svg {
-		width: 24px;
-		height: 24px;
+		width: 20px;
+		height: 20px;
 	}
 
 	.tool-label {
-		font-size: 0.75rem;
+		font-size: 0.65rem;
 	}
 
 	.tool-interface {
