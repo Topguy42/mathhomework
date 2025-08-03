@@ -810,6 +810,382 @@
 					</div>
 				</section>
 			</div>
+
+			<!-- Apps Section -->
+			<div id="apps-section" class="tab-section" style="display: none;">
+				<section class="apps-section">
+					<div class="apps-container">
+						<h2 class="apps-title">Popular Apps</h2>
+						<p class="apps-description">
+							Access your favorite web applications securely through our proxy
+						</p>
+
+						<div class="apps-search-container">
+							<div class="apps-search-bar">
+								<div class="apps-search-icon">
+									<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									</svg>
+								</div>
+								<input
+									id="apps-search"
+									type="text"
+									placeholder="Search apps by name, category, or description..."
+									autocomplete="off"
+									spellcheck="false"
+								/>
+								<div class="apps-search-clear" id="apps-search-clear" style="display: none;">
+									<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									</svg>
+								</div>
+							</div>
+						</div>
+
+						<div class="apps-grid">
+							<div class="app-card" data-url="https://discord.com/app">
+								<div class="app-card-header">
+									<h3 class="app-title">Discord</h3>
+									<span class="app-category">Communication</span>
+								</div>
+								<p class="app-description">Voice, video, and text communication platform</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.8</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://web.whatsapp.com">
+								<div class="app-card-header">
+									<h3 class="app-title">WhatsApp Web</h3>
+									<span class="app-category">Communication</span>
+								</div>
+								<p class="app-description">Messaging app for desktop browsers</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.7</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://spotify.com/us/player">
+								<div class="app-card-header">
+									<h3 class="app-title">Spotify Web Player</h3>
+									<span class="app-category">Music</span>
+								</div>
+								<p class="app-description">Stream millions of songs and podcasts</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.9</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">���</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://netflix.com">
+								<div class="app-card-header">
+									<h3 class="app-title">Netflix</h3>
+									<span class="app-category">Entertainment</span>
+								</div>
+								<p class="app-description">Movies, TV shows, and original content</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.6</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://docs.google.com">
+								<div class="app-card-header">
+									<h3 class="app-title">Google Docs</h3>
+									<span class="app-category">Productivity</span>
+								</div>
+								<p class="app-description">Online document editing and collaboration</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.8</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://sheets.google.com">
+								<div class="app-card-header">
+									<h3 class="app-title">Google Sheets</h3>
+									<span class="app-category">Productivity</span>
+								</div>
+								<p class="app-description">Online spreadsheet application</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.7</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://slides.google.com">
+								<div class="app-card-header">
+									<h3 class="app-title">Google Slides</h3>
+									<span class="app-category">Productivity</span>
+								</div>
+								<p class="app-description">Create and present slide presentations</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.6</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://drive.google.com">
+								<div class="app-card-header">
+									<h3 class="app-title">Google Drive</h3>
+									<span class="app-category">Storage</span>
+								</div>
+								<p class="app-description">Cloud storage and file sharing</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.5</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://outlook.live.com">
+								<div class="app-card-header">
+									<h3 class="app-title">Outlook</h3>
+									<span class="app-category">Email</span>
+								</div>
+								<p class="app-description">Microsoft's web-based email client</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.4</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://gmail.com">
+								<div class="app-card-header">
+									<h3 class="app-title">Gmail</h3>
+									<span class="app-category">Email</span>
+								</div>
+								<p class="app-description">Google's email service</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.8</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://canva.com">
+								<div class="app-card-header">
+									<h3 class="app-title">Canva</h3>
+									<span class="app-category">Design</span>
+								</div>
+								<p class="app-description">Graphic design and visual content creation</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.7</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://figma.com">
+								<div class="app-card-header">
+									<h3 class="app-title">Figma</h3>
+									<span class="app-category">Design</span>
+								</div>
+								<p class="app-description">Collaborative interface design tool</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.9</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://notion.so">
+								<div class="app-card-header">
+									<h3 class="app-title">Notion</h3>
+									<span class="app-category">Productivity</span>
+								</div>
+								<p class="app-description">All-in-one workspace for notes and docs</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.6</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://trello.com">
+								<div class="app-card-header">
+									<h3 class="app-title">Trello</h3>
+									<span class="app-category">Productivity</span>
+								</div>
+								<p class="app-description">Kanban-style project management</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.5</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://slack.com">
+								<div class="app-card-header">
+									<h3 class="app-title">Slack</h3>
+									<span class="app-category">Communication</span>
+								</div>
+								<p class="app-description">Team communication and collaboration</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.4</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://zoom.us">
+								<div class="app-card-header">
+									<h3 class="app-title">Zoom</h3>
+									<span class="app-category">Communication</span>
+								</div>
+								<p class="app-description">Video conferencing and meetings</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.3</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://twitter.com">
+								<div class="app-card-header">
+									<h3 class="app-title">Twitter / X</h3>
+									<span class="app-category">Social</span>
+								</div>
+								<p class="app-description">Social media and news platform</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.2</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://reddit.com">
+								<div class="app-card-header">
+									<h3 class="app-title">Reddit</h3>
+									<span class="app-category">Social</span>
+								</div>
+								<p class="app-description">Online community and discussion platform</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.5</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://calendar.google.com">
+								<div class="app-card-header">
+									<h3 class="app-title">Google Calendar</h3>
+									<span class="app-category">Productivity</span>
+								</div>
+								<p class="app-description">Schedule management and event planning</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.6</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+
+							<div class="app-card" data-url="https://photos.google.com">
+								<div class="app-card-header">
+									<h3 class="app-title">Google Photos</h3>
+									<span class="app-category">Storage</span>
+								</div>
+								<p class="app-description">Photo storage and sharing service</p>
+								<div class="app-rating">
+									<span class="star">★</span>
+									<span class="rating-value">4.4</span>
+									<span class="rating-label">rating</span>
+								</div>
+								<button class="launch-button">
+									<span class="launch-icon">🚀</span>
+									Launch App
+								</button>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
 		</div>
 
 		<!-- Hidden Frame -->
