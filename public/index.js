@@ -30,10 +30,11 @@ async function loadUrl(url) {
 		throw err;
 	}
 
+	let frameContainer = document.getElementById("frame-container");
 	let frame = document.getElementById("uv-frame");
-	frame.style.display = "block";
 
-	// Hide background content and prevent scrolling
+	// Show frame container and hide background content
+	frameContainer.style.display = "block";
 	document.body.classList.add("frame-active");
 
 	let wispUrl =
