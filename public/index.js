@@ -1141,6 +1141,43 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Load settings on page load
 	loadSettings();
 
+	// Theme preview functionality
+	if (themePreviewBtn) {
+		themePreviewBtn.addEventListener("click", () => {
+			const isVisible = themePreviewGrid.style.display !== "none";
+			themePreviewGrid.style.display = isVisible ? "none" : "grid";
+			themePreviewBtn.textContent = isVisible ? "Preview" : "Hide";
+		});
+	}
+
+	// Theme preview selection
+	const themePreviewItems = document.querySelectorAll(".theme-preview-item");
+	themePreviewItems.forEach(item => {
+		item.addEventListener("click", () => {
+			const theme = item.getAttribute("data-theme");
+			if (themeSelect) {
+				themeSelect.value = theme;
+
+				// Apply theme immediately for preview
+				const settings = getCurrentSettings();
+				settings.theme = theme;
+				applyFunctionalSettings(settings);
+
+				// Hide preview grid
+				themePreviewGrid.style.display = "none";
+				themePreviewBtn.innerHTML = `
+					<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+						<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+					</svg>
+					Preview
+				`;
+
+				// Show notification
+				showNotification(`Theme changed to ${getThemeName(theme)}! Don't forget to save your settings.`, "success");
+			}
+		});
+	});
+
 	// User agent select handler
 	if (userAgentSelect) {
 		userAgentSelect.addEventListener("change", () => {
