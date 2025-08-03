@@ -26,9 +26,17 @@ const fastify = Fastify({
 	},
 });
 
+// Serve custom public files first (our rebranded UI)
+fastify.register(fastifyStatic, {
+	root: join(process.cwd(), "public"),
+	decorateReply: true,
+});
+
+// Fallback to ultraviolet static files for missing files
 fastify.register(fastifyStatic, {
 	root: publicPath,
-	decorateReply: true,
+	prefix: "/uv-static/",
+	decorateReply: false,
 });
 
 fastify.get("/uv/uv.config.js", (req, res) => {
