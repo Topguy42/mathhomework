@@ -264,6 +264,32 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
+	// Close frame functionality
+	const closeFrameButton = document.getElementById('close-frame');
+	if (closeFrameButton) {
+		closeFrameButton.addEventListener('click', () => {
+			const frameContainer = document.getElementById('frame-container');
+			const frame = document.getElementById('uv-frame');
+
+			// Hide frame and restore background
+			frameContainer.style.display = 'none';
+			frame.src = '';
+			document.body.classList.remove('frame-active');
+		});
+	}
+
+	// Also allow ESC key to close frame
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape' && document.body.classList.contains('frame-active')) {
+			const frameContainer = document.getElementById('frame-container');
+			const frame = document.getElementById('uv-frame');
+
+			frameContainer.style.display = 'none';
+			frame.src = '';
+			document.body.classList.remove('frame-active');
+		}
+	});
+
 	// Initialize with proxy tab active
 	switchTab('proxy');
 });
