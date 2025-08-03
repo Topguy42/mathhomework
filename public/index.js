@@ -1470,6 +1470,45 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	}
 
+	function getCurrentSettings() {
+		return {
+			searchEngine: document.getElementById("default-search-engine")?.value || defaultSettings.searchEngine,
+			homepageUrl: document.getElementById("homepage-url")?.value || "",
+			autoOpenLinks: document.getElementById("auto-open-links")?.checked ?? defaultSettings.autoOpenLinks,
+			blockTracking: document.getElementById("block-tracking")?.checked ?? defaultSettings.blockTracking,
+			blockAds: document.getElementById("block-ads")?.checked ?? defaultSettings.blockAds,
+			forceHttps: document.getElementById("force-https")?.checked ?? defaultSettings.forceHttps,
+			clearOnExit: document.getElementById("clear-on-exit")?.checked ?? defaultSettings.clearOnExit,
+			theme: document.getElementById("theme-select")?.value || defaultSettings.theme,
+			enableAnimations: document.getElementById("enable-animations")?.checked ?? defaultSettings.enableAnimations,
+			compactMode: document.getElementById("compact-mode")?.checked ?? defaultSettings.compactMode,
+			imageCompression: document.getElementById("image-compression")?.checked ?? defaultSettings.imageCompression,
+			cacheSize: document.getElementById("cache-size")?.value || defaultSettings.cacheSize,
+			preloadLinks: document.getElementById("preload-links")?.checked ?? defaultSettings.preloadLinks,
+			userAgent: document.getElementById("user-agent")?.value || defaultSettings.userAgent,
+			customUserAgent: document.getElementById("custom-user-agent")?.value || "",
+			enableJavascript: document.getElementById("enable-javascript")?.checked ?? defaultSettings.enableJavascript,
+			enableWebrtc: document.getElementById("enable-webrtc")?.checked ?? defaultSettings.enableWebrtc
+		};
+	}
+
+	function getThemeName(theme) {
+		const themeNames = {
+			dark: "Dark Theme",
+			light: "Light Theme",
+			blue: "Ocean Blue",
+			purple: "Purple Galaxy",
+			green: "Forest Green",
+			red: "Crimson Red",
+			orange: "Sunset Orange",
+			pink: "Rose Pink",
+			cyber: "Cyberpunk",
+			matrix: "Matrix Green",
+			auto: "Auto (System)"
+		};
+		return themeNames[theme] || theme;
+	}
+
 	function showNotification(message, type = "info") {
 		// Create notification element
 		const notification = document.createElement("div");
