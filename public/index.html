@@ -657,7 +657,7 @@
 									<span class="rating-label">rating</span>
 								</div>
 								<button class="play-button">
-									<span class="play-icon">▶</span>
+									<span class="play-icon">���</span>
 									Play Now
 								</button>
 							</div>
@@ -1398,24 +1398,126 @@
 									Appearance
 								</h3>
 
-								<div class="setting-item">
+								<div class="setting-item theme-setting">
 									<div class="setting-info">
 										<label class="setting-label">Theme</label>
 										<p class="setting-description">Choose your preferred color theme</p>
 									</div>
-									<select id="theme-select" class="setting-select">
-										<option value="dark">🌙 Dark Theme</option>
-										<option value="light">☀️ Light Theme</option>
-										<option value="blue">💙 Ocean Blue</option>
-										<option value="purple">💜 Purple Galaxy</option>
-										<option value="green">💚 Forest Green</option>
-										<option value="red">❤️ Crimson Red</option>
-										<option value="orange">🧡 Sunset Orange</option>
-										<option value="pink">💖 Rose Pink</option>
-										<option value="cyber">🤖 Cyberpunk</option>
-										<option value="matrix">🔰 Matrix Green</option>
-										<option value="auto">🔄 Auto (System)</option>
-									</select>
+									<div class="theme-controls">
+										<select id="theme-select" class="setting-select">
+											<option value="dark">🌙 Dark Theme</option>
+											<option value="light">☀️ Light Theme</option>
+											<option value="blue">💙 Ocean Blue</option>
+											<option value="purple">💜 Purple Galaxy</option>
+											<option value="green">💚 Forest Green</option>
+											<option value="red">❤️ Crimson Red</option>
+											<option value="orange">🧡 Sunset Orange</option>
+											<option value="pink">💖 Rose Pink</option>
+											<option value="cyber">🤖 Cyberpunk</option>
+											<option value="matrix">🔰 Matrix Green</option>
+											<option value="auto">🔄 Auto (System)</option>
+										</select>
+										<button id="theme-preview-btn" class="theme-preview-button" type="button">
+											<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+												<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+											</svg>
+											Preview
+										</button>
+									</div>
+								</div>
+
+								<!-- Theme Preview Grid -->
+								<div class="theme-preview-grid" id="theme-preview-grid" style="display: none;">
+									<div class="theme-preview-item" data-theme="dark">
+										<div class="theme-preview-card dark-preview">
+											<div class="preview-header">🌙 Dark</div>
+											<div class="preview-content">
+												<div class="preview-accent"></div>
+												<div class="preview-text"></div>
+											</div>
+										</div>
+									</div>
+									<div class="theme-preview-item" data-theme="light">
+										<div class="theme-preview-card light-preview">
+											<div class="preview-header">☀️ Light</div>
+											<div class="preview-content">
+												<div class="preview-accent"></div>
+												<div class="preview-text"></div>
+											</div>
+										</div>
+									</div>
+									<div class="theme-preview-item" data-theme="blue">
+										<div class="theme-preview-card blue-preview">
+											<div class="preview-header">💙 Ocean</div>
+											<div class="preview-content">
+												<div class="preview-accent"></div>
+												<div class="preview-text"></div>
+											</div>
+										</div>
+									</div>
+									<div class="theme-preview-item" data-theme="purple">
+										<div class="theme-preview-card purple-preview">
+											<div class="preview-header">💜 Galaxy</div>
+											<div class="preview-content">
+												<div class="preview-accent"></div>
+												<div class="preview-text"></div>
+											</div>
+										</div>
+									</div>
+									<div class="theme-preview-item" data-theme="green">
+										<div class="theme-preview-card green-preview">
+											<div class="preview-header">💚 Forest</div>
+											<div class="preview-content">
+												<div class="preview-accent"></div>
+												<div class="preview-text"></div>
+											</div>
+										</div>
+									</div>
+									<div class="theme-preview-item" data-theme="red">
+										<div class="theme-preview-card red-preview">
+											<div class="preview-header">❤️ Crimson</div>
+											<div class="preview-content">
+												<div class="preview-accent"></div>
+												<div class="preview-text"></div>
+											</div>
+										</div>
+									</div>
+									<div class="theme-preview-item" data-theme="orange">
+										<div class="theme-preview-card orange-preview">
+											<div class="preview-header">🧡 Sunset</div>
+											<div class="preview-content">
+												<div class="preview-accent"></div>
+												<div class="preview-text"></div>
+											</div>
+										</div>
+									</div>
+									<div class="theme-preview-item" data-theme="pink">
+										<div class="theme-preview-card pink-preview">
+											<div class="preview-header">💖 Rose</div>
+											<div class="preview-content">
+												<div class="preview-accent"></div>
+												<div class="preview-text"></div>
+											</div>
+										</div>
+									</div>
+									<div class="theme-preview-item" data-theme="cyber">
+										<div class="theme-preview-card cyber-preview">
+											<div class="preview-header">🤖 Cyber</div>
+											<div class="preview-content">
+												<div class="preview-accent"></div>
+												<div class="preview-text"></div>
+											</div>
+										</div>
+									</div>
+									<div class="theme-preview-item" data-theme="matrix">
+										<div class="theme-preview-card matrix-preview">
+											<div class="preview-header">🔰 Matrix</div>
+											<div class="preview-content">
+												<div class="preview-accent"></div>
+												<div class="preview-text"></div>
+											</div>
+										</div>
+									</div>
 								</div>
 
 								<div class="setting-item">
