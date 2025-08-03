@@ -1110,6 +1110,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	const customUserAgentItem = document.getElementById("custom-user-agent-item");
 	const storageUsageSpan = document.getElementById("storage-usage");
 	const lastBackupSpan = document.getElementById("last-backup");
+	const themePreviewBtn = document.getElementById("theme-preview-btn");
+	const themePreviewGrid = document.getElementById("theme-preview-grid");
+	const themeSelect = document.getElementById("theme-select");
 
 	// Settings storage key
 	const SETTINGS_KEY = "vortex_settings";
