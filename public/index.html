@@ -1481,32 +1481,66 @@
 							<div id="cloaker-interface" class="tool-interface">
 								<h3 class="tool-interface-title">
 									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.86 9.14 5 13z"/>
+										<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
 									</svg>
 									Cloaker
 								</h3>
-								<p class="tool-interface-description">Hide your browsing activity and mask your digital footprint</p>
+								<p class="tool-interface-description">Change website title and favicon for privacy</p>
 								<div class="tool-input-container">
-									<div class="tool-options">
-										<label class="tool-checkbox">
-											<input type="checkbox" id="hide-ip" checked />
-											<span>Hide IP Address</span>
-										</label>
-										<label class="tool-checkbox">
-											<input type="checkbox" id="spoof-useragent" checked />
-											<span>Spoof User Agent</span>
-										</label>
-										<label class="tool-checkbox">
-											<input type="checkbox" id="block-tracking" checked />
-											<span>Block Tracking Scripts</span>
-										</label>
-										<label class="tool-checkbox">
-											<input type="checkbox" id="clear-cookies" />
-											<span>Clear Cookies</span>
-										</label>
+									<div class="cloak-input-group">
+										<label for="website-title" class="cloak-label">Website Title:</label>
+										<input id="website-title" type="text" placeholder="e.g., Google Classroom, Khan Academy, etc." class="cloak-input" />
+										<small class="cloak-hint">This will change the title shown in your browser tab</small>
 									</div>
-									<button id="cloaker-btn" class="tool-button">Activate Cloaking</button>
+
+									<div class="cloak-input-group">
+										<label for="favicon-url" class="cloak-label">Favicon URL:</label>
+										<input id="favicon-url" type="text" placeholder="https://example.com/favicon.ico" class="cloak-input" />
+										<small class="cloak-hint">This will change the icon shown in your browser tab</small>
+									</div>
+
+									<div class="cloak-buttons">
+										<button id="apply-cloaker-btn" class="tool-button cloak-apply">Apply Cloaker</button>
+										<button id="restore-original-btn" class="tool-button cloak-restore">Restore Original</button>
+									</div>
 								</div>
+
+								<div class="quick-presets">
+									<h4 class="presets-title">
+										<span class="presets-icon">💡</span>
+										Quick Presets:
+									</h4>
+									<div class="presets-grid">
+										<button class="preset-btn" data-title="Google Classroom" data-favicon="https://classroom.google.com/favicon.ico">
+											<span class="preset-icon">📚</span>
+											<span class="preset-label">Google Classroom</span>
+										</button>
+										<button class="preset-btn" data-title="Khan Academy" data-favicon="https://cdn.kastatic.org/images/favicon.ico">
+											<span class="preset-icon">➕</span>
+											<span class="preset-label">Khan Academy</span>
+										</button>
+										<button class="preset-btn" data-title="Google Docs" data-favicon="https://docs.google.com/favicon.ico">
+											<span class="preset-icon">📄</span>
+											<span class="preset-label">Google Docs</span>
+										</button>
+										<button class="preset-btn" data-title="Wikipedia" data-favicon="https://wikipedia.org/favicon.ico">
+											<span class="preset-icon">📖</span>
+											<span class="preset-label">Wikipedia</span>
+										</button>
+									</div>
+								</div>
+
+								<div class="cloak-warnings">
+									<p class="cloak-warning">
+										<span class="warning-icon">😎</span>
+										Changes the appearance of your browser tab for privacy
+									</p>
+									<p class="cloak-warning">
+										<span class="warning-icon">⚠️</span>
+										Remember to restore when done to avoid confusion
+									</p>
+								</div>
+
 								<div id="cloaker-result" class="tool-result"></div>
 							</div>
 
