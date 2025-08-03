@@ -1910,6 +1910,100 @@ body.frame-active .main-container {
 		padding: 0.6rem;
 		font-size: 0.8rem;
 	}
+
+	.tools-section {
+		padding: 1rem;
+	}
+
+	.tools-grid {
+		grid-template-columns: repeat(4, 1fr);
+		gap: 0.75rem;
+	}
+
+	.tool-card {
+		padding: 1rem 0.5rem;
+		min-height: 80px;
+	}
+
+	.tool-icon svg {
+		width: 24px;
+		height: 24px;
+	}
+
+	.tool-label {
+		font-size: 0.75rem;
+	}
+
+	.tool-interface {
+		padding: 1.5rem;
+	}
+
+	.tool-interface-title {
+		font-size: 1.25rem;
+	}
+
+	.tool-input-container {
+		gap: 0.75rem;
+	}
+
+	.tool-input-container input,
+	.tool-select {
+		padding: 0.75rem;
+		font-size: 0.9rem;
+	}
+
+	.tool-button {
+		padding: 0.875rem 1.25rem;
+		font-size: 0.9rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.tools-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.5rem;
+	}
+
+	.tool-card {
+		padding: 0.75rem 0.5rem;
+		min-height: 70px;
+	}
+
+	.tool-icon svg {
+		width: 20px;
+		height: 20px;
+	}
+
+	.tool-label {
+		font-size: 0.7rem;
+	}
+
+	.tool-interface {
+		padding: 1rem;
+	}
+
+	.tool-interface-title {
+		font-size: 1.125rem;
+		flex-direction: column;
+		gap: 0.5rem;
+		text-align: center;
+	}
+
+	.tool-input-container input,
+	.tool-select {
+		padding: 0.75rem;
+		font-size: 0.875rem;
+	}
+
+	.tool-button {
+		padding: 0.75rem 1rem;
+		font-size: 0.875rem;
+	}
+
+	.tool-result {
+		font-size: 0.8rem;
+		min-height: 80px;
+	}
 }
 
 /* Loading Animation */
