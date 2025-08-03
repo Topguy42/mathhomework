@@ -493,8 +493,8 @@ body {
 }
 
 .brand-title {
-	font-size: 3rem;
-	font-weight: 700;
+	font-size: 6rem;
+	font-weight: 800;
 	background: linear-gradient(
 		135deg,
 		#ffffff 0%,
@@ -506,6 +506,7 @@ body {
 	-webkit-text-fill-color: transparent;
 	text-shadow: 0 0 30px rgba(0, 212, 170, 0.3);
 	filter: drop-shadow(0 2px 4px rgba(0, 212, 170, 0.2));
+	letter-spacing: -0.03em;
 }
 
 .brand-subtitle {
