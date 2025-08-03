@@ -840,17 +840,22 @@ body {
   }
 
   .quick-access-grid {
-    gap: 1.25rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
   }
 
   .quick-access-icon {
-    width: 56px;
-    height: 56px;
+    width: 52px;
+    height: 52px;
   }
 
   .quick-access-icon svg {
-    width: 28px;
-    height: 28px;
+    width: 22px;
+    height: 22px;
+  }
+
+  .quick-access-label {
+    font-size: 0.75rem;
   }
 
   .floating-orb {
