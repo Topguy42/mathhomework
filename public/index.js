@@ -1102,6 +1102,331 @@ document.addEventListener("DOMContentLoaded", () => {
 		return recommendations;
 	}
 
+	// Settings functionality
+	const saveSettingsBtn = document.getElementById("save-settings");
+	const resetSettingsBtn = document.getElementById("reset-settings");
+	const clearDataBtn = document.getElementById("clear-data");
+	const userAgentSelect = document.getElementById("user-agent");
+	const customUserAgentItem = document.getElementById("custom-user-agent-item");
+	const storageUsageSpan = document.getElementById("storage-usage");
+	const lastBackupSpan = document.getElementById("last-backup");
+
+	// Settings storage key
+	const SETTINGS_KEY = "vortex_settings";
+
+	// Default settings
+	const defaultSettings = {
+		searchEngine: "https://www.google.com/search?q=%s",
+		homepageUrl: "",
+		autoOpenLinks: true,
+		blockTracking: true,
+		blockAds: true,
+		forceHttps: true,
+		clearOnExit: false,
+		theme: "dark",
+		enableAnimations: true,
+		compactMode: false,
+		imageCompression: false,
+		cacheSize: "medium",
+		preloadLinks: true,
+		userAgent: "default",
+		customUserAgent: "",
+		enableJavascript: true,
+		enableWebrtc: false
+	};
+
+	// Load settings on page load
+	loadSettings();
+
+	// User agent select handler
+	if (userAgentSelect) {
+		userAgentSelect.addEventListener("change", () => {
+			if (userAgentSelect.value === "custom") {
+				customUserAgentItem.style.display = "block";
+			} else {
+				customUserAgentItem.style.display = "none";
+			}
+		});
+	}
+
+	// Save settings
+	if (saveSettingsBtn) {
+		saveSettingsBtn.addEventListener("click", () => {
+			setLoading(saveSettingsBtn, true);
+			try {
+				saveSettings();
+				showNotification("Settings saved successfully!", "success");
+			} catch (error) {
+				showNotification(`Error saving settings: ${error.message}`, "error");
+			}
+			setLoading(saveSettingsBtn, false);
+		});
+	}
+
+	// Reset settings
+	if (resetSettingsBtn) {
+		resetSettingsBtn.addEventListener("click", () => {
+			if (confirm("Are you sure you want to reset all settings to defaults? This cannot be undone.")) {
+				setLoading(resetSettingsBtn, true);
+				try {
+					resetToDefaults();
+					showNotification("Settings reset to defaults", "success");
+				} catch (error) {
+					showNotification(`Error resetting settings: ${error.message}`, "error");
+				}
+				setLoading(resetSettingsBtn, false);
+			}
+		});
+	}
+
+	// Clear data
+	if (clearDataBtn) {
+		clearDataBtn.addEventListener("click", () => {
+			if (confirm("Are you sure you want to clear all data? This will remove all settings, cache, and stored data. This cannot be undone.")) {
+				setLoading(clearDataBtn, true);
+				try {
+					clearAllData();
+					showNotification("All data cleared successfully", "success");
+				} catch (error) {
+					showNotification(`Error clearing data: ${error.message}`, "error");
+				}
+				setLoading(clearDataBtn, false);
+			}
+		});
+	}
+
+	// Settings functions
+	function loadSettings() {
+		try {
+			const savedSettings = localStorage.getItem(SETTINGS_KEY);
+			const settings = savedSettings ? JSON.parse(savedSettings) : defaultSettings;
+
+			// Apply settings to form elements
+			applySettingsToUI(settings);
+
+			// Apply functional settings
+			applyFunctionalSettings(settings);
+
+			// Update storage usage
+			updateStorageInfo();
+
+		} catch (error) {
+			console.error("Error loading settings:", error);
+			applySettingsToUI(defaultSettings);
+		}
+	}
+
+	function applySettingsToUI(settings) {
+		// General settings
+		const searchEngineSelect = document.getElementById("default-search-engine");
+		if (searchEngineSelect) searchEngineSelect.value = settings.searchEngine || defaultSettings.searchEngine;
+
+		const homepageInput = document.getElementById("homepage-url");
+		if (homepageInput) homepageInput.value = settings.homepageUrl || "";
+
+		const autoOpenLinksCheck = document.getElementById("auto-open-links");
+		if (autoOpenLinksCheck) autoOpenLinksCheck.checked = settings.autoOpenLinks ?? defaultSettings.autoOpenLinks;
+
+		// Privacy & Security
+		const blockTrackingCheck = document.getElementById("block-tracking");
+		if (blockTrackingCheck) blockTrackingCheck.checked = settings.blockTracking ?? defaultSettings.blockTracking;
+
+		const blockAdsCheck = document.getElementById("block-ads");
+		if (blockAdsCheck) blockAdsCheck.checked = settings.blockAds ?? defaultSettings.blockAds;
+
+		const forceHttpsCheck = document.getElementById("force-https");
+		if (forceHttpsCheck) forceHttpsCheck.checked = settings.forceHttps ?? defaultSettings.forceHttps;
+
+		const clearOnExitCheck = document.getElementById("clear-on-exit");
+		if (clearOnExitCheck) clearOnExitCheck.checked = settings.clearOnExit ?? defaultSettings.clearOnExit;
+
+		// Appearance
+		const themeSelect = document.getElementById("theme-select");
+		if (themeSelect) themeSelect.value = settings.theme || defaultSettings.theme;
+
+		const enableAnimationsCheck = document.getElementById("enable-animations");
+		if (enableAnimationsCheck) enableAnimationsCheck.checked = settings.enableAnimations ?? defaultSettings.enableAnimations;
+
+		const compactModeCheck = document.getElementById("compact-mode");
+		if (compactModeCheck) compactModeCheck.checked = settings.compactMode ?? defaultSettings.compactMode;
+
+		// Performance
+		const imageCompressionCheck = document.getElementById("image-compression");
+		if (imageCompressionCheck) imageCompressionCheck.checked = settings.imageCompression ?? defaultSettings.imageCompression;
+
+		const cacheSizeSelect = document.getElementById("cache-size");
+		if (cacheSizeSelect) cacheSizeSelect.value = settings.cacheSize || defaultSettings.cacheSize;
+
+		const preloadLinksCheck = document.getElementById("preload-links");
+		if (preloadLinksCheck) preloadLinksCheck.checked = settings.preloadLinks ?? defaultSettings.preloadLinks;
+
+		// Advanced
+		if (userAgentSelect) {
+			userAgentSelect.value = settings.userAgent || defaultSettings.userAgent;
+			if (settings.userAgent === "custom") {
+				customUserAgentItem.style.display = "block";
+			}
+		}
+
+		const customUserAgentInput = document.getElementById("custom-user-agent");
+		if (customUserAgentInput) customUserAgentInput.value = settings.customUserAgent || "";
+
+		const enableJavascriptCheck = document.getElementById("enable-javascript");
+		if (enableJavascriptCheck) enableJavascriptCheck.checked = settings.enableJavascript ?? defaultSettings.enableJavascript;
+
+		const enableWebrtcCheck = document.getElementById("enable-webrtc");
+		if (enableWebrtcCheck) enableWebrtcCheck.checked = settings.enableWebrtc ?? defaultSettings.enableWebrtc;
+	}
+
+	function applyFunctionalSettings(settings) {
+		// Apply theme
+		if (settings.theme === "light") {
+			document.body.classList.add("light-theme");
+		} else {
+			document.body.classList.remove("light-theme");
+		}
+
+		// Apply compact mode
+		if (settings.compactMode) {
+			document.body.classList.add("compact-mode");
+		} else {
+			document.body.classList.remove("compact-mode");
+		}
+
+		// Apply animations
+		if (!settings.enableAnimations) {
+			document.body.classList.add("no-animations");
+		} else {
+			document.body.classList.remove("no-animations");
+		}
+
+		// Update search engine in main form
+		const searchEngineInput = document.getElementById("uv-search-engine");
+		if (searchEngineInput && settings.searchEngine) {
+			searchEngineInput.value = settings.searchEngine;
+		}
+	}
+
+	function saveSettings() {
+		const settings = {
+			searchEngine: document.getElementById("default-search-engine")?.value || defaultSettings.searchEngine,
+			homepageUrl: document.getElementById("homepage-url")?.value || "",
+			autoOpenLinks: document.getElementById("auto-open-links")?.checked ?? defaultSettings.autoOpenLinks,
+			blockTracking: document.getElementById("block-tracking")?.checked ?? defaultSettings.blockTracking,
+			blockAds: document.getElementById("block-ads")?.checked ?? defaultSettings.blockAds,
+			forceHttps: document.getElementById("force-https")?.checked ?? defaultSettings.forceHttps,
+			clearOnExit: document.getElementById("clear-on-exit")?.checked ?? defaultSettings.clearOnExit,
+			theme: document.getElementById("theme-select")?.value || defaultSettings.theme,
+			enableAnimations: document.getElementById("enable-animations")?.checked ?? defaultSettings.enableAnimations,
+			compactMode: document.getElementById("compact-mode")?.checked ?? defaultSettings.compactMode,
+			imageCompression: document.getElementById("image-compression")?.checked ?? defaultSettings.imageCompression,
+			cacheSize: document.getElementById("cache-size")?.value || defaultSettings.cacheSize,
+			preloadLinks: document.getElementById("preload-links")?.checked ?? defaultSettings.preloadLinks,
+			userAgent: document.getElementById("user-agent")?.value || defaultSettings.userAgent,
+			customUserAgent: document.getElementById("custom-user-agent")?.value || "",
+			enableJavascript: document.getElementById("enable-javascript")?.checked ?? defaultSettings.enableJavascript,
+			enableWebrtc: document.getElementById("enable-webrtc")?.checked ?? defaultSettings.enableWebrtc
+		};
+
+		localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+		localStorage.setItem("vortex_last_backup", new Date().toISOString());
+
+		// Apply functional settings
+		applyFunctionalSettings(settings);
+
+		// Update storage info
+		updateStorageInfo();
+	}
+
+	function resetToDefaults() {
+		localStorage.removeItem(SETTINGS_KEY);
+		applySettingsToUI(defaultSettings);
+		applyFunctionalSettings(defaultSettings);
+		updateStorageInfo();
+	}
+
+	function clearAllData() {
+		// Clear all localStorage
+		localStorage.clear();
+
+		// Clear sessionStorage
+		sessionStorage.clear();
+
+		// Reset to defaults
+		resetToDefaults();
+
+		// Update storage info
+		updateStorageInfo();
+	}
+
+	function updateStorageInfo() {
+		// Calculate storage usage
+		let totalSize = 0;
+		for (let key in localStorage) {
+			if (localStorage.hasOwnProperty(key)) {
+				totalSize += localStorage[key].length;
+			}
+		}
+
+		// Convert to MB
+		const sizeInMB = (totalSize / 1024 / 1024).toFixed(2);
+		if (storageUsageSpan) {
+			storageUsageSpan.textContent = `${sizeInMB} MB`;
+		}
+
+		// Update last backup
+		const lastBackup = localStorage.getItem("vortex_last_backup");
+		if (lastBackupSpan) {
+			if (lastBackup) {
+				const backupDate = new Date(lastBackup);
+				lastBackupSpan.textContent = backupDate.toLocaleDateString() + " " + backupDate.toLocaleTimeString();
+			} else {
+				lastBackupSpan.textContent = "Never";
+			}
+		}
+	}
+
+	function showNotification(message, type = "info") {
+		// Create notification element
+		const notification = document.createElement("div");
+		notification.className = `notification ${type}`;
+		notification.textContent = message;
+
+		// Style the notification
+		notification.style.cssText = `
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			background: ${type === "success" ? "var(--success)" : type === "error" ? "var(--error)" : "var(--accent-color)"};
+			color: white;
+			padding: 1rem 1.5rem;
+			border-radius: 8px;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+			z-index: 10000;
+			font-weight: 500;
+			backdrop-filter: blur(10px);
+			transform: translateX(400px);
+			transition: transform 0.3s ease;
+		`;
+
+		document.body.appendChild(notification);
+
+		// Animate in
+		setTimeout(() => {
+			notification.style.transform = "translateX(0)";
+		}, 100);
+
+		// Remove after 3 seconds
+		setTimeout(() => {
+			notification.style.transform = "translateX(400px)";
+			setTimeout(() => {
+				if (notification.parentNode) {
+					notification.parentNode.removeChild(notification);
+				}
+			}, 300);
+		}, 3000);
+	}
+
 	// Initialize with proxy tab active
 	switchTab("proxy");
 });
