@@ -1279,11 +1279,20 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	function applyFunctionalSettings(settings) {
-		// Apply theme
-		if (settings.theme === "light") {
-			document.body.classList.add("light-theme");
-		} else {
-			document.body.classList.remove("light-theme");
+		// Remove all theme classes first
+		const themeClasses = ['light-theme', 'blue-theme', 'purple-theme', 'green-theme', 'red-theme', 'orange-theme', 'pink-theme', 'cyber-theme', 'matrix-theme'];
+		themeClasses.forEach(cls => document.body.classList.remove(cls));
+
+		// Apply selected theme
+		if (settings.theme === "auto") {
+			// Check system preference
+			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+			if (!prefersDark) {
+				document.body.classList.add("light-theme");
+			}
+		} else if (settings.theme !== "dark") {
+			// Apply the selected theme (dark is default, no class needed)
+			document.body.classList.add(`${settings.theme}-theme`);
 		}
 
 		// Apply compact mode
@@ -1305,6 +1314,41 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (searchEngineInput && settings.searchEngine) {
 			searchEngineInput.value = settings.searchEngine;
 		}
+
+		// Update theme-specific elements
+		updateThemeElements(settings.theme);
+	}
+
+	function updateThemeElements(theme) {
+		// Update brand title based on theme
+		const brandTitle = document.querySelector('.brand-title');
+		if (brandTitle) {
+			switch(theme) {
+				case 'cyber':
+					brandTitle.style.fontFamily = '"Orbitron", "Arial Black", sans-serif';
+					brandTitle.style.textShadow = '0 0 20px var(--primary-color)';
+					break;
+				case 'matrix':
+					brandTitle.style.fontFamily = '"Courier New", monospace';
+					brandTitle.style.textShadow = '0 0 20px var(--primary-color)';
+					break;
+				default:
+					brandTitle.style.fontFamily = '"Arial Black", "Helvetica Neue", Helvetica, Arial, sans-serif';
+					brandTitle.style.textShadow = '0 2px 10px rgba(0, 212, 170, 0.2)';
+			}
+		}
+	}
+
+	// Listen for system theme changes
+	if (window.matchMedia) {
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		mediaQuery.addListener((e) => {
+			const savedSettings = localStorage.getItem(SETTINGS_KEY);
+			const settings = savedSettings ? JSON.parse(savedSettings) : defaultSettings;
+			if (settings.theme === "auto") {
+				applyFunctionalSettings(settings);
+			}
+		});
 	}
 
 	function saveSettings() {
