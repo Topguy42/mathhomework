@@ -1405,27 +1405,251 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// About:blank mode functions
 	function enableAboutBlankMode() {
-		// Store original values
-		window.originalTitle = window.originalTitle || document.title;
-		window.originalFavicon = window.originalFavicon || document.querySelector('link[rel="icon"], link[rel="shortcut icon"]')?.href;
+		// Create about:blank version of the proxy
+		const aboutBlankContent = createAboutBlankProxy();
 
-		// Set to blank appearance
-		document.title = "";
+		// Open new tab with about:blank appearance but functional proxy
+		const newTab = window.open('about:blank', '_blank');
 
-		// Remove favicon
-		const existingFavicons = document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
-		existingFavicons.forEach(favicon => favicon.remove());
+		if (newTab) {
+			// Wait for the new tab to load
+			setTimeout(() => {
+				try {
+					// Set up the new tab with hidden proxy functionality
+					newTab.document.documentElement.innerHTML = aboutBlankContent;
 
-		// Add blank favicon
-		const blankFavicon = document.createElement('link');
-		blankFavicon.rel = 'icon';
-		blankFavicon.href = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"></svg>';
-		document.head.appendChild(blankFavicon);
+					// Set title and favicon to appear as about:blank
+					newTab.document.title = "";
 
-		// Hide page content when not focused
-		document.addEventListener('visibilitychange', handleAboutBlankVisibility);
-		window.addEventListener('blur', handleAboutBlankBlur);
-		window.addEventListener('focus', handleAboutBlankFocus);
+					// Remove any existing favicon
+					const existingFavicons = newTab.document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
+					existingFavicons.forEach(favicon => favicon.remove());
+
+					// Add completely transparent favicon
+					const blankFavicon = newTab.document.createElement('link');
+					blankFavicon.rel = 'icon';
+					blankFavicon.href = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"></svg>';
+					newTab.document.head.appendChild(blankFavicon);
+
+					// Copy all the necessary scripts and functionality
+					setupAboutBlankProxy(newTab);
+
+					// Show success notification
+					showNotification("About:blank proxy tab opened! The new tab appears blank but is fully functional.", "success");
+
+				} catch (error) {
+					console.error('Error setting up about:blank tab:', error);
+					// Fallback: provide instructions
+					newTab.document.write(`
+						<html>
+						<head><title></title></head>
+						<body style="margin:0;padding:20px;font-family:Arial,sans-serif;background:#fff;">
+							<div style="max-width:600px;margin:50px auto;text-align:center;">
+								<h2>About:Blank Proxy</h2>
+								<p>Navigate to: <code>${window.location.origin}</code></p>
+								<p>This tab appears as about:blank but you can access the proxy by typing the URL above.</p>
+								<p>Press F5 to refresh and access the full proxy interface.</p>
+							</div>
+						</body>
+						</html>
+					`);
+					newTab.document.close();
+				}
+			}, 100);
+		} else {
+			showNotification("Please allow pop-ups to use about:blank mode", "error");
+		}
+	}
+
+	function createAboutBlankProxy() {
+		// Create a minimal, hidden version of the proxy interface
+		return `
+		<!DOCTYPE html>
+		<html lang="en">
+		<head>
+			<meta charset="utf-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+			<title></title>
+			<style>
+				* {
+					margin: 0;
+					padding: 0;
+					box-sizing: border-box;
+				}
+				body {
+					font-family: Arial, sans-serif;
+					background: #ffffff;
+					color: #000000;
+					min-height: 100vh;
+					position: relative;
+				}
+				.hidden-proxy {
+					position: fixed;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					background: white;
+					z-index: 1000;
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: center;
+					opacity: 0;
+					pointer-events: none;
+					transition: opacity 0.3s ease;
+				}
+				.proxy-interface {
+					background: white;
+					padding: 20px;
+					border-radius: 8px;
+					box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+					width: 90%;
+					max-width: 500px;
+					text-align: center;
+				}
+				.proxy-input {
+					width: 100%;
+					padding: 12px;
+					border: 2px solid #ddd;
+					border-radius: 6px;
+					margin: 10px 0;
+					font-size: 16px;
+				}
+				.proxy-button {
+					background: #007bff;
+					color: white;
+					border: none;
+					padding: 12px 24px;
+					border-radius: 6px;
+					cursor: pointer;
+					font-size: 16px;
+					margin: 10px 5px;
+				}
+				.proxy-button:hover {
+					background: #0056b3;
+				}
+				.toggle-btn {
+					position: fixed;
+					bottom: 20px;
+					right: 20px;
+					background: #f8f9fa;
+					border: 1px solid #ddd;
+					padding: 8px 12px;
+					border-radius: 4px;
+					cursor: pointer;
+					font-size: 12px;
+					color: #666;
+					z-index: 1001;
+				}
+				.hidden-proxy.active {
+					opacity: 1;
+					pointer-events: all;
+				}
+				iframe {
+					width: 100%;
+					height: 100%;
+					border: none;
+				}
+			</style>
+		</head>
+		<body>
+			<div class="hidden-proxy" id="proxyInterface">
+				<div class="proxy-interface">
+					<h2 style="margin-bottom: 20px;">Web Proxy</h2>
+					<form id="proxyForm">
+						<input type="text" class="proxy-input" id="urlInput" placeholder="Enter URL or search term..." />
+						<br>
+						<button type="submit" class="proxy-button">Go</button>
+						<button type="button" class="proxy-button" onclick="loadQuickSite('https://google.com')">Google</button>
+						<button type="button" class="proxy-button" onclick="loadQuickSite('https://youtube.com')">YouTube</button>
+					</form>
+				</div>
+			</div>
+
+			<div id="frameContainer" style="display: none; width: 100%; height: 100vh;">
+				<iframe id="proxyFrame"></iframe>
+				<button onclick="closeFrame()" style="position: fixed; top: 10px; right: 10px; z-index: 10000; background: white; border: 1px solid #ddd; padding: 8px 12px; border-radius: 4px; cursor: pointer;">Close</button>
+			</div>
+
+			<button class="toggle-btn" onclick="toggleProxy()">≡</button>
+
+			<script src="${window.location.origin}/baremux/index.js"></script>
+			<script src="${window.location.origin}/epoxy/index.js"></script>
+			<script src="${window.location.origin}/uv/uv.bundle.js"></script>
+			<script src="${window.location.origin}/uv/uv.config.js"></script>
+			<script src="${window.location.origin}/register-sw.js"></script>
+			<script src="${window.location.origin}/search.js"></script>
+			<script>
+				function toggleProxy() {
+					const proxyInterface = document.getElementById('proxyInterface');
+					proxyInterface.classList.toggle('active');
+				}
+
+				function loadQuickSite(url) {
+					document.getElementById('urlInput').value = url;
+					document.getElementById('proxyForm').dispatchEvent(new Event('submit'));
+				}
+
+				function closeFrame() {
+					document.getElementById('frameContainer').style.display = 'none';
+					document.getElementById('proxyInterface').classList.remove('active');
+				}
+
+				document.getElementById('proxyForm').addEventListener('submit', async (e) => {
+					e.preventDefault();
+					const url = document.getElementById('urlInput').value;
+					if (!url) return;
+
+					try {
+						// Initialize proxy connection
+						const connection = new BareMux.BareMuxConnection("${window.location.origin}/baremux/worker.js");
+
+						let wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
+						if ((await connection.getTransport()) !== "/epoxy/index.mjs") {
+							await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
+						}
+
+						const finalUrl = url.startsWith('http') ? url : 'https://' + url;
+						const proxyUrl = __uv$config.prefix + __uv$config.encodeUrl(finalUrl);
+
+						document.getElementById('proxyFrame').src = proxyUrl;
+						document.getElementById('frameContainer').style.display = 'block';
+						document.getElementById('proxyInterface').classList.remove('active');
+
+					} catch (error) {
+						console.error('Proxy error:', error);
+						alert('Error loading proxy: ' + error.message);
+					}
+				});
+
+				// Hide interface by default
+				setTimeout(() => {
+					document.getElementById('proxyInterface').classList.remove('active');
+				}, 100);
+			</script>
+		</body>
+		</html>
+		`;
+	}
+
+	function setupAboutBlankProxy(newTab) {
+		// Additional setup if needed
+		// The tab is already set up with the HTML content
+		// This function can be used for any additional configuration
+
+		// Set up periodic title clearing to maintain about:blank appearance
+		setInterval(() => {
+			if (newTab && !newTab.closed) {
+				try {
+					if (newTab.document.title !== "") {
+						newTab.document.title = "";
+					}
+				} catch (e) {
+					// Tab might be closed or cross-origin
+				}
+			}
+		}, 1000);
 	}
 
 	function disableAboutBlankMode() {
