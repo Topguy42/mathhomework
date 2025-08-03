@@ -320,7 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		toolCards.forEach((card) => card.classList.remove("active"));
 
 		// Hide all tool interfaces
-		toolInterfaces.forEach((interface) => interface.classList.remove("active"));
+		toolInterfaces.forEach((toolInterface) => toolInterface.classList.remove("active"));
 
 		// Add active class to selected tool card
 		const activeCard = document.querySelector(`[data-tool="${toolName}"]`);
