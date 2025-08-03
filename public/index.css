@@ -33,7 +33,11 @@
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--background);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 60%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+    linear-gradient(135deg, var(--background) 0%, #0d0d21 50%, var(--background) 100%);
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
@@ -50,15 +54,19 @@ body {
   height: 100%;
   z-index: -2;
   overflow: hidden;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 70% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 60%);
 }
 
 .floating-orb {
   position: absolute;
   border-radius: 50%;
   background: var(--gradient-primary);
-  opacity: 0.1;
-  animation: float 20s infinite ease-in-out;
-  filter: blur(1px);
+  opacity: 0.08;
+  animation: float 25s infinite ease-in-out;
+  filter: blur(2px);
+  backdrop-filter: blur(1px);
 }
 
 .orb-1 {
@@ -112,8 +120,12 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  background:
+    radial-gradient(ellipse at 25% 25%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 75% 75%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+    linear-gradient(180deg, rgba(6, 182, 212, 0.03) 0%, transparent 50%, rgba(99, 102, 241, 0.03) 100%);
   z-index: -1;
+  backdrop-filter: blur(0.5px);
 }
 
 @keyframes float {
