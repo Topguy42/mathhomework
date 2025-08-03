@@ -49,9 +49,33 @@ form.addEventListener("submit", async (event) => {
 	await loadUrl(url);
 });
 
+// Tab switching functionality
+function switchTab(tabName) {
+	// Hide all sections
+	const sections = document.querySelectorAll('.tab-section');
+	sections.forEach(section => section.style.display = 'none');
+
+	// Remove active class from all tabs
+	const tabs = document.querySelectorAll('.nav-tab');
+	tabs.forEach(tab => tab.classList.remove('active'));
+
+	// Show selected section
+	const targetSection = document.getElementById(tabName + '-section');
+	if (targetSection) {
+		targetSection.style.display = 'block';
+	}
+
+	// Add active class to clicked tab
+	const activeTab = document.querySelector(`[data-tab="${tabName}"]`);
+	if (activeTab) {
+		activeTab.classList.add('active');
+	}
+}
+
 // Quick Access functionality
 document.addEventListener("DOMContentLoaded", () => {
 	const quickAccessItems = document.querySelectorAll(".quick-access-item");
+	const gameItems = document.querySelectorAll(".game-item");
 
 	quickAccessItems.forEach((item) => {
 		item.addEventListener("click", async (event) => {
@@ -62,4 +86,30 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 		});
 	});
+
+	// Game items functionality
+	gameItems.forEach((item) => {
+		item.addEventListener("click", async (event) => {
+			event.preventDefault();
+			const url = item.getAttribute("data-url");
+			if (url) {
+				await loadUrl(url);
+			}
+		});
+	});
+
+	// Tab navigation
+	const navTabs = document.querySelectorAll('.nav-tab');
+	navTabs.forEach((tab) => {
+		tab.addEventListener("click", (event) => {
+			event.preventDefault();
+			const tabName = tab.getAttribute("data-tab");
+			if (tabName) {
+				switchTab(tabName);
+			}
+		});
+	});
+
+	// Initialize with proxy tab active
+	switchTab('proxy');
 });
