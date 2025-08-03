@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+		/>
+		<title>Credits | NeoProxy</title>
+		<meta name="theme-color" content="#6366f1" />
+		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="stylesheet" href="index.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			.credits-container {
+				max-width: 800px;
+				margin: 0 auto;
+				padding: 2rem;
+				min-height: calc(100vh - 200px);
+			}
+
+			.credits-header {
+				text-align: center;
+				margin-bottom: 3rem;
+				padding-top: 2rem;
+			}
+
+			.credits-title {
+				font-size: 2.5rem;
+				font-weight: 700;
+				background: var(--gradient-primary);
+				background-clip: text;
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				margin-bottom: 1rem;
+			}
+
+			.credits-subtitle {
+				color: var(--text-secondary);
+				font-size: 1.125rem;
+			}
+
+			.credit-section {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: 16px;
+				padding: 2rem;
+				margin-bottom: 2rem;
+				backdrop-filter: blur(20px);
+				transition: all 0.3s ease;
+			}
+
+			.credit-section:hover {
+				border-color: var(--primary-color);
+				box-shadow: 0 8px 32px rgba(99, 102, 241, 0.15);
+			}
+
+			.credit-section h3 {
+				color: var(--primary-color);
+				font-size: 1.5rem;
+				font-weight: 600;
+				margin-bottom: 1rem;
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+			}
+
+			.credit-section p {
+				color: var(--text-secondary);
+				line-height: 1.6;
+				margin-bottom: 1rem;
+			}
+
+			.credit-link {
+				color: var(--accent-color);
+				text-decoration: none;
+				font-weight: 500;
+				transition: color 0.3s ease;
+			}
+
+			.credit-link:hover {
+				color: var(--primary-color);
+			}
+
+			.back-link {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				color: var(--text-secondary);
+				text-decoration: none;
+				margin-bottom: 2rem;
+				transition: color 0.3s ease;
+			}
+
+			.back-link:hover {
+				color: var(--primary-color);
+			}
+
+			.icon {
+				width: 24px;
+				height: 24px;
+				color: var(--primary-color);
+			}
+		</style>
+	</head>
+
+	<body>
+		<!-- Animated Background -->
+		<div class="background-animation">
+			<div class="floating-orb orb-1"></div>
+			<div class="floating-orb orb-2"></div>
+			<div class="floating-orb orb-3"></div>
+			<div class="floating-orb orb-4"></div>
+			<div class="floating-orb orb-5"></div>
+			<div class="gradient-overlay"></div>
+		</div>
+
+		<div class="credits-container">
+			<a href="/" class="back-link">
+				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M19 12H5M5 12L12 19M5 12L12 5"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+				</svg>
+				Back to NeoProxy
+			</a>
+
+			<div class="credits-header">
+				<h1 class="credits-title">Credits & Acknowledgments</h1>
+				<p class="credits-subtitle">
+					NeoProxy is built on the shoulders of giants
+				</p>
+			</div>
+
+			<div class="credit-section">
+				<h3>
+					<svg
+						class="icon"
+						viewBox="0 0 24 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
+					Ultraviolet
+				</h3>
+				<p>
+					The core proxy technology powering NeoProxy. Ultraviolet is a highly
+					sophisticated proxy used for evading internet censorship or accessing
+					websites in a controlled sandbox using the power of service-workers.
+				</p>
+				<p>
+					<strong>License:</strong> GPL-3.0<br />
+					<strong>Project:</strong>
+					<a
+						href="https://github.com/titaniumnetwork-dev/Ultraviolet"
+						class="credit-link"
+						target="_blank"
+						rel="noopener"
+						>TitaniumNetwork-dev/Ultraviolet</a
+					>
+				</p>
+			</div>
+
+			<div class="credit-section">
+				<h3>
+					<svg
+						class="icon"
+						viewBox="0 0 24 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M16 4H18C19.1 4 20 4.9 20 6V18C20 19.1 19.1 20 18 20H6C4.9 20 4 19.1 4 18V6C4 4.9 4.9 4 6 4H8M12 2V6M8 2V6M16 2V6"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
+					TitaniumNetwork
+				</h3>
+				<p>
+					The organization behind Ultraviolet and many other privacy tools.
+					Their dedication to internet freedom and privacy has made projects
+					like this possible.
+				</p>
+				<p>
+					<strong>Organization:</strong>
+					<a
+						href="https://github.com/titaniumnetwork-dev"
+						class="credit-link"
+						target="_blank"
+						rel="noopener"
+						>TitaniumNetwork-dev</a
+					><br />
+					<strong>Discord:</strong>
+					<a
+						href="https://discord.gg/unblock"
+						class="credit-link"
+						target="_blank"
+						rel="noopener"
+						>discord.gg/unblock</a
+					>
+				</p>
+			</div>
+
+			<div class="credit-section">
+				<h3>
+					<svg
+						class="icon"
+						viewBox="0 0 24 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M12 2L2 7L12 12L22 7L12 2Z"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+						<path
+							d="M2 17L12 22L22 17"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+						<path
+							d="M2 12L12 17L22 12"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
+					Service Workers & Web Technologies
+				</h3>
+				<p>
+					NeoProxy leverages modern web technologies including Service Workers,
+					which enable the proxy functionality to work seamlessly in modern
+					browsers without requiring additional software installation.
+				</p>
+			</div>
+
+			<div class="credit-section">
+				<h3>
+					<svg
+						class="icon"
+						viewBox="0 0 24 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M21 16V8C20.9996 7.64927 20.9071 7.30481 20.7315 7.00116C20.556 6.69751 20.3037 6.44536 20 6.27L13 2.27C12.696 2.09446 12.3511 2.00205 12 2.00205C11.6489 2.00205 11.304 2.09446 11 2.27L4 6.27C3.69626 6.44536 3.44398 6.69751 3.26846 7.00116C3.09294 7.30481 3.00036 7.64927 3 8V16C3.00036 16.3507 3.09294 16.6952 3.26846 16.9988C3.44398 17.3025 3.69626 17.5546 4 17.73L11 21.73C11.304 21.9055 11.6489 21.9979 12 21.9979C12.3511 21.9979 12.696 21.9055 13 21.73L20 17.73C20.3037 17.5546 20.556 17.3025 20.7315 16.9988C20.9071 16.6952 20.9996 16.3507 21 16Z"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+						<path
+							d="M3.27 6.96L12 12.01L20.73 6.96M12 22.08V12"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
+					Open Source Libraries
+				</h3>
+				<p>
+					NeoProxy uses various open-source libraries and frameworks that make
+					modern web development possible. We're grateful to all the
+					contributors and maintainers of these projects.
+				</p>
+				<p>
+					<strong>Runtime:</strong> Node.js, Fastify<br />
+					<strong>Frontend:</strong> Modern CSS, Web APIs<br />
+					<strong>Fonts:</strong> Inter by Rasmus Andersson
+				</p>
+			</div>
+
+			<div class="credit-section">
+				<h3>
+					<svg
+						class="icon"
+						viewBox="0 0 24 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M20.24 12.24C21.3658 11.1142 21.9983 9.58722 21.9983 7.99504C21.9983 6.40285 21.3658 4.87588 20.24 3.75004C19.1142 2.62419 17.5872 1.9917 15.995 1.9917C14.4028 1.9917 12.8758 2.62419 11.75 3.75004L5 10.5V19H13.5L20.24 12.24Z"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+						<path
+							d="M16 8L2 22M17.5 15H9"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
+					Design & UI
+				</h3>
+				<p>
+					The modern interface design of NeoProxy features custom animations,
+					responsive layouts, and accessibility considerations to provide the
+					best user experience possible.
+				</p>
+				<p>
+					<strong>Design System:</strong> Custom CSS with CSS Variables<br />
+					<strong>Animations:</strong> CSS Keyframes<br />
+					<strong>Icons:</strong> Lucide React Icons
+				</p>
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<footer class="footer">
+			<div class="footer-content">
+				<div class="footer-links">
+					<a
+						href="https://github.com/titaniumnetwork-dev"
+						target="_blank"
+						rel="noopener"
+						>GitHub</a
+					>
+					<a href="https://discord.gg/unblock" target="_blank" rel="noopener"
+						>Discord</a
+					>
+					<a href="https://github.com/tomphttp" target="_blank" rel="noopener"
+						>TompHTTP</a
+					>
+					<a href="/">Back to NeoProxy</a>
+				</div>
+				<div class="footer-copyright">
+					<span>NeoProxy &copy; 2024 | Powered by Ultraviolet Technology</span>
+				</div>
+			</div>
+		</footer>
+	</body>
+</html>
