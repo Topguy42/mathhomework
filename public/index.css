@@ -306,7 +306,7 @@ body {
 	align-items: center;
 	gap: 0.5rem;
 	padding: 0.625rem 1rem;
-	border-radius: 12px;
+	border-radius: 20px;
 	color: var(--text-secondary);
 	text-decoration: none;
 	font-weight: 500;
