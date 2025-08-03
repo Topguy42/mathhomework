@@ -1653,48 +1653,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	function disableAboutBlankMode() {
-		// Restore original title and favicon
-		if (window.originalTitle) {
-			document.title = window.originalTitle;
-		}
-
-		if (window.originalFavicon) {
-			const existingFavicons = document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
-			existingFavicons.forEach(favicon => favicon.remove());
-
-			const restoredFavicon = document.createElement('link');
-			restoredFavicon.rel = 'icon';
-			restoredFavicon.href = window.originalFavicon;
-			document.head.appendChild(restoredFavicon);
-		}
-
-		// Remove event listeners
-		document.removeEventListener('visibilitychange', handleAboutBlankVisibility);
-		window.removeEventListener('blur', handleAboutBlankBlur);
-		window.removeEventListener('focus', handleAboutBlankFocus);
-
-		// Show content
-		document.body.style.display = 'block';
-	}
-
-	function handleAboutBlankVisibility() {
-		if (document.hidden) {
-			document.body.style.display = 'none';
-			document.title = "";
-		} else {
-			document.body.style.display = 'block';
-			document.title = window.originalTitle || "Vortex";
-		}
-	}
-
-	function handleAboutBlankBlur() {
-		document.body.style.display = 'none';
-		document.title = "";
-	}
-
-	function handleAboutBlankFocus() {
-		document.body.style.display = 'block';
-		document.title = window.originalTitle || "Vortex";
+		// Since about:blank mode opens a new tab, disabling just means
+		// not opening new tabs when toggled on again
+		showNotification("About:blank mode disabled. No new tabs will be opened.", "success");
 	}
 
 	// Anti-GoGuardian functions
