@@ -205,6 +205,60 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
+	// Apps search functionality
+	const appsSearch = document.getElementById('apps-search');
+	const appsSearchClear = document.getElementById('apps-search-clear');
+	const allAppCards = document.querySelectorAll('.app-card');
+
+	function filterApps(searchTerm) {
+		const term = searchTerm.toLowerCase().trim();
+
+		allAppCards.forEach(card => {
+			const title = card.querySelector('.app-title').textContent.toLowerCase();
+			const category = card.querySelector('.app-category').textContent.toLowerCase();
+			const description = card.querySelector('.app-description').textContent.toLowerCase();
+
+			const isMatch = title.includes(term) ||
+							category.includes(term) ||
+							description.includes(term);
+
+			if (isMatch || term === '') {
+				card.style.display = 'block';
+			} else {
+				card.style.display = 'none';
+			}
+		});
+
+		// Show/hide clear button
+		if (term.length > 0) {
+			appsSearchClear.style.display = 'block';
+		} else {
+			appsSearchClear.style.display = 'none';
+		}
+	}
+
+	if (appsSearch) {
+		appsSearch.addEventListener('input', (event) => {
+			filterApps(event.target.value);
+		});
+
+		appsSearch.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape') {
+				appsSearch.value = '';
+				filterApps('');
+				appsSearch.blur();
+			}
+		});
+	}
+
+	if (appsSearchClear) {
+		appsSearchClear.addEventListener('click', () => {
+			appsSearch.value = '';
+			filterApps('');
+			appsSearch.focus();
+		});
+	}
+
 	// Initialize with proxy tab active
 	switchTab('proxy');
 });
