@@ -274,27 +274,6 @@ body {
   width: 100%;
   max-width: 600px;
   text-align: center;
-  padding: 2rem;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 32px;
-  backdrop-filter: blur(25px);
-  box-shadow:
-    0 12px 40px var(--glass-shadow),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 1px 0 rgba(255, 255, 255, 0.04);
-  position: relative;
-  overflow: hidden;
-}
-
-.search-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--gradient-glass-border);
 }
 
 .search-title {
