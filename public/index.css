@@ -2774,6 +2774,112 @@ body.matrix-theme .floating-orb {
 	}
 }
 
+/* Cyberpunk special effects */
+body.cyber-theme .brand-title {
+	text-shadow:
+		0 0 5px var(--primary-color),
+		0 0 10px var(--primary-color),
+		0 0 20px var(--primary-color),
+		0 0 40px var(--primary-color);
+	animation: cyberGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes cyberGlow {
+	from {
+		text-shadow:
+			0 0 5px var(--primary-color),
+			0 0 10px var(--primary-color),
+			0 0 20px var(--primary-color),
+			0 0 40px var(--primary-color);
+	}
+	to {
+		text-shadow:
+			0 0 2px var(--primary-color),
+			0 0 5px var(--primary-color),
+			0 0 10px var(--primary-color),
+			0 0 20px var(--primary-color),
+			0 0 35px var(--secondary-color);
+	}
+}
+
+body.cyber-theme .nav-container {
+	border-bottom: 2px solid;
+	border-image: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color)) 1;
+}
+
+body.cyber-theme .tool-card.active,
+body.cyber-theme .game-card:hover,
+body.cyber-theme .app-card:hover {
+	box-shadow:
+		0 0 20px var(--primary-color),
+		inset 0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+/* Matrix special effects */
+body.matrix-theme .brand-title {
+	text-shadow:
+		0 0 5px var(--primary-color),
+		0 0 10px var(--primary-color);
+	animation: matrixFlicker 3s ease-in-out infinite;
+}
+
+@keyframes matrixFlicker {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0.8; }
+	75% { opacity: 1; }
+	85% { opacity: 0.9; }
+	95% { opacity: 1; }
+}
+
+body.matrix-theme::before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="13" fill="%2300ff41" opacity="0.1">01010101</text></svg>') repeat;
+	pointer-events: none;
+	z-index: -1;
+	animation: matrixRain 20s linear infinite;
+}
+
+@keyframes matrixRain {
+	0% { transform: translateY(-100%); }
+	100% { transform: translateY(100%); }
+}
+
+/* Theme-specific button styles */
+body.cyber-theme .tool-button,
+body.cyber-theme .settings-btn {
+	border: 2px solid var(--primary-color);
+	box-shadow:
+		0 0 10px var(--primary-color),
+		inset 0 0 10px rgba(0, 255, 255, 0.1);
+}
+
+body.cyber-theme .tool-button:hover,
+body.cyber-theme .settings-btn:hover {
+	box-shadow:
+		0 0 20px var(--primary-color),
+		0 0 30px var(--secondary-color),
+		inset 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+body.matrix-theme .tool-button,
+body.matrix-theme .settings-btn {
+	border: 1px solid var(--primary-color);
+	background: rgba(0, 255, 65, 0.1);
+	text-shadow: 0 0 5px var(--primary-color);
+}
+
+body.matrix-theme .tool-button:hover,
+body.matrix-theme .settings-btn:hover {
+	background: rgba(0, 255, 65, 0.2);
+	box-shadow: 0 0 15px var(--primary-color);
+	text-shadow: 0 0 10px var(--primary-color);
+}
+
 /* Compact Mode */
 body.compact-mode .nav-container {
 	padding: 0.5rem 1rem;
