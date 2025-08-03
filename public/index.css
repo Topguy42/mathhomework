@@ -834,7 +834,7 @@ body {
 }
 
 .quick-access-item:hover .quick-access-label {
-	color: var(--accent-color);
+	color: #ffffff;
 }
 
 /* Hidden Frame */
