@@ -19,7 +19,7 @@ const error = document.getElementById("uv-error");
  * @type {HTMLPreElement}
  */
 const errorCode = document.getElementById("uv-error-code");
-const connection = new BareMux.BareMuxConnection("/baremux/worker.js")
+const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
 
 async function loadUrl(url) {
 	try {
@@ -32,8 +32,12 @@ async function loadUrl(url) {
 
 	let frame = document.getElementById("uv-frame");
 	frame.style.display = "block";
-	let wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
-	if (await connection.getTransport() !== "/epoxy/index.mjs") {
+	let wispUrl =
+		(location.protocol === "https:" ? "wss" : "ws") +
+		"://" +
+		location.host +
+		"/wisp/";
+	if ((await connection.getTransport()) !== "/epoxy/index.mjs") {
 		await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
 	}
 	frame.src = __uv$config.prefix + __uv$config.encodeUrl(url);
@@ -49,7 +53,7 @@ form.addEventListener("submit", async (event) => {
 document.addEventListener("DOMContentLoaded", () => {
 	const quickAccessItems = document.querySelectorAll(".quick-access-item");
 
-	quickAccessItems.forEach(item => {
+	quickAccessItems.forEach((item) => {
 		item.addEventListener("click", async (event) => {
 			event.preventDefault();
 			const url = item.getAttribute("data-url");
