@@ -10,20 +10,25 @@
   --primary-dark: #4f46e5;
   --secondary-color: #8b5cf6;
   --accent-color: #06b6d4;
-  --background: #0f0f23;
-  --background-light: #1a1a2e;
-  --surface: #16213e;
-  --surface-light: #1e293b;
+  --background: #0a0a1a;
+  --background-light: #141428;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-light: rgba(255, 255, 255, 0.08);
+  --glass-bg-strong: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-border-light: rgba(255, 255, 255, 0.25);
+  --glass-shadow: rgba(0, 0, 0, 0.15);
+  --glass-shadow-strong: rgba(0, 0, 0, 0.25);
   --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --border: rgba(255, 255, 255, 0.1);
-  --border-light: rgba(255, 255, 255, 0.2);
-  --shadow: rgba(0, 0, 0, 0.3);
+  --text-secondary: #b4bcd0;
+  --text-muted: #7c8db0;
+  --text-glass: rgba(255, 255, 255, 0.9);
   --success: #10b981;
   --error: #ef4444;
   --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   --gradient-secondary: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  --gradient-glass-border: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
 }
 
 body {
