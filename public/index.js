@@ -1366,8 +1366,239 @@ document.addEventListener("DOMContentLoaded", () => {
 			searchEngineInput.value = settings.searchEngine;
 		}
 
+		// Apply Safety features
+		applySafetyFeatures(settings);
+
 		// Update theme-specific elements
 		updateThemeElements(settings.theme);
+	}
+
+	function applySafetyFeatures(settings) {
+		// About:blank mode
+		if (settings.aboutblankMode) {
+			enableAboutBlankMode();
+		} else {
+			disableAboutBlankMode();
+		}
+
+		// Anti-GoGuardian protection
+		if (settings.antiGoguardian) {
+			enableAntiGoGuardian();
+		} else {
+			disableAntiGoGuardian();
+		}
+
+		// Tab protection
+		if (settings.tabProtection) {
+			enableTabProtection();
+		} else {
+			disableTabProtection();
+		}
+
+		// History protection
+		if (settings.historyProtection) {
+			enableHistoryProtection();
+		} else {
+			disableHistoryProtection();
+		}
+	}
+
+	// About:blank mode functions
+	function enableAboutBlankMode() {
+		// Store original values
+		window.originalTitle = window.originalTitle || document.title;
+		window.originalFavicon = window.originalFavicon || document.querySelector('link[rel="icon"], link[rel="shortcut icon"]')?.href;
+
+		// Set to blank appearance
+		document.title = "";
+
+		// Remove favicon
+		const existingFavicons = document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
+		existingFavicons.forEach(favicon => favicon.remove());
+
+		// Add blank favicon
+		const blankFavicon = document.createElement('link');
+		blankFavicon.rel = 'icon';
+		blankFavicon.href = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"></svg>';
+		document.head.appendChild(blankFavicon);
+
+		// Hide page content when not focused
+		document.addEventListener('visibilitychange', handleAboutBlankVisibility);
+		window.addEventListener('blur', handleAboutBlankBlur);
+		window.addEventListener('focus', handleAboutBlankFocus);
+	}
+
+	function disableAboutBlankMode() {
+		// Restore original title and favicon
+		if (window.originalTitle) {
+			document.title = window.originalTitle;
+		}
+
+		if (window.originalFavicon) {
+			const existingFavicons = document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
+			existingFavicons.forEach(favicon => favicon.remove());
+
+			const restoredFavicon = document.createElement('link');
+			restoredFavicon.rel = 'icon';
+			restoredFavicon.href = window.originalFavicon;
+			document.head.appendChild(restoredFavicon);
+		}
+
+		// Remove event listeners
+		document.removeEventListener('visibilitychange', handleAboutBlankVisibility);
+		window.removeEventListener('blur', handleAboutBlankBlur);
+		window.removeEventListener('focus', handleAboutBlankFocus);
+
+		// Show content
+		document.body.style.display = 'block';
+	}
+
+	function handleAboutBlankVisibility() {
+		if (document.hidden) {
+			document.body.style.display = 'none';
+			document.title = "";
+		} else {
+			document.body.style.display = 'block';
+			document.title = window.originalTitle || "Vortex";
+		}
+	}
+
+	function handleAboutBlankBlur() {
+		document.body.style.display = 'none';
+		document.title = "";
+	}
+
+	function handleAboutBlankFocus() {
+		document.body.style.display = 'block';
+		document.title = window.originalTitle || "Vortex";
+	}
+
+	// Anti-GoGuardian functions
+	let antiGoGuardianActive = false;
+	let beforeUnloadHandler = null;
+
+	function enableAntiGoGuardian() {
+		if (antiGoGuardianActive) return;
+		antiGoGuardianActive = true;
+
+		// Prevent tab closure
+		beforeUnloadHandler = function(e) {
+			e.preventDefault();
+			e.returnValue = '';
+			return '';
+		};
+
+		window.addEventListener('beforeunload', beforeUnloadHandler);
+
+		// Override close functions
+		const originalClose = window.close;
+		window.close = function() {
+			console.log('Tab close attempt blocked by Anti-GoGuardian');
+			return false;
+		};
+
+		// Prevent GoGuardian scripts from running
+		const observer = new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {
+				mutation.addedNodes.forEach(function(node) {
+					if (node.nodeType === 1 && node.tagName === 'SCRIPT') {
+						const src = node.src || '';
+						const content = node.textContent || '';
+						if (src.includes('goguardian') || src.includes('securly') ||
+							content.includes('goguardian') || content.includes('securly')) {
+							node.remove();
+							console.log('Blocked monitoring script');
+						}
+					}
+				});
+			});
+		});
+
+		observer.observe(document.documentElement, {
+			childList: true,
+			subtree: true
+		});
+
+		window.antiGoGuardianObserver = observer;
+	}
+
+	function disableAntiGoGuardian() {
+		if (!antiGoGuardianActive) return;
+		antiGoGuardianActive = false;
+
+		// Remove beforeunload handler
+		if (beforeUnloadHandler) {
+			window.removeEventListener('beforeunload', beforeUnloadHandler);
+			beforeUnloadHandler = null;
+		}
+
+		// Restore original close function
+		delete window.close;
+
+		// Disconnect observer
+		if (window.antiGoGuardianObserver) {
+			window.antiGoGuardianObserver.disconnect();
+			delete window.antiGoGuardianObserver;
+		}
+	}
+
+	// Tab protection functions
+	function enableTabProtection() {
+		// Prevent right-click context menu
+		document.addEventListener('contextmenu', preventContextMenu);
+
+		// Prevent developer tools shortcuts
+		document.addEventListener('keydown', preventDevTools);
+
+		// Prevent text selection in sensitive areas
+		document.body.style.userSelect = 'none';
+		document.body.style.webkitUserSelect = 'none';
+	}
+
+	function disableTabProtection() {
+		document.removeEventListener('contextmenu', preventContextMenu);
+		document.removeEventListener('keydown', preventDevTools);
+		document.body.style.userSelect = '';
+		document.body.style.webkitUserSelect = '';
+	}
+
+	function preventContextMenu(e) {
+		e.preventDefault();
+		return false;
+	}
+
+	function preventDevTools(e) {
+		// Prevent F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+		if (e.keyCode === 123 ||
+			(e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
+			(e.ctrlKey && e.keyCode === 85)) {
+			e.preventDefault();
+			return false;
+		}
+	}
+
+	// History protection functions
+	function enableHistoryProtection() {
+		// Clear history periodically
+		setInterval(() => {
+			if (window.history && window.history.replaceState) {
+				window.history.replaceState(null, '', window.location.href);
+			}
+		}, 5000);
+
+		// Override history methods
+		const originalPushState = history.pushState;
+		const originalReplaceState = history.replaceState;
+
+		history.pushState = function() {
+			// Don't add to history
+			return originalReplaceState.apply(history, arguments);
+		};
+	}
+
+	function disableHistoryProtection() {
+		// Note: Can't easily undo the history protection once enabled
+		// This would require storing original functions
 	}
 
 	function updateThemeElements(theme) {
