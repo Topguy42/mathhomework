@@ -680,34 +680,316 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	async function runPrivacyCheck() {
+		try {
+			const privacyInfo = await gatherPrivacyInformation();
+			return formatPrivacyResults(privacyInfo);
+		} catch (error) {
+			return `❌ Privacy check failed: ${error.message}`;
+		}
+	}
+
+	async function gatherPrivacyInformation() {
+		const info = {
+			timestamp: new Date().toISOString(),
+			connection: {},
+			browser: {},
+			system: {},
+			network: {},
+			privacy: {},
+			security: {}
+		};
+
+		// Basic browser information
+		info.browser = {
+			userAgent: navigator.userAgent,
+			language: navigator.language,
+			languages: navigator.languages ? navigator.languages.join(', ') : 'N/A',
+			platform: navigator.platform,
+			cookieEnabled: navigator.cookieEnabled,
+			doNotTrack: navigator.doNotTrack || 'Not set',
+			onLine: navigator.onLine
+		};
+
+		// Screen and display information
+		info.system = {
+			screenResolution: `${screen.width}x${screen.height}`,
+			availableResolution: `${screen.availWidth}x${screen.availHeight}`,
+			colorDepth: `${screen.colorDepth} bits`,
+			pixelDepth: `${screen.pixelDepth} bits`,
+			devicePixelRatio: window.devicePixelRatio || 1,
+			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+			timezoneOffset: new Date().getTimezoneOffset()
+		};
+
+		// Connection information
+		info.connection = {
+			protocol: window.location.protocol,
+			host: window.location.host,
+			port: window.location.port || (window.location.protocol === 'https:' ? '443' : '80'),
+			secure: window.location.protocol === 'https:'
+		};
+
+		// Network connection details (if available)
+		if ('connection' in navigator) {
+			const conn = navigator.connection;
+			info.network.connectionType = conn.effectiveType || 'Unknown';
+			info.network.downlink = conn.downlink ? `${conn.downlink} Mbps` : 'Unknown';
+			info.network.rtt = conn.rtt ? `${conn.rtt} ms` : 'Unknown';
+			info.network.saveData = conn.saveData || false;
+		}
+
+		// Try to get local IP addresses using WebRTC
+		try {
+			const ips = await getLocalIPs();
+			info.network.localIPs = ips;
+		} catch (e) {
+			info.network.localIPs = ['Unable to detect (WebRTC blocked)'];
+		}
+
+		// Try to get public IP
+		try {
+			const publicIP = await getPublicIP();
+			info.network.publicIP = publicIP;
+		} catch (e) {
+			info.network.publicIP = 'Unable to detect';
+		}
+
+		// WebGL information
+		try {
+			const gl = document.createElement('canvas').getContext('webgl');
+			if (gl) {
+				const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+				info.system.webglVendor = debugInfo ? gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) : 'Unknown';
+				info.system.webglRenderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'Unknown';
+			}
+		} catch (e) {
+			info.system.webglVendor = 'Blocked';
+			info.system.webglRenderer = 'Blocked';
+		}
+
+		// Storage information
+		info.privacy.localStorage = typeof(Storage) !== "undefined" && localStorage ? 'Available' : 'Blocked';
+		info.privacy.sessionStorage = typeof(Storage) !== "undefined" && sessionStorage ? 'Available' : 'Blocked';
+		info.privacy.indexedDB = 'indexedDB' in window ? 'Available' : 'Blocked';
+
+		// Security features
+		info.security.httpsUsed = window.location.protocol === 'https:';
+		info.security.mixedContent = false; // Would need more complex detection
+		info.security.hsts = false; // Would need server header analysis
+		info.security.csp = false; // Would need server header analysis
+
+		// Check for various APIs that could compromise privacy
+		info.privacy.geolocation = 'geolocation' in navigator ? 'Available' : 'Blocked';
+		info.privacy.notifications = 'Notification' in window ? 'Available' : 'Blocked';
+		info.privacy.mediaDevices = 'mediaDevices' in navigator ? 'Available' : 'Blocked';
+		info.privacy.bluetooth = 'bluetooth' in navigator ? 'Available' : 'Blocked';
+		info.privacy.usb = 'usb' in navigator ? 'Available' : 'Blocked';
+
+		// Check for tracking protection
+		info.privacy.referrerPolicy = document.referrerPolicy || 'Not set';
+		info.privacy.crossOriginIsolated = window.crossOriginIsolated || false;
+
+		return info;
+	}
+
+	function getLocalIPs() {
 		return new Promise((resolve) => {
+			const ips = [];
+			const RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+
+			if (!RTCPeerConnection) {
+				resolve(['WebRTC not supported']);
+				return;
+			}
+
+			const pc = new RTCPeerConnection({iceServers: []});
+
+			pc.createDataChannel('');
+			pc.onicecandidate = (ice) => {
+				if (!ice || !ice.candidate || !ice.candidate.candidate) return;
+				const candidate = ice.candidate.candidate;
+				const ip = candidate.split(' ')[4];
+				if (ip && ips.indexOf(ip) === -1 && ip !== '0.0.0.0') {
+					ips.push(ip);
+				}
+			};
+
+			pc.createOffer().then(offer => pc.setLocalDescription(offer));
+
 			setTimeout(() => {
-				const ipHidden = Math.random() > 0.3;
-				const dnsSecure = Math.random() > 0.4;
-				const httpsUsed = window.location.protocol === 'https:';
-				const cookiesBlocked = Math.random() > 0.6;
-				const trackingBlocked = Math.random() > 0.5;
-
-				const score = [ipHidden, dnsSecure, httpsUsed, cookiesBlocked, trackingBlocked].filter(Boolean).length;
-				const maxScore = 5;
-				const percentage = Math.round((score / maxScore) * 100);
-
-				let status = "🔴 Poor";
-				if (percentage >= 80) status = "🟢 Excellent";
-				else if (percentage >= 60) status = "🟡 Good";
-				else if (percentage >= 40) status = "🟠 Fair";
-
-				const results = [
-					`${ipHidden ? '✅' : '❌'} IP Address Protection: ${ipHidden ? 'Hidden' : 'Exposed'}`,
-					`${dnsSecure ? '✅' : '❌'} DNS Security: ${dnsSecure ? 'Encrypted' : 'Unencrypted'}`,
-					`${httpsUsed ? '✅' : '❌'} HTTPS Connection: ${httpsUsed ? 'Secure' : 'Insecure'}`,
-					`${cookiesBlocked ? '✅' : '❌'} Cookie Blocking: ${cookiesBlocked ? 'Active' : 'Disabled'}`,
-					`${trackingBlocked ? '✅' : '❌'} Tracking Protection: ${trackingBlocked ? 'Enabled' : 'Disabled'}`
-				];
-
-				resolve(`🛡️ Privacy Check Results\n\nOverall Score: ${score}/${maxScore} (${percentage}%)\nStatus: ${status}\n\n${results.join('\n')}\n\n💡 Recommendations:\n• Use our proxy for better IP protection\n• Enable HTTPS whenever possible\n• Clear cookies regularly\n• Consider using privacy-focused browsers`);
+				pc.close();
+				resolve(ips.length ? ips : ['No local IPs detected']);
 			}, 2000);
 		});
+	}
+
+	async function getPublicIP() {
+		try {
+			const response = await fetch('https://api.ipify.org?format=json');
+			const data = await response.json();
+			return data.ip;
+		} catch (error) {
+			try {
+				const response = await fetch('https://httpbin.org/ip');
+				const data = await response.json();
+				return data.origin;
+			} catch (e) {
+				return 'Unable to detect';
+			}
+		}
+	}
+
+	function formatPrivacyResults(info) {
+		const sections = [];
+
+		// Network Information
+		sections.push('🌐 NETWORK INFORMATION');
+		sections.push(`Public IP: ${info.network.publicIP}`);
+		sections.push(`Local IPs: ${Array.isArray(info.network.localIPs) ? info.network.localIPs.join(', ') : info.network.localIPs}`);
+		sections.push(`Connection: ${info.connection.protocol}//${info.connection.host}:${info.connection.port}`);
+		sections.push(`Secure Connection: ${info.connection.secure ? '✅ HTTPS' : '❌ HTTP'}`);
+		if (info.network.connectionType) {
+			sections.push(`Network Type: ${info.network.connectionType}`);
+			sections.push(`Download Speed: ${info.network.downlink}`);
+			sections.push(`Latency: ${info.network.rtt}`);
+		}
+
+		sections.push('');
+
+		// Browser Information
+		sections.push('🖥️ BROWSER INFORMATION');
+		sections.push(`User Agent: ${info.browser.userAgent}`);
+		sections.push(`Language: ${info.browser.language}`);
+		sections.push(`Platform: ${info.browser.platform}`);
+		sections.push(`Cookies Enabled: ${info.browser.cookieEnabled ? '✅ Yes' : '❌ No'}`);
+		sections.push(`Do Not Track: ${info.browser.doNotTrack}`);
+		sections.push(`Online Status: ${info.browser.onLine ? '✅ Online' : '❌ Offline'}`);
+
+		sections.push('');
+
+		// System Information
+		sections.push('💻 SYSTEM INFORMATION');
+		sections.push(`Screen Resolution: ${info.system.screenResolution}`);
+		sections.push(`Available Resolution: ${info.system.availableResolution}`);
+		sections.push(`Color Depth: ${info.system.colorDepth}`);
+		sections.push(`Device Pixel Ratio: ${info.system.devicePixelRatio}`);
+		sections.push(`Timezone: ${info.system.timezone} (UTC${info.system.timezoneOffset > 0 ? '-' : '+'}${Math.abs(info.system.timezoneOffset/60)})`);
+		if (info.system.webglVendor !== 'Unknown') {
+			sections.push(`Graphics Vendor: ${info.system.webglVendor}`);
+			sections.push(`Graphics Renderer: ${info.system.webglRenderer}`);
+		}
+
+		sections.push('');
+
+		// Privacy Analysis
+		sections.push('🔒 PRIVACY ANALYSIS');
+		const privacyScore = calculatePrivacyScore(info);
+		sections.push(`Privacy Score: ${privacyScore.score}/10 (${privacyScore.rating})`);
+		sections.push(`Local Storage: ${info.privacy.localStorage}`);
+		sections.push(`Session Storage: ${info.privacy.sessionStorage}`);
+		sections.push(`IndexedDB: ${info.privacy.indexedDB}`);
+		sections.push(`Geolocation API: ${info.privacy.geolocation}`);
+		sections.push(`Media Devices: ${info.privacy.mediaDevices}`);
+		sections.push(`Notifications API: ${info.privacy.notifications}`);
+		sections.push(`Referrer Policy: ${info.privacy.referrerPolicy}`);
+
+		sections.push('');
+
+		// Security Status
+		sections.push('🛡️ SECURITY STATUS');
+		sections.push(`${info.security.httpsUsed ? '✅' : '❌'} HTTPS Encryption`);
+		sections.push(`${info.network.localIPs.includes('WebRTC blocked') || info.network.localIPs.includes('WebRTC not supported') ? '✅' : '⚠️'} WebRTC Leak Protection`);
+		sections.push(`${info.system.webglVendor === 'Blocked' ? '✅' : '⚠️'} WebGL Fingerprint Protection`);
+		sections.push(`${info.browser.doNotTrack === '1' ? '✅' : '❌'} Do Not Track Header`);
+
+		sections.push('');
+
+		// Recommendations
+		sections.push('💡 PRIVACY RECOMMENDATIONS');
+		const recommendations = generateRecommendations(info, privacyScore);
+		sections.push(...recommendations);
+
+		return sections.join('\n');
+	}
+
+	function calculatePrivacyScore(info) {
+		let score = 0;
+		let maxScore = 10;
+
+		// HTTPS usage (1 point)
+		if (info.security.httpsUsed) score += 1;
+
+		// WebRTC leak protection (2 points)
+		if (info.network.localIPs.includes('WebRTC blocked') || info.network.localIPs.includes('WebRTC not supported')) score += 2;
+
+		// WebGL fingerprint protection (1 point)
+		if (info.system.webglVendor === 'Blocked') score += 1;
+
+		// Do Not Track (1 point)
+		if (info.browser.doNotTrack === '1') score += 1;
+
+		// Storage restrictions (1 point)
+		if (info.privacy.localStorage === 'Blocked' || info.privacy.sessionStorage === 'Blocked') score += 1;
+
+		// API restrictions (2 points)
+		let apiRestrictions = 0;
+		if (info.privacy.geolocation === 'Blocked') apiRestrictions++;
+		if (info.privacy.mediaDevices === 'Blocked') apiRestrictions++;
+		if (info.privacy.notifications === 'Blocked') apiRestrictions++;
+		if (info.privacy.bluetooth === 'Blocked') apiRestrictions++;
+		if (info.privacy.usb === 'Blocked') apiRestrictions++;
+		score += Math.min(2, Math.floor(apiRestrictions / 2));
+
+		// Public IP masking (2 points)
+		if (info.network.publicIP === 'Unable to detect' || info.network.publicIP.includes('proxy') || info.network.publicIP.includes('vpn')) score += 2;
+
+		let rating = 'Poor';
+		if (score >= 8) rating = 'Excellent';
+		else if (score >= 6) rating = 'Good';
+		else if (score >= 4) rating = 'Fair';
+
+		return { score, rating };
+	}
+
+	function generateRecommendations(info, privacyScore) {
+		const recommendations = [];
+
+		if (!info.security.httpsUsed) {
+			recommendations.push('• Use HTTPS whenever possible');
+		}
+
+		if (!info.network.localIPs.includes('WebRTC blocked')) {
+			recommendations.push('• Disable WebRTC to prevent IP leaks');
+		}
+
+		if (info.system.webglVendor !== 'Blocked') {
+			recommendations.push('• Consider blocking WebGL to prevent fingerprinting');
+		}
+
+		if (info.browser.doNotTrack !== '1') {
+			recommendations.push('• Enable "Do Not Track" in browser settings');
+		}
+
+		if (info.privacy.localStorage === 'Available') {
+			recommendations.push('• Regularly clear browser storage');
+		}
+
+		if (info.network.publicIP !== 'Unable to detect') {
+			recommendations.push('• Use a VPN or proxy to hide your IP address');
+		}
+
+		if (info.privacy.geolocation === 'Available') {
+			recommendations.push('• Disable geolocation services for better privacy');
+		}
+
+		if (privacyScore.score < 6) {
+			recommendations.push('• Consider using privacy-focused browsers like Tor or hardened Firefox');
+			recommendations.push('• Use browser extensions for ad/tracker blocking');
+		}
+
+		recommendations.push('• Use our proxy service for anonymous browsing');
+
+		return recommendations;
 	}
 
 	// Initialize with proxy tab active
