@@ -1265,6 +1265,19 @@ document.addEventListener("DOMContentLoaded", () => {
 		const autoOpenLinksCheck = document.getElementById("auto-open-links");
 		if (autoOpenLinksCheck) autoOpenLinksCheck.checked = settings.autoOpenLinks ?? defaultSettings.autoOpenLinks;
 
+		// Safety settings
+		const aboutblankModeCheck = document.getElementById("aboutblank-mode");
+		if (aboutblankModeCheck) aboutblankModeCheck.checked = settings.aboutblankMode ?? defaultSettings.aboutblankMode;
+
+		const antiGoguardianCheck = document.getElementById("anti-goguardian");
+		if (antiGoguardianCheck) antiGoguardianCheck.checked = settings.antiGoguardian ?? defaultSettings.antiGoguardian;
+
+		const tabProtectionCheck = document.getElementById("tab-protection");
+		if (tabProtectionCheck) tabProtectionCheck.checked = settings.tabProtection ?? defaultSettings.tabProtection;
+
+		const historyProtectionCheck = document.getElementById("history-protection");
+		if (historyProtectionCheck) historyProtectionCheck.checked = settings.historyProtection ?? defaultSettings.historyProtection;
+
 		// Privacy & Security
 		const blockTrackingCheck = document.getElementById("block-tracking");
 		if (blockTrackingCheck) blockTrackingCheck.checked = settings.blockTracking ?? defaultSettings.blockTracking;
