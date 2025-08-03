@@ -1110,25 +1110,26 @@ body {
 	}
 
 	.games-grid {
-		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-		gap: 1.25rem;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 1rem;
 	}
 
-	.game-item {
-		width: 100px;
-		height: 110px;
-		padding: 0.75rem 0.5rem 0.5rem;
+	.game-card {
+		padding: 1.25rem;
 	}
 
-	.game-icon {
-		width: 50px;
-		height: 50px;
-		font-size: 1.2rem;
-		margin-bottom: 0.5rem;
+	.game-title {
+		font-size: 1.3rem;
 	}
 
-	.game-label {
+	.game-category {
 		font-size: 0.7rem;
+		padding: 0.2rem 0.6rem;
+	}
+
+	.play-button {
+		padding: 0.6rem 0.8rem;
+		font-size: 0.85rem;
 	}
 }
 
