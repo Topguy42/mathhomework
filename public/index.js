@@ -125,6 +125,32 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	});
 
+	// App cards functionality
+	const appCards = document.querySelectorAll(".app-card");
+	appCards.forEach((card) => {
+		card.addEventListener("click", async (event) => {
+			event.preventDefault();
+			const url = card.getAttribute("data-url");
+			if (url) {
+				await loadUrl(url);
+			}
+		});
+	});
+
+	// Launch button functionality
+	const launchButtons = document.querySelectorAll(".launch-button");
+	launchButtons.forEach((button) => {
+		button.addEventListener("click", async (event) => {
+			event.preventDefault();
+			event.stopPropagation();
+			const card = button.closest(".app-card");
+			const url = card.getAttribute("data-url");
+			if (url) {
+				await loadUrl(url);
+			}
+		});
+	});
+
 	// Games search functionality
 	const gamesSearch = document.getElementById('games-search');
 	const gamesSearchClear = document.getElementById('games-search-clear');
