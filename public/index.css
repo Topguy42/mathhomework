@@ -914,9 +914,19 @@ body {
     font-size: 0.875rem;
   }
 
-  .features-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+  .quick-access-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .quick-access-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .quick-access-icon svg {
+    width: 28px;
+    height: 28px;
   }
 
   .footer-links {
