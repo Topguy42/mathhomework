@@ -722,39 +722,15 @@ body {
 }
 
 .quick-access-label {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: var(--text-secondary);
   transition: color 0.3s ease;
+  text-align: center;
 }
 
 .quick-access-item:hover .quick-access-label {
-  color: var(--text-primary);
-}
-
-/* Brand-specific icon colors */
-.quick-access-icon.youtube {
-  color: #ff0000;
-}
-
-.quick-access-icon.reddit {
-  color: #ff4500;
-}
-
-.quick-access-icon.discord {
-  color: #5865f2;
-}
-
-.quick-access-icon.github {
-  color: #ffffff;
-}
-
-.quick-access-icon.instagram {
-  color: #e4405f;
-}
-
-.quick-access-icon.tiktok {
-  color: #000000;
+  color: var(--accent-color);
 }
 
 
