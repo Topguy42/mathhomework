@@ -897,17 +897,17 @@ body {
   }
 
   .quick-access-icon {
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
   }
 
   .quick-access-icon svg {
-    width: 20px;
-    height: 20px;
+    width: 26px;
+    height: 26px;
   }
 
   .quick-access-label {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
   }
   
 
