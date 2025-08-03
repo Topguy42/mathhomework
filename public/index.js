@@ -465,26 +465,82 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	// Cloaker functionality
-	const cloakerBtn = document.getElementById("cloaker-btn");
+	const applyCloakerBtn = document.getElementById("apply-cloaker-btn");
+	const restoreOriginalBtn = document.getElementById("restore-original-btn");
+	const websiteTitleInput = document.getElementById("website-title");
+	const faviconUrlInput = document.getElementById("favicon-url");
 	const cloakerResult = document.getElementById("cloaker-result");
+	const presetButtons = document.querySelectorAll(".preset-btn");
 
-	if (cloakerBtn) {
-		cloakerBtn.addEventListener("click", () => {
-			const hideIP = document.getElementById("hide-ip").checked;
-			const spoofUserAgent = document.getElementById("spoof-useragent").checked;
-			const blockTracking = document.getElementById("block-tracking").checked;
-			const clearCookies = document.getElementById("clear-cookies").checked;
+	// Store original values
+	let originalTitle = document.title;
+	let originalFavicon = null;
 
-			setLoading(cloakerBtn, true);
+	// Get original favicon
+	const existingFavicon = document.querySelector('link[rel="icon"], link[rel="shortcut icon"]');
+	if (existingFavicon) {
+		originalFavicon = existingFavicon.href;
+	}
+
+	// Apply cloaker
+	if (applyCloakerBtn) {
+		applyCloakerBtn.addEventListener("click", () => {
+			const newTitle = websiteTitleInput.value.trim();
+			const newFavicon = faviconUrlInput.value.trim();
+
+			if (!newTitle && !newFavicon) {
+				showResult(cloakerResult, "Please enter a title or favicon URL to apply cloaking", "error");
+				return;
+			}
+
+			setLoading(applyCloakerBtn, true);
 			try {
-				const result = activateCloaking(hideIP, spoofUserAgent, blockTracking, clearCookies);
+				const result = applyCloaking(newTitle, newFavicon);
 				showResult(cloakerResult, result, "success");
 			} catch (error) {
 				showResult(cloakerResult, `Error: ${error.message}`, "error");
 			}
-			setLoading(cloakerBtn, false);
+			setLoading(applyCloakerBtn, false);
 		});
 	}
+
+	// Restore original
+	if (restoreOriginalBtn) {
+		restoreOriginalBtn.addEventListener("click", () => {
+			setLoading(restoreOriginalBtn, true);
+			try {
+				const result = restoreOriginal();
+				showResult(cloakerResult, result, "success");
+				// Clear input fields
+				websiteTitleInput.value = "";
+				faviconUrlInput.value = "";
+			} catch (error) {
+				showResult(cloakerResult, `Error: ${error.message}`, "error");
+			}
+			setLoading(restoreOriginalBtn, false);
+		});
+	}
+
+	// Preset buttons
+	presetButtons.forEach(btn => {
+		btn.addEventListener("click", () => {
+			const title = btn.getAttribute("data-title");
+			const favicon = btn.getAttribute("data-favicon");
+
+			websiteTitleInput.value = title;
+			faviconUrlInput.value = favicon;
+
+			// Auto-apply the preset
+			setLoading(btn, true);
+			try {
+				const result = applyCloaking(title, favicon);
+				showResult(cloakerResult, result, "success");
+			} catch (error) {
+				showResult(cloakerResult, `Error: ${error.message}`, "error");
+			}
+			setLoading(btn, false);
+		});
+	});
 
 	// Search Engine functionality
 	const searchEngineBtn = document.getElementById("search-engine-btn");
