@@ -1194,6 +1194,37 @@ body {
 	.quick-access-label {
 		font-size: 0.75rem;
 	}
+
+	.games-section {
+		padding: 1rem;
+	}
+
+	.games-grid {
+		grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+		gap: 1rem;
+	}
+
+	.game-item {
+		width: 90px;
+		height: 100px;
+		padding: 0.5rem 0.25rem 0.5rem;
+	}
+
+	.game-icon {
+		width: 45px;
+		height: 45px;
+		font-size: 1rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.game-icon svg {
+		width: 25px;
+		height: 25px;
+	}
+
+	.game-label {
+		font-size: 0.65rem;
+	}
 }
 
 /* Loading Animation */
