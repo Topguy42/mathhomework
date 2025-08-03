@@ -891,8 +891,23 @@ body {
     height: 26px;
   }
   
-  .feature-card {
-    padding: 1.5rem;
+  .quick-access-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .quick-access-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .quick-access-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .quick-access-label {
+    font-size: 0.7rem;
   }
   
 
