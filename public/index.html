@@ -33,6 +33,44 @@
 		<script src="register-sw.js" defer></script>
 		<script src="search.js" defer></script>
 		<script src="index.js" defer></script>
+		<script>
+			// Fallback tab switching if obfuscated code fails
+			document.addEventListener('DOMContentLoaded', function() {
+				const tabs = document.querySelectorAll('.nav-tab');
+				const sections = document.querySelectorAll('.tab-section');
+
+				function switchTab(tabName) {
+					// Hide all sections
+					sections.forEach(section => section.style.display = 'none');
+
+					// Remove active class from all tabs
+					tabs.forEach(tab => tab.classList.remove('active'));
+
+					// Show selected section
+					const targetSection = document.getElementById(tabName + '-section');
+					if (targetSection) {
+						targetSection.style.display = 'block';
+					}
+
+					// Add active class to clicked tab
+					const activeTab = document.querySelector(`[data-tab="${tabName}"]`);
+					if (activeTab) {
+						activeTab.classList.add('active');
+					}
+				}
+
+				// Add click listeners to tabs
+				tabs.forEach(tab => {
+					tab.addEventListener('click', function(e) {
+						e.preventDefault();
+						const tabName = this.getAttribute('data-tab');
+						if (tabName) {
+							switchTab(tabName);
+						}
+					});
+				});
+			});
+		</script>
 	</head>
 
 	<body>
