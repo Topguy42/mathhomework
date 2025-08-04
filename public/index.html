@@ -75,8 +75,15 @@
 				if (aboutBlankToggle) {
 					aboutBlankToggle.addEventListener('change', function() {
 						if (this.checked) {
-							document.body.classList.add('aboutblank-mode');
+							// Store original URL for restoration
+							sessionStorage.setItem('vortex-original-url', window.location.href);
+
+							// Navigate to Google to hide proxy from history
+							window.history.replaceState({}, '', 'https://www.google.com/');
 							document.title = '';
+
+							// Apply blank styling
+							document.body.classList.add('aboutblank-mode');
 
 							// Add toggle button
 							let toggleBtn = document.getElementById('aboutblank-toggle');
@@ -102,6 +109,13 @@
 								document.body.appendChild(toggleBtn);
 
 								toggleBtn.addEventListener('click', function() {
+									// Restore original URL
+									const originalUrl = sessionStorage.getItem('vortex-original-url');
+									if (originalUrl) {
+										window.history.replaceState({}, '', originalUrl);
+										sessionStorage.removeItem('vortex-original-url');
+									}
+
 									document.body.classList.remove('aboutblank-mode');
 									document.title = 'Vortex | Fast Web Access';
 									aboutBlankToggle.checked = false;
@@ -109,6 +123,13 @@
 								});
 							}
 						} else {
+							// Restore original URL
+							const originalUrl = sessionStorage.getItem('vortex-original-url');
+							if (originalUrl) {
+								window.history.replaceState({}, '', originalUrl);
+								sessionStorage.removeItem('vortex-original-url');
+							}
+
 							document.body.classList.remove('aboutblank-mode');
 							document.title = 'Vortex | Fast Web Access';
 							const toggleBtn = document.getElementById('aboutblank-toggle');
@@ -1132,7 +1153,7 @@
 									<span class="rating-label">rating</span>
 								</div>
 								<button class="launch-button">
-									<span class="launch-icon">🚀</span>
+									<span class="launch-icon">��</span>
 									Launch App
 								</button>
 							</div>
@@ -1223,7 +1244,7 @@
 									<span class="rating-label">rating</span>
 								</div>
 								<button class="launch-button">
-									<span class="launch-icon">���</span>
+									<span class="launch-icon">🚀</span>
 									Launch App
 								</button>
 							</div>
