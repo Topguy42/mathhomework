@@ -1678,35 +1678,74 @@ document.addEventListener("DOMContentLoaded", () => {
 	async function enableAboutBlankCloaking() {
 		console.log("Enabling about:blank cloaking mode");
 
-		// Clear the title completely
+		// Immediately clear the title and favicon multiple times
 		document.title = "";
 
-		// Remove all existing favicons
-		const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
-		existingFavicons.forEach((favicon) => favicon.remove());
+		// Remove ALL existing favicons aggressively
+		const removeAllFavicons = () => {
+			const favicons = document.querySelectorAll('link[rel*="icon"], link[type*="image"]');
+			favicons.forEach((favicon) => favicon.remove());
+		};
 
-		// Add completely transparent favicon to make it invisible
-		const blankFavicon = document.createElement("link");
-		blankFavicon.rel = "icon";
-		blankFavicon.href = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><rect width="1" height="1" fill="transparent"/></svg>');
-		document.head.appendChild(blankFavicon);
+		// Remove favicons multiple times to ensure they're gone
+		removeAllFavicons();
+		setTimeout(removeAllFavicons, 50);
+		setTimeout(removeAllFavicons, 100);
 
-		// Add shortcut icon version too
-		const blankShortcut = document.createElement("link");
-		blankShortcut.rel = "shortcut icon";
-		blankShortcut.href = blankFavicon.href;
-		document.head.appendChild(blankShortcut);
+		// Add multiple blank favicon attempts with different methods
+		const addBlankFavicon = () => {
+			// Method 1: Completely empty data URL
+			const emptyFavicon = document.createElement("link");
+			emptyFavicon.rel = "icon";
+			emptyFavicon.href = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+			document.head.appendChild(emptyFavicon);
 
-		// Set up periodic title clearing to maintain blank appearance
+			// Method 2: Transparent SVG
+			const transparentFavicon = document.createElement("link");
+			transparentFavicon.rel = "shortcut icon";
+			transparentFavicon.href = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"><rect width="1" height="1" fill="none"/></svg>');
+			document.head.appendChild(transparentFavicon);
+
+			// Method 3: Empty ICO
+			const icoFavicon = document.createElement("link");
+			icoFavicon.rel = "icon";
+			icoFavicon.type = "image/x-icon";
+			icoFavicon.href = 'data:image/x-icon;base64,AAABAAEAAQEAAAEAIAAwAAAAFgAAACgAAAABAAAAAgAAAAEAIAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+			document.head.appendChild(icoFavicon);
+		};
+
+		// Add blank favicon immediately and with delays
+		addBlankFavicon();
+		setTimeout(addBlankFavicon, 100);
+		setTimeout(addBlankFavicon, 300);
+
+		// Aggressive title clearing with multiple methods
+		const clearTitle = () => {
+			document.title = "";
+			if (document.querySelector('title')) {
+				document.querySelector('title').textContent = "";
+			}
+		};
+
+		// Clear title immediately and repeatedly
+		clearTitle();
+		setTimeout(clearTitle, 50);
+		setTimeout(clearTitle, 100);
+		setTimeout(clearTitle, 200);
+
+		// Set up very frequent title clearing to maintain blank appearance
 		if (window.aboutBlankInterval) {
 			clearInterval(window.aboutBlankInterval);
 		}
 
 		window.aboutBlankInterval = setInterval(() => {
-			if (document.title !== "") {
-				document.title = "";
+			clearTitle();
+			// Also periodically remove any new favicons that might appear
+			if (document.querySelectorAll('link[rel*="icon"]').length > 3) {
+				removeAllFavicons();
+				addBlankFavicon();
 			}
-		}, 100);
+		}, 50); // More frequent clearing
 
 		// Add subtle visual indicator (optional - can be toggled)
 		document.body.classList.add("about-blank-active");
@@ -1717,9 +1756,23 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Store that we're in about:blank mode
 		window.isAboutBlankMode = true;
 
-		console.log("✅ About:blank cloaking enabled");
+		// Override document.title setter to prevent any title changes
+		const originalTitleDescriptor = Object.getOwnPropertyDescriptor(Document.prototype, 'title');
+		Object.defineProperty(document, 'title', {
+			get: () => '',
+			set: () => {}, // Ignore all attempts to set title
+			configurable: true
+		});
 
-		return `🕵️ About:Blank Mode Activated!\n\n✅ Page title cleared\n✅ Favicon made invisible\n✅ Automatic title clearing enabled\n\n😎 Your browser tab now appears completely blank for maximum stealth.\n\n💡 Click the toggle in the top-right corner to hide/show the indicator.\n\n⚠️ Remember to restore original settings when done to avoid confusion.`;
+		// Store original descriptor for restoration
+		window.originalTitleDescriptor = originalTitleDescriptor;
+
+		console.log("✅ About:blank cloaking enabled with aggressive clearing");
+
+		// Wait a bit to ensure everything is applied
+		await new Promise(resolve => setTimeout(resolve, 500));
+
+		return `🕵️ About:Blank Mode Activated!\n\n✅ Page title cleared and locked\n✅ Favicon made completely invisible\n✅ Aggressive title/favicon clearing enabled\n\n😎 Your browser tab now appears completely blank for maximum stealth.\n\n💡 Click the toggle in the top-right corner to hide/show the indicator.\n\n⚠️ Remember to restore original settings when done.`;
 	}
 
 	function addAboutBlankToggle() {
