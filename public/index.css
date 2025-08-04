@@ -3745,14 +3745,16 @@ body.matrix-theme .settings-btn:hover {
 }
 
 .light-preview {
-	background: rgba(248, 249, 250, 0.9);
-	color: #2d3436;
+	background: rgba(248, 250, 255, 0.95);
+	color: #1a1a1a;
+	border: 1px solid rgba(9, 132, 227, 0.2);
+	box-shadow: 0 4px 15px rgba(9, 132, 227, 0.1);
 }
 .light-preview .preview-accent {
-	background: #00b894;
+	background: linear-gradient(90deg, #0984e3, #74b9ff);
 }
 .light-preview .preview-text {
-	background: #636e72;
+	background: #4a5568;
 }
 
 .blue-preview {
