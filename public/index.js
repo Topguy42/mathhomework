@@ -1273,6 +1273,22 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
+	// Add immediate trigger for anti-GoGuardian mode
+	const antiGoGuardianToggle = document.getElementById("anti-goguardian");
+	if (antiGoGuardianToggle) {
+		antiGoGuardianToggle.addEventListener("change", (e) => {
+			if (e.target.checked) {
+				// Immediately enable anti-GoGuardian protection
+				enableAntiGoGuardian();
+				showNotification("🛡️ Anti-GoGuardian protection enabled! Tab closure will now require confirmation.", "success");
+			} else {
+				// Disable protection when toggled off
+				disableAntiGoGuardian();
+				showNotification("Anti-GoGuardian protection disabled", "info");
+			}
+		});
+	}
+
 	// Theme preview functionality - always visible now
 	if (themePreviewBtn) {
 		themePreviewBtn.addEventListener("click", () => {
