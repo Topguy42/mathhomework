@@ -328,7 +328,8 @@ body {
 	text-decoration: none;
 	font-weight: 500;
 	font-size: 0.875rem;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	position: relative;
 	overflow: hidden;
 }
@@ -378,7 +379,8 @@ body {
 	justify-content: center;
 	color: var(--text-secondary);
 	cursor: pointer;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	backdrop-filter: blur(20px);
 	box-shadow:
 		0 2px 10px var(--glass-shadow),
@@ -413,7 +415,8 @@ body {
 }
 
 .theme-toggle svg {
-	transition: all 0.3s ease;
+	transition: all 0.1s ease;
+	will-change: transform;
 }
 
 /* Improve theme toggle for light theme */
@@ -615,7 +618,8 @@ body.light-theme .theme-toggle:hover {
 		0 4px 12px rgba(0, 0, 0, 0.08),
 		inset 0 2px 0 rgba(255, 255, 255, 0.15),
 		inset 0 -2px 0 rgba(0, 0, 0, 0.05);
-	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	position: relative;
 	overflow: hidden;
 }
@@ -704,7 +708,8 @@ body.light-theme .theme-toggle:hover {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
-	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	box-shadow:
 		0 8px 32px rgba(var(--primary-color), 0.3),
 		0 4px 16px rgba(0, 0, 0, 0.1),
@@ -817,7 +822,8 @@ body.light-theme .theme-toggle:hover {
 	justify-content: space-between;
 	text-decoration: none;
 	color: var(--text-primary);
-	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	cursor: pointer;
 	width: 100px;
 	height: 110px;
@@ -844,7 +850,8 @@ body.light-theme .theme-toggle:hover {
 	align-items: center;
 	justify-content: center;
 	color: var(--accent-color);
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	flex: 1;
 }
 
@@ -951,7 +958,8 @@ body.light-theme .theme-toggle:hover {
 	box-shadow:
 		0 4px 20px rgba(0, 0, 0, 0.2),
 		inset 0 1px 0 rgba(255, 255, 255, 0.05);
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 }
 
 .games-search-bar:focus-within {
@@ -992,7 +1000,8 @@ body.light-theme .theme-toggle:hover {
 	cursor: pointer;
 	padding: 0.25rem;
 	border-radius: 50%;
-	transition: all 0.2s ease;
+	transition: all 0.08s ease;
+	will-change: transform;
 	margin-left: 0.5rem;
 	flex-shrink: 0;
 }
@@ -1027,7 +1036,8 @@ body.light-theme .theme-toggle:hover {
 		0 3px 10px rgba(0, 0, 0, 0.05),
 		inset 0 2px 0 rgba(255, 255, 255, 0.08),
 		inset 0 -1px 0 rgba(0, 0, 0, 0.03);
-	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	cursor: pointer;
 	position: relative;
 	overflow: hidden;
@@ -1120,7 +1130,8 @@ body.light-theme .theme-toggle:hover {
 	font-weight: 600;
 	font-size: 0.9rem;
 	cursor: pointer;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	box-shadow:
 		0 2px 10px rgba(0, 212, 170, 0.3),
 		inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -1185,7 +1196,8 @@ body.light-theme .theme-toggle:hover {
 	box-shadow:
 		0 4px 20px rgba(0, 0, 0, 0.2),
 		inset 0 1px 0 rgba(255, 255, 255, 0.05);
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 }
 
 .apps-search-bar:focus-within {
@@ -1226,7 +1238,8 @@ body.light-theme .theme-toggle:hover {
 	cursor: pointer;
 	padding: 0.25rem;
 	border-radius: 50%;
-	transition: all 0.2s ease;
+	transition: all 0.08s ease;
+	will-change: transform;
 	margin-left: 0.5rem;
 	flex-shrink: 0;
 }
@@ -1261,7 +1274,8 @@ body.light-theme .theme-toggle:hover {
 		0 3px 10px rgba(0, 0, 0, 0.05),
 		inset 0 2px 0 rgba(255, 255, 255, 0.08),
 		inset 0 -1px 0 rgba(0, 0, 0, 0.03);
-	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	cursor: pointer;
 	position: relative;
 	overflow: hidden;
@@ -1338,7 +1352,8 @@ body.light-theme .theme-toggle:hover {
 	font-weight: 600;
 	font-size: 0.9rem;
 	cursor: pointer;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	box-shadow:
 		0 2px 10px rgba(0, 212, 170, 0.3),
 		inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -1560,7 +1575,8 @@ body.light-theme .theme-toggle:hover {
 	padding: 0.5rem;
 	border-radius: 8px;
 	background: rgba(255, 255, 255, 0.05);
-	transition: all 0.3s ease;
+	transition: all 0.1s ease;
+	will-change: transform;
 	position: relative;
 }
 
@@ -1624,7 +1640,8 @@ body.light-theme .theme-toggle:hover {
 	justify-content: center;
 	color: var(--text-secondary);
 	cursor: pointer;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	backdrop-filter: blur(20px);
 }
 
@@ -1680,7 +1697,8 @@ body.light-theme .theme-toggle:hover {
 	width: 100%;
 	backdrop-filter: blur(20px);
 	cursor: text;
-	transition: all 0.3s ease;
+	transition: all 0.1s ease;
+	will-change: transform;
 }
 
 .tab-url-container:hover {
@@ -1759,7 +1777,8 @@ body.light-theme .theme-toggle:hover {
 	justify-content: center;
 	color: var(--text-secondary);
 	cursor: pointer;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	backdrop-filter: blur(20px);
 }
 
@@ -1914,7 +1933,8 @@ body.frame-active .top-nav {
 	cursor: pointer;
 	margin: 1rem 0;
 	display: none;
-	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	box-shadow:
 		0 4px 20px rgba(99, 102, 241, 0.25),
 		inset 0 1px 0 rgba(255, 255, 255, 0.2),
@@ -1981,7 +2001,8 @@ body.frame-active .top-nav {
 	border: 2px solid var(--glass-border);
 	border-radius: 16px;
 	cursor: pointer;
-	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	backdrop-filter: blur(30px) saturate(150%);
 	box-shadow:
 		0 8px 32px var(--glass-shadow),
@@ -2122,7 +2143,8 @@ body.frame-active .top-nav {
 	padding: 0.875rem 1rem;
 	color: var(--text-primary);
 	font-size: 1rem;
-	transition: all 0.3s ease;
+	transition: all 0.1s ease;
+	will-change: transform;
 	outline: none;
 }
 
@@ -2145,7 +2167,8 @@ body.frame-active .top-nav {
 	font-weight: 600;
 	font-size: 1rem;
 	cursor: pointer;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	box-shadow:
 		0 4px 20px rgba(0, 212, 170, 0.3),
 		inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -2267,7 +2290,8 @@ body.frame-active .top-nav {
 	padding: 0.875rem 1rem;
 	color: var(--text-primary);
 	font-size: 1rem;
-	transition: all 0.3s ease;
+	transition: all 0.1s ease;
+	will-change: transform;
 	outline: none;
 }
 
@@ -2351,7 +2375,8 @@ body.frame-active .top-nav {
 	padding: 1rem;
 	color: var(--text-primary);
 	cursor: pointer;
-	transition: all 0.3s ease;
+	transition: all 0.1s ease;
+	will-change: transform;
 	text-align: left;
 }
 
@@ -2506,7 +2531,8 @@ body.frame-active .top-nav {
 	color: var(--text-primary);
 	font-size: 0.875rem;
 	min-width: 150px;
-	transition: all 0.3s ease;
+	transition: all 0.1s ease;
+	will-change: transform;
 	outline: none;
 }
 
@@ -2543,7 +2569,8 @@ body.frame-active .top-nav {
 	bottom: 0;
 	background: rgba(255, 255, 255, 0.2);
 	border-radius: 24px;
-	transition: all 0.3s ease;
+	transition: all 0.1s ease;
+	will-change: transform;
 	border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -2556,7 +2583,8 @@ body.frame-active .top-nav {
 	top: 2px;
 	background: white;
 	border-radius: 50%;
-	transition: all 0.3s ease;
+	transition: all 0.1s ease;
+	will-change: transform;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -2591,7 +2619,8 @@ body.frame-active .top-nav {
 	font-weight: 600;
 	font-size: 0.9rem;
 	cursor: pointer;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform, box-shadow;
 	border: 2px solid transparent;
 	backdrop-filter: blur(10px);
 }
@@ -4283,7 +4312,8 @@ body.matrix-theme .nav-logo {
 	color: var(--text-primary);
 	font-size: 0.875rem;
 	cursor: pointer;
-	transition: all 0.3s ease;
+	transition: all 0.1s ease;
+	will-change: transform;
 	outline: none;
 }
 
@@ -4312,7 +4342,8 @@ body.matrix-theme .nav-logo {
 .theme-preview-card {
 	border-radius: 12px;
 	padding: 1rem;
-	transition: all 0.3s ease;
+	transition: all 0.1s ease;
+	will-change: transform;
 	border: 2px solid transparent;
 	backdrop-filter: blur(10px);
 	min-height: 80px;
