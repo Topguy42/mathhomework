@@ -1604,6 +1604,20 @@ document.addEventListener("DOMContentLoaded", () => {
 	function restoreOriginal() {
 		const changes = [];
 
+		// Clear about:blank mode if active
+		if (window.isAboutBlankMode) {
+			// Clear the interval
+			if (window.aboutBlankInterval) {
+				clearInterval(window.aboutBlankInterval);
+				window.aboutBlankInterval = null;
+			}
+
+			// Remove about:blank styling
+			document.body.classList.remove("about-blank-active");
+			window.isAboutBlankMode = false;
+			changes.push("✅ About:blank mode disabled");
+		}
+
 		// Restore original title
 		if (document.title !== originalTitle) {
 			document.title = originalTitle;
