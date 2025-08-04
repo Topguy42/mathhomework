@@ -1192,7 +1192,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			const data = await response.json();
 
 			if (data.status.http_code === 200) {
-				return `✅ Site is accessible!\n\nURL: ${cleanUrl}\nStatus: ${data.status.http_code}\nResponse time: ${(Math.random() * 1000) | 0}ms\n\nAlternative access methods:\n• Use our proxy: ${window.location.origin}/?url=${encodeURIComponent(cleanUrl)}\n• Try different protocols (http/https)\n• Use IP address instead of domain`;
+				return `✅ Site is accessible!\n\nURL: ${cleanUrl}\nStatus: ${data.status.http_code}\nResponse time: ${(Math.random() * 1000) | 0}ms\n\nAlternative access methods:\n• Use our proxy: ${window.location.origin}/?url=${encodeURIComponent(cleanUrl)}\n• Try different protocols (http/https)\n��� Use IP address instead of domain`;
 			} else {
 				return `❌ Site may be blocked or inaccessible\n\nURL: ${cleanUrl}\nStatus: ${data.status.http_code}\n\nSuggested alternatives:\n• Try proxy access\n• Check for typos in URL\n• Site might be temporarily down`;
 			}
@@ -2662,13 +2662,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		const newTab = window.open("about:blank", "_blank");
 
 		if (newTab) {
-			// Create about:blank page with proxy visible but no header
+			// Create about:blank page with proxy visible but no header + anti-extension protection
 			const htmlContent = `<!DOCTYPE html>
 <html>
 <head>
 <title></title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline' 'unsafe-eval'; object-src 'none';">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -2687,13 +2688,136 @@ body {
 </style>
 </head>
 <body>
-<iframe id="proxyFrame" class="proxy-frame" src="${window.location.origin}"></iframe>
+<iframe id="proxyFrame" class="proxy-frame" src="${window.location.origin}" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation"></iframe>
 
 <script>
-// Clear title every second to maintain about:blank appearance
-setInterval(() => {
-	if (document.title !== '') document.title = '';
-}, 1000);
+(function() {
+	'use strict';
+
+	// Anti-extension protection measures
+
+	// 1. Clear title every second to maintain about:blank appearance
+	setInterval(() => {
+		if (document.title !== '') document.title = '';
+	}, 100);
+
+	// 2. Prevent extension content script injection
+	const originalCreateElement = document.createElement;
+	document.createElement = function(tagName) {
+		const element = originalCreateElement.call(this, tagName);
+		// Block certain elements that extensions might inject
+		if (['script', 'link', 'style'].includes(tagName.toLowerCase())) {
+			// Only allow if called from our code
+			const stack = new Error().stack;
+			if (!stack || !stack.includes('about:blank')) {
+				console.warn('Blocked external element creation:', tagName);
+				return document.createDocumentFragment();
+			}
+		}
+		return element;
+	};
+
+	// 3. Override DOM modification methods to prevent extension tampering
+	const originalAppendChild = Element.prototype.appendChild;
+	Element.prototype.appendChild = function(child) {
+		// Block suspicious script injections
+		if (child.tagName === 'SCRIPT' && !child.src.startsWith(window.location.origin)) {
+			console.warn('Blocked external script injection');
+			return child;
+		}
+		return originalAppendChild.call(this, child);
+	};
+
+	// 4. Hide window.chrome and extension APIs
+	if (window.chrome) {
+		try {
+			Object.defineProperty(window, 'chrome', {
+				get: () => undefined,
+				set: () => {},
+				configurable: false
+			});
+		} catch(e) {}
+	}
+
+	// 5. Prevent extension message passing
+	if (window.postMessage) {
+		const originalPostMessage = window.postMessage;
+		window.postMessage = function(message, origin) {
+			// Only allow messages from our origin
+			if (origin === window.location.origin || origin === '*') {
+				return originalPostMessage.call(this, message, origin);
+			}
+			console.warn('Blocked external postMessage');
+		};
+	}
+
+	// 6. Prevent extension storage access
+	if (window.localStorage) {
+		const originalLocalStorage = window.localStorage;
+		Object.defineProperty(window, 'localStorage', {
+			get: () => {
+				// Return a sandboxed storage that extensions can't access
+				return {
+					getItem: () => null,
+					setItem: () => {},
+					removeItem: () => {},
+					clear: () => {},
+					length: 0
+				};
+			},
+			configurable: false
+		});
+	}
+
+	// 7. Block extension communication channels
+	window.addEventListener('message', function(event) {
+		// Only allow messages from our origin
+		if (event.origin !== window.location.origin) {
+			event.stopImmediatePropagation();
+			console.warn('Blocked external message:', event.origin);
+		}
+	}, true);
+
+	// 8. Prevent extension access to page content
+	const observer = new MutationObserver(function(mutations) {
+		mutations.forEach(function(mutation) {
+			if (mutation.type === 'childList') {
+				mutation.addedNodes.forEach(function(node) {
+					// Remove any suspicious injected content
+					if (node.nodeType === 1 && node.tagName === 'SCRIPT' &&
+						(!node.src || !node.src.startsWith(window.location.origin))) {
+						console.warn('Removed suspicious script injection');
+						node.remove();
+					}
+				});
+			}
+		});
+	});
+
+	observer.observe(document.body, {
+		childList: true,
+		subtree: true
+	});
+
+	// 9. Freeze important objects to prevent tampering
+	try {
+		Object.freeze(Document.prototype);
+		Object.freeze(Element.prototype);
+		Object.freeze(window.location);
+	} catch(e) {}
+
+	// 10. Clear any extension-set cookies periodically
+	setInterval(() => {
+		try {
+			// Clear cookies that might be set by extensions
+			document.cookie.split(";").forEach(function(c) {
+				document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+			});
+		} catch(e) {}
+	}, 5000);
+
+	console.log('🛡️ About:blank anti-extension protection active');
+})();
 </script>
 </body>
 </html>`;
