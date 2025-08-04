@@ -2141,6 +2141,31 @@ setInterval(() => {
 		console.log("Enhanced Anti-GoGuardian protection activated");
 	}
 
+	// Manual test function for cloaker (accessible via console)
+	window.testCloaker = function(title = "Google Classroom", favicon = "https://classroom.google.com/favicon.ico") {
+		console.log("Testing cloaker with:", { title, favicon });
+		try {
+			const result = applyCloaking(title, favicon);
+			console.log("Cloaker test result:", result);
+			return result;
+		} catch (error) {
+			console.error("Cloaker test error:", error);
+			return error.message;
+		}
+	};
+
+	window.testRestore = function() {
+		console.log("Testing restore original");
+		try {
+			const result = restoreOriginal();
+			console.log("Restore test result:", result);
+			return result;
+		} catch (error) {
+			console.error("Restore test error:", error);
+			return error.message;
+		}
+	};
+
 	function disableAntiGoGuardian() {
 		if (!antiGoGuardianActive) return;
 		antiGoGuardianActive = false;
