@@ -2602,6 +2602,11 @@ document.addEventListener("DOMContentLoaded", () => {
 			document.body.classList.add(`${settings.theme}-theme`);
 		}
 
+		// Update theme toggle button to match current theme
+		if (window.updateThemeToggleFromSettings) {
+			updateThemeToggleFromSettings(settings.theme || 'dark');
+		}
+
 		// Apply compact mode
 		if (settings.compactMode) {
 			document.body.classList.add("compact-mode");
