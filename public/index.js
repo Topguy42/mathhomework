@@ -2361,6 +2361,9 @@ document.addEventListener("DOMContentLoaded", () => {
 				themePreviewItems.forEach((item) => item.classList.remove("selected"));
 				item.classList.add("selected");
 
+				// Update theme toggle button icon
+				updateThemeToggleFromSettings(theme);
+
 				// Show notification
 				showNotification(
 					`Theme changed to ${getThemeName(theme)}! Don't forget to save your settings.`,
