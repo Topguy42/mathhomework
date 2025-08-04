@@ -693,8 +693,8 @@ body.light-theme .theme-toggle:hover {
 
 .search-button {
 	background: var(--gradient-primary);
-	border: 1px solid var(--glass-border-light);
-	border-radius: 16px;
+	border: 2px solid var(--glass-border-light);
+	border-radius: 18px;
 	margin: 0.375rem;
 	padding: 0.875rem 1.5rem;
 	color: white;
@@ -706,10 +706,11 @@ body.light-theme .theme-toggle:hover {
 	gap: 0.5rem;
 	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 	box-shadow:
-		0 4px 20px rgba(99, 102, 241, 0.25),
-		inset 0 1px 0 rgba(255, 255, 255, 0.2),
-		0 1px 0 rgba(255, 255, 255, 0.1);
-	backdrop-filter: blur(10px);
+		0 8px 32px rgba(var(--primary-color), 0.3),
+		0 4px 16px rgba(0, 0, 0, 0.1),
+		inset 0 2px 0 rgba(255, 255, 255, 0.25),
+		inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(15px) saturate(120%);
 	position: relative;
 	overflow: hidden;
 }
