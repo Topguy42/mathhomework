@@ -1347,7 +1347,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Change page title
 		if (title) {
 			document.title = title;
-			changes.push(`✅ Page title changed to: "${title}"`);
+			changes.push(`�� Page title changed to: "${title}"`);
 		}
 
 		// Change favicon
@@ -1392,8 +1392,17 @@ document.addEventListener("DOMContentLoaded", () => {
 					console.warn("Method 3 failed:", error.message);
 				}
 
-				// Method 4: Direct setting (will show grey globe if CORS blocked)
-				console.log("Using Method 4: Direct setting (fallback)");
+				// Method 4: Try to get favicon from domain root
+				try {
+					console.log("Trying Method 4: Domain root favicon");
+					await tryDomainRootFavicon(url);
+					return;
+				} catch (error) {
+					console.warn("Method 4 failed:", error.message);
+				}
+
+				// Method 5: Direct setting (will show grey globe if CORS blocked)
+				console.log("Using Method 5: Direct setting (final fallback)");
 				setFaviconDirectly(url);
 			}
 
@@ -1473,6 +1482,41 @@ document.addEventListener("DOMContentLoaded", () => {
 					reader.onerror = reject;
 					reader.readAsDataURL(blob);
 				});
+			}
+
+			async function tryDomainRootFavicon(originalUrl) {
+				try {
+					// Extract domain from URL
+					const urlObj = new URL(originalUrl);
+					const domain = urlObj.origin;
+
+					// Try common favicon paths
+					const faviconPaths = [
+						'/favicon.ico',
+						'/favicon.png',
+						'/apple-touch-icon.png',
+						'/favicon-32x32.png',
+						'/favicon-16x16.png'
+					];
+
+					for (const path of faviconPaths) {
+						try {
+							const faviconUrl = domain + path;
+							console.log("Trying domain favicon:", faviconUrl);
+
+							// Try through proxy first
+							await fetchFaviconThroughProxy(faviconUrl);
+							console.log("✅ Found working domain favicon");
+							return;
+						} catch (error) {
+							// Continue to next path
+						}
+					}
+
+					throw new Error("No working domain favicon found");
+				} catch (error) {
+					throw new Error("Domain favicon extraction failed");
+				}
 			}
 
 			function setFaviconFromDataUrl(dataUrl) {
@@ -2762,7 +2806,7 @@ setInterval(() => {
 			// Show protection notification
 			if (typeof showNotification === "function") {
 				showNotification(
-					"🛡️ Tab closure blocked by Anti-GoGuardian protection",
+					"🛡��� Tab closure blocked by Anti-GoGuardian protection",
 					"warning"
 				);
 			}
