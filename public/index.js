@@ -1593,7 +1593,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			return "❌ No changes applied. Please provide a title or favicon URL.";
 		}
 
-		return `🕵️ Cloaking Applied Successfully!\n\n${changes.join("\n")}\n\n�� Your browser tab now appears as a different website for privacy.\n\n⚠️ Remember to restore the original settings when you're done to avoid confusion.`;
+		return `🕵️ Cloaking Applied Successfully!\n\n${changes.join("\n")}\n\n😎 Your browser tab now appears as a different website for privacy.\n\n⚠️ Remember to restore the original settings when you're done to avoid confusion.`;
 	}
 
 	function restoreOriginal() {
@@ -3013,6 +3013,34 @@ setInterval(() => {
 
 		console.log("Simple favicon set:", url);
 		return "Favicon set using simple method";
+	};
+
+	// Test favicon with all available methods
+	window.testFaviconWithAllMethods = async function(url) {
+		console.log("🔍 Testing favicon with all available methods:", url);
+
+		try {
+			// Test the full cloaking pipeline
+			await applyCloaking("Test Title", url);
+			console.log("✅ Full cloaking test completed");
+			return "Check your browser tab - if the favicon changed, it works!";
+		} catch (error) {
+			console.error("❌ Full test failed:", error);
+			return "All methods failed. Check console for details.";
+		}
+	};
+
+	// Extract and try domain favicon
+	window.tryDomainFavicon = function(websiteUrl) {
+		try {
+			const domain = new URL(websiteUrl).origin;
+			const faviconUrl = domain + "/favicon.ico";
+			console.log("Trying domain favicon:", faviconUrl);
+			return testFaviconWithAllMethods(faviconUrl);
+		} catch (error) {
+			console.error("Invalid URL:", error);
+			return "Invalid URL provided";
+		}
 	};
 
 	// Function to get current favicons
