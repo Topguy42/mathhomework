@@ -147,8 +147,27 @@
 									const originalUrl = sessionStorage.getItem('vortex-original-url');
 									const originalTitle = sessionStorage.getItem('vortex-original-title');
 
+									// Restore URL if we changed it
 									if (originalUrl) {
-										window.history.replaceState({}, originalTitle || 'Vortex | Fast Web Access', originalUrl);
+										try {
+											window.history.replaceState({}, originalTitle || 'Vortex | Fast Web Access', originalUrl);
+										} catch (e) {
+											console.log('URL restoration blocked, continuing with other restoration');
+										}
+									}
+
+									// Restore meta description
+									const metaDescription = document.querySelector('meta[name="description"]');
+									if (metaDescription && metaDescription.getAttribute('data-original')) {
+										metaDescription.content = metaDescription.getAttribute('data-original');
+										metaDescription.removeAttribute('data-original');
+									}
+
+									// Restore favicon
+									const favicon = document.querySelector('link[rel*="icon"]');
+									if (favicon && favicon.getAttribute('data-original')) {
+										favicon.href = favicon.getAttribute('data-original');
+										favicon.removeAttribute('data-original');
 									}
 
 									// Clear session storage
