@@ -1538,7 +1538,8 @@ body {
 		padding: 0.375rem 0.75rem;
 	}
 
-	.tab-url {
+	.tab-url,
+	.tab-address-input {
 		font-size: 0.8rem;
 	}
 }
