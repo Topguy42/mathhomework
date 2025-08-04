@@ -3194,6 +3194,24 @@ setInterval(() => {
 		}
 	};
 
+	// Quick about:blank mode toggle
+	window.toggleAboutBlank = function() {
+		if (window.isAboutBlankMode) {
+			console.log("Disabling about:blank mode...");
+			const restoreBtn = document.getElementById("restore-original-btn");
+			if (restoreBtn) {
+				restoreBtn.click();
+				return "About:blank mode disabled";
+			}
+		} else {
+			console.log("Enabling about:blank mode...");
+			applyCloaking("", "about:blank").then(result => {
+				console.log("About:blank mode enabled");
+			});
+			return "About:blank mode enabled";
+		}
+	};
+
 	// Function to get current favicons
 	window.getCurrentFavicons = function() {
 		const favicons = document.querySelectorAll('link[rel*="icon"]');
