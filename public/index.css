@@ -1352,6 +1352,20 @@ body {
 	border-color: var(--glass-border-light);
 }
 
+.tab-control-btn:not(:disabled):active {
+	transform: translateY(0);
+	background: var(--glass-bg-strong);
+}
+
+.tab-control-btn.loading {
+	opacity: 0.7;
+	pointer-events: none;
+}
+
+.tab-control-btn.loading svg {
+	animation: spin 1s linear infinite;
+}
+
 .tab-control-btn svg {
 	width: 18px;
 	height: 18px;
