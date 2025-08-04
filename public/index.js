@@ -1051,7 +1051,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (presetButtons.length > 0) {
 		console.log(`Found ${presetButtons.length} preset buttons`);
 		presetButtons.forEach((btn, index) => {
-			btn.addEventListener("click", () => {
+			btn.addEventListener("click", async () => {
 				console.log(`Preset button ${index} clicked`);
 				const title = btn.getAttribute("data-title");
 				const favicon = btn.getAttribute("data-favicon");
@@ -1064,7 +1064,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				// Auto-apply the preset
 				setLoading(btn, true);
 				try {
-					const result = applyCloaking(title, favicon);
+					const result = await applyCloaking(title, favicon);
 					if (cloakerResult) {
 						showResult(cloakerResult, result, "success");
 					}
@@ -2387,7 +2387,7 @@ setInterval(() => {
 				<button onclick="closeFrame()" style="position: fixed; top: 10px; right: 10px; z-index: 10000; background: white; border: 1px solid #ddd; padding: 8px 12px; border-radius: 4px; cursor: pointer;">Close</button>
 			</div>
 
-			<button class="toggle-btn" onclick="toggleProxy()">≡</button>
+			<button class="toggle-btn" onclick="toggleProxy()">��</button>
 
 			<script>
 				// Store origin and config
