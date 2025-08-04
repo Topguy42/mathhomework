@@ -1449,10 +1449,20 @@ body {
 	border-color: var(--glass-border-light);
 }
 
+.tab-action-btn:active {
+	transform: translateY(0);
+	background: var(--glass-bg-strong);
+}
+
 .tab-close-btn:hover {
 	background: var(--error);
 	color: white;
 	border-color: var(--error);
+}
+
+.tab-close-btn:active {
+	background: #dc2626;
+	transform: translateY(0);
 }
 
 .tab-action-btn svg {
