@@ -3202,12 +3202,7 @@ body.light-theme {
 			rgba(9, 132, 227, 0.05) 0%,
 			transparent 50%
 		),
-		linear-gradient(
-			135deg,
-			#f8faff 0%,
-			#ffffff 50%,
-			#f8faff 100%
-		);
+		linear-gradient(135deg, #f8faff 0%, #ffffff 50%, #f8faff 100%);
 }
 
 /* Light theme navigation improvements */
@@ -3353,7 +3348,11 @@ body.light-theme .setting-input:focus {
 
 /* Light theme brand title */
 body.light-theme .brand-title {
-	background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+	background: linear-gradient(
+		135deg,
+		var(--primary-color),
+		var(--secondary-color)
+	);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	background-clip: text;
@@ -3434,12 +3433,7 @@ body.blue-theme {
 			rgba(52, 152, 219, 0.1) 0%,
 			transparent 50%
 		),
-		linear-gradient(
-			135deg,
-			#0c1e3d 0%,
-			#1e3a5f 50%,
-			#0c1e3d 100%
-		);
+		linear-gradient(135deg, #0c1e3d 0%, #1e3a5f 50%, #0c1e3d 100%);
 }
 
 body.blue-theme .background-animation {
@@ -3536,12 +3530,7 @@ body.purple-theme {
 			rgba(108, 92, 231, 0.1) 0%,
 			transparent 50%
 		),
-		linear-gradient(
-			135deg,
-			#2d1b69 0%,
-			#3c2a7a 50%,
-			#2d1b69 100%
-		);
+		linear-gradient(135deg, #2d1b69 0%, #3c2a7a 50%, #2d1b69 100%);
 }
 
 body.purple-theme .background-animation {
@@ -3638,12 +3627,7 @@ body.green-theme {
 			rgba(0, 184, 148, 0.1) 0%,
 			transparent 50%
 		),
-		linear-gradient(
-			135deg,
-			#0f3620 0%,
-			#1e4d35 50%,
-			#0f3620 100%
-		);
+		linear-gradient(135deg, #0f3620 0%, #1e4d35 50%, #0f3620 100%);
 }
 
 body.green-theme .background-animation {
@@ -3740,12 +3724,7 @@ body.red-theme {
 			rgba(214, 48, 49, 0.1) 0%,
 			transparent 50%
 		),
-		linear-gradient(
-			135deg,
-			#3d1414 0%,
-			#5a1f1f 50%,
-			#3d1414 100%
-		);
+		linear-gradient(135deg, #3d1414 0%, #5a1f1f 50%, #3d1414 100%);
 }
 
 body.red-theme .background-animation {
@@ -3842,12 +3821,7 @@ body.orange-theme {
 			rgba(225, 112, 85, 0.1) 0%,
 			transparent 50%
 		),
-		linear-gradient(
-			135deg,
-			#3d2914 0%,
-			#5a3d20 50%,
-			#3d2914 100%
-		);
+		linear-gradient(135deg, #3d2914 0%, #5a3d20 50%, #3d2914 100%);
 }
 
 body.orange-theme .background-animation {
@@ -3944,12 +3918,7 @@ body.pink-theme {
 			rgba(243, 104, 224, 0.1) 0%,
 			transparent 50%
 		),
-		linear-gradient(
-			135deg,
-			#3d1428 0%,
-			#5a1f3c 50%,
-			#3d1428 100%
-		);
+		linear-gradient(135deg, #3d1428 0%, #5a1f3c 50%, #3d1428 100%);
 }
 
 body.pink-theme .background-animation {
