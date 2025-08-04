@@ -3378,6 +3378,23 @@ body.purple-theme {
 	--error: #e17055;
 }
 
+body.purple-theme .search-button,
+body.purple-theme .play-button,
+body.purple-theme .launch-button {
+	background: var(--primary-color);
+	border-color: var(--primary-dark);
+}
+
+body.purple-theme .search-button:hover,
+body.purple-theme .play-button:hover,
+body.purple-theme .launch-button:hover {
+	background: var(--primary-dark);
+}
+
+body.purple-theme .nav-logo {
+	background: var(--gradient-primary);
+}
+
 /* Green Theme */
 body.green-theme {
 	--primary-color: #27ae60;
