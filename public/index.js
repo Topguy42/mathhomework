@@ -993,7 +993,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Apply cloaker
 	if (applyCloakerBtn && cloakerResult) {
-		applyCloakerBtn.addEventListener("click", () => {
+		applyCloakerBtn.addEventListener("click", async () => {
 			console.log("Apply cloaker button clicked");
 
 			const newTitle = websiteTitleInput ? websiteTitleInput.value.trim() : "";
@@ -1051,7 +1051,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (presetButtons.length > 0) {
 		console.log(`Found ${presetButtons.length} preset buttons`);
 		presetButtons.forEach((btn, index) => {
-			btn.addEventListener("click", () => {
+			btn.addEventListener("click", async () => {
 				console.log(`Preset button ${index} clicked`);
 				const title = btn.getAttribute("data-title");
 				const favicon = btn.getAttribute("data-favicon");
@@ -1064,7 +1064,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				// Auto-apply the preset
 				setLoading(btn, true);
 				try {
-					const result = applyCloaking(title, favicon);
+					const result = await applyCloaking(title, favicon);
 					if (cloakerResult) {
 						showResult(cloakerResult, result, "success");
 					}
@@ -1288,7 +1288,32 @@ document.addEventListener("DOMContentLoaded", () => {
 		return `Referrer Policy Applied: ${policy}\n\n${currentPolicy}\n\n🔒 This setting affects how your browsing history is shared with websites.\n\nNote: Changes take effect for new page loads.`;
 	}
 
-	function applyCloaking(title, faviconUrl) {
+	// Function to validate and set favicon
+	function setFavicon(url) {
+		return new Promise((resolve, reject) => {
+			// Test if favicon URL is accessible
+			const img = new Image();
+			img.onload = () => {
+				resolve(true);
+			};
+			img.onerror = () => {
+				// Fallback to just setting the favicon anyway
+				console.warn(
+					"Favicon may not be accessible, but applying anyway:",
+					url
+				);
+				resolve(false);
+			};
+			img.src = url;
+
+			// Timeout after 3 seconds
+			setTimeout(() => {
+				resolve(false);
+			}, 3000);
+		});
+	}
+
+	async function applyCloaking(title, faviconUrl) {
 		const changes = [];
 
 		// Change page title
@@ -1299,20 +1324,95 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		// Change favicon
 		if (faviconUrl) {
-			// Remove existing favicon
-			const existingFavicons = document.querySelectorAll(
-				'link[rel="icon"], link[rel="shortcut icon"]'
-			);
+			console.log("Setting favicon:", faviconUrl);
+
+			// Remove ALL existing favicons first
+			const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
 			existingFavicons.forEach((favicon) => favicon.remove());
 
-			// Add new favicon
-			const newFavicon = document.createElement("link");
-			newFavicon.rel = "icon";
-			newFavicon.type = "image/x-icon";
-			newFavicon.href = faviconUrl;
-			document.head.appendChild(newFavicon);
+			// Force immediate favicon change using multiple aggressive techniques
+			const timestamp = Date.now();
+			const random = Math.random().toString(36).substring(7);
+			const cacheBustUrl =
+				faviconUrl +
+				(faviconUrl.includes("?") ? "&" : "?") +
+				`_t=${timestamp}&_r=${random}`;
 
-			changes.push(`✅ Favicon changed to: ${faviconUrl}`);
+			// Method 1: Standard favicon with cache busting
+			const favicon1 = document.createElement("link");
+			favicon1.rel = "icon";
+			favicon1.type = "image/x-icon";
+			favicon1.href = cacheBustUrl;
+			document.head.appendChild(favicon1);
+
+			// Method 2: Shortcut icon with cache busting
+			const favicon2 = document.createElement("link");
+			favicon2.rel = "shortcut icon";
+			favicon2.type = "image/x-icon";
+			favicon2.href = cacheBustUrl;
+			document.head.appendChild(favicon2);
+
+			// Method 3: Force refresh by creating temporary blank favicon first
+			const blankFavicon = document.createElement("link");
+			blankFavicon.rel = "icon";
+			blankFavicon.href =
+				'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"></svg>';
+			document.head.appendChild(blankFavicon);
+
+			// Method 4: Remove blank and add real favicon after short delay
+			setTimeout(() => {
+				blankFavicon.remove();
+
+				const finalFavicon = document.createElement("link");
+				finalFavicon.rel = "icon";
+				finalFavicon.href = cacheBustUrl + `&_final=${Date.now()}`;
+				document.head.appendChild(finalFavicon);
+			}, 50);
+
+			// Method 5: Force browser to refresh favicon by manipulating head
+			setTimeout(() => {
+				// Remove all and re-add with new timestamp
+				document
+					.querySelectorAll('link[rel*="icon"]')
+					.forEach((f) => f.remove());
+
+				const ultimateFavicon = document.createElement("link");
+				ultimateFavicon.rel = "shortcut icon";
+				ultimateFavicon.type = "image/x-icon";
+				ultimateFavicon.href =
+					faviconUrl +
+					(faviconUrl.includes("?") ? "&" : "?") +
+					`_ultimate=${Date.now()}`;
+				document.head.appendChild(ultimateFavicon);
+
+				// Also add standard icon
+				const standardIcon = document.createElement("link");
+				standardIcon.rel = "icon";
+				standardIcon.href = ultimateFavicon.href;
+				document.head.appendChild(standardIcon);
+			}, 200);
+
+			// Method 6: Try to force favicon refresh using window focus trick
+			setTimeout(() => {
+				if (document.hidden) {
+					document.addEventListener("visibilitychange", function handler() {
+						if (!document.hidden) {
+							const refreshIcon = document.createElement("link");
+							refreshIcon.rel = "icon";
+							refreshIcon.href =
+								faviconUrl +
+								(faviconUrl.includes("?") ? "&" : "?") +
+								`_focus=${Date.now()}`;
+							document.head.appendChild(refreshIcon);
+							document.removeEventListener("visibilitychange", handler);
+						}
+					});
+				}
+			}, 100);
+
+			changes.push(
+				`✅ Favicon changed to: ${faviconUrl} (using aggressive refresh)`
+			);
 		}
 
 		if (changes.length === 0) {
@@ -1333,21 +1433,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		// Restore original favicon
 		const currentFavicons = document.querySelectorAll(
-			'link[rel="icon"], link[rel="shortcut icon"]'
+			'link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]'
 		);
 		currentFavicons.forEach((favicon) => favicon.remove());
 
 		if (originalFavicon) {
-			const restoredFavicon = document.createElement("link");
-			restoredFavicon.rel = "icon";
-			restoredFavicon.type = "image/x-icon";
-			restoredFavicon.href = originalFavicon;
-			document.head.appendChild(restoredFavicon);
+			// Restore with multiple formats
+			const faviconTypes = [
+				{ rel: "icon", type: "image/x-icon" },
+				{ rel: "shortcut icon", type: "image/x-icon" },
+			];
+
+			faviconTypes.forEach((iconType) => {
+				const restoredFavicon = document.createElement("link");
+				restoredFavicon.rel = iconType.rel;
+				restoredFavicon.type = iconType.type;
+				restoredFavicon.href = originalFavicon;
+				document.head.appendChild(restoredFavicon);
+			});
 			changes.push(`✅ Favicon restored to original`);
 		} else {
 			// Add default favicon if none existed
 			const defaultFavicon = document.createElement("link");
-			defaultFavicon.rel = "icon";
+			defaultFavicon.rel = "shortcut icon";
 			defaultFavicon.type = "image/x-icon";
 			defaultFavicon.href = "/favicon.ico";
 			document.head.appendChild(defaultFavicon);
@@ -1818,6 +1926,21 @@ document.addEventListener("DOMContentLoaded", () => {
 				// Disable protection when toggled off
 				disableAntiGoGuardian();
 				showNotification("Anti-GoGuardian protection disabled", "info");
+			}
+		});
+	}
+
+	// Add immediate trigger for compact mode
+	const compactModeToggle = document.getElementById("compact-mode");
+	if (compactModeToggle) {
+		compactModeToggle.addEventListener("change", (e) => {
+			// Apply compact mode immediately
+			if (e.target.checked) {
+				document.body.classList.add("compact-mode");
+				showNotification("📏 Compact mode enabled", "success");
+			} else {
+				document.body.classList.remove("compact-mode");
+				showNotification("📏 Compact mode disabled", "info");
 			}
 		});
 	}
@@ -2619,7 +2742,7 @@ setInterval(() => {
 		// Add visual indicator that protection is active
 		const indicator = document.createElement("div");
 		indicator.id = "anti-goguardian-indicator";
-		indicator.innerHTML = "🛡️ Protection Active";
+		indicator.innerHTML = "🛡��� Protection Active";
 		indicator.style.cssText = `
 			position: fixed;
 			top: 10px;
