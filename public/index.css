@@ -3527,7 +3527,10 @@ body.orange-theme .launch-button:hover {
 }
 
 body.orange-theme .nav-logo {
-	background: var(--gradient-primary);
+	background: linear-gradient(135deg, #f39c12, #fdcb6e);
+	box-shadow:
+		0 2px 10px rgba(243, 156, 18, 0.3),
+		inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 /* Pink Theme */
