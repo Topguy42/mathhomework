@@ -1461,10 +1461,9 @@ setInterval(() => {
 			newTab.document.write(htmlContent);
 			newTab.document.close();
 
-			// Show success notification
-			showNotification("About:blank proxy opened! URL shows about:blank with full proxy functionality.", "success");
+			// Silent operation - no notifications
 		} else {
-			showNotification("Please allow pop-ups to use about:blank mode", "error");
+			// Silent failure - no notifications
 		}
 	}
 
