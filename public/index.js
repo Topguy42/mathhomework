@@ -1034,8 +1034,13 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 
 			setLoading(applyCloakerBtn, true);
+
+			if (newFavicon) {
+				showResult(cloakerResult, "🔄 Testing favicon URL and applying changes...", "info");
+			}
+
 			try {
-				const result = applyCloaking(newTitle, newFavicon);
+				const result = await applyCloaking(newTitle, newFavicon);
 				showResult(cloakerResult, result, "success");
 				console.log("Cloaking applied successfully");
 			} catch (error) {
