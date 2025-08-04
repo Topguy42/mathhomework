@@ -1281,139 +1281,158 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	async function generateUnblockMethods(url, method) {
-		// Clean and format the URL
-		const cleanUrl = url.startsWith("http") ? url : `https://${url}`;
-		let domain;
-		try {
-			domain = new URL(cleanUrl).hostname;
-		} catch (e) {
-			domain = url.replace(/^https?:\/\//, '').split('/')[0];
+	function generateSecurePassword(options) {
+		const {
+			length = 16,
+			uppercase = true,
+			lowercase = true,
+			numbers = true,
+			symbols = true,
+			excludeAmbiguous = false
+		} = options;
+
+		// Validate options
+		if (length < 4 || length > 64) {
+			throw new Error("Password length must be between 4 and 64 characters");
 		}
 
-		const allMethods = {
-			proxy: [
-				{
-					name: "🌐 Vortex Proxy",
-					url: `${window.location.origin}/?url=${encodeURIComponent(cleanUrl)}`,
-					description: "Access through our secure proxy service"
-				},
-				{
-					name: "🔒 HTTPS Upgrade",
-					url: cleanUrl.replace("http://", "https://"),
-					description: "Try secure HTTPS version"
-				},
-				{
-					name: "📱 Mobile Version",
-					url: `https://m.${domain}`,
-					description: "Mobile sites often bypass filters"
-				}
-			],
-			alternative: [
-				{
-					name: "🌍 Different TLD",
-					url: cleanUrl.replace(/\.(com|org|net)/, ".io"),
-					description: "Try different domain extension"
-				},
-				{
-					name: "🔤 Subdomain Access",
-					url: `https://www.${domain}`,
-					description: "Access via www subdomain"
-				},
-				{
-					name: "🔗 URL Shortener",
-					url: `https://bit.ly/redirect?url=${encodeURIComponent(cleanUrl)}`,
-					description: "Use shortened URL to bypass filters"
-				},
-				{
-					name: "📂 Direct File Access",
-					url: `${cleanUrl}/index.html`,
-					description: "Try accessing index file directly"
-				}
-			],
-			archive: [
-				{
-					name: "📚 Internet Archive",
-					url: `https://web.archive.org/web/newest/${cleanUrl}`,
-					description: "Access cached version from archive.org"
-				},
-				{
-					name: "🗃️ Google Cache",
-					url: `https://webcache.googleusercontent.com/search?q=cache:${cleanUrl}`,
-					description: "View Google's cached version"
-				},
-				{
-					name: "📄 Archive Today",
-					url: `https://archive.today/${cleanUrl}`,
-					description: "Another archive service option"
-				}
-			],
-			translate: [
-				{
-					name: "🔤 Google Translate",
-					url: `https://translate.google.com/translate?sl=auto&tl=en&u=${encodeURIComponent(cleanUrl)}`,
-					description: "Access through Google Translate"
-				},
-				{
-					name: "🌐 Microsoft Translator",
-					url: `https://www.microsofttranslator.com/bv.aspx?from=&to=en&a=${encodeURIComponent(cleanUrl)}`,
-					description: "Use Microsoft's translation service"
-				}
-			],
-			dns: [
-				{
-					name: "🔢 IP Address Access",
-					url: `http://8.8.8.8`, // Placeholder - would need actual IP lookup
-					description: "Access using direct IP address"
-				},
-				{
-					name: "🌐 CloudFlare DNS",
-					url: `https://1.1.1.1/dns-query?name=${domain}&type=A`,
-					description: "Use alternative DNS to resolve"
-				},
-				{
-					name: "📡 OpenDNS",
-					url: cleanUrl.replace("://", "://208.67.222.222/"),
-					description: "Route through OpenDNS servers"
-				}
-			]
-		};
+		if (!uppercase && !lowercase && !numbers && !symbols) {
+			throw new Error("At least one character type must be selected");
+		}
 
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				let methodsToShow = [];
+		// Character sets
+		let uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		let lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
+		let numberChars = "0123456789";
+		let symbolChars = "!@#$%^&*()_+-=[]{}|;:,.<>?";
 
-				if (method === "all") {
-					// Show all methods
-					methodsToShow = [
-						...allMethods.proxy,
-						...allMethods.alternative,
-						...allMethods.archive,
-						...allMethods.translate,
-						...allMethods.dns
-					];
-				} else {
-					// Show specific method type
-					methodsToShow = allMethods[method] || [];
-				}
+		// Remove ambiguous characters if requested
+		if (excludeAmbiguous) {
+			uppercaseChars = uppercaseChars.replace(/[O]/g, "");
+			lowercaseChars = lowercaseChars.replace(/[l]/g, "");
+			numberChars = numberChars.replace(/[01]/g, "");
+			symbolChars = symbolChars.replace(/[|]/g, "");
+		}
 
-				const resultLines = methodsToShow.map(m =>
-					`${m.name}\n   🔗 ${m.url}\n   💡 ${m.description}`
-				);
+		// Build character pool
+		let charPool = "";
+		const requiredChars = [];
 
-				const result = `🚀 Website Unblocker Results for: ${cleanUrl}\n\n` +
-					`Found ${methodsToShow.length} bypass methods:\n\n` +
-					resultLines.join('\n\n') +
-					`\n\n⚠️ Tips:\n` +
-					`• Try methods in order - some may work better than others\n` +
-					`• Clear cookies/cache between attempts\n` +
-					`• Use incognito/private browsing mode\n` +
-					`• Some methods may be slower than direct access\n\n` +
-					`🔒 All access attempts are secured through Vortex proxy`;
+		if (uppercase) {
+			charPool += uppercaseChars;
+			requiredChars.push(getRandomChar(uppercaseChars));
+		}
+		if (lowercase) {
+			charPool += lowercaseChars;
+			requiredChars.push(getRandomChar(lowercaseChars));
+		}
+		if (numbers) {
+			charPool += numberChars;
+			requiredChars.push(getRandomChar(numberChars));
+		}
+		if (symbols) {
+			charPool += symbolChars;
+			requiredChars.push(getRandomChar(symbolChars));
+		}
 
-				resolve(result);
-			}, 1000);
-		});
+		// Generate password
+		let password = "";
+
+		// Add required characters first
+		for (const char of requiredChars) {
+			password += char;
+		}
+
+		// Fill remaining length with random characters
+		for (let i = password.length; i < length; i++) {
+			password += getRandomChar(charPool);
+		}
+
+		// Shuffle the password to avoid predictable patterns
+		return shuffleString(password);
+	}
+
+	function getRandomChar(charSet) {
+		const randomIndex = Math.floor(Math.random() * charSet.length);
+		return charSet[randomIndex];
+	}
+
+	function shuffleString(str) {
+		const array = str.split('');
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+		}
+		return array.join('');
+	}
+
+	function displayPassword(password, isError = false) {
+		if (!passwordDisplay) return;
+
+		passwordDisplay.textContent = password;
+		passwordDisplay.className = `password-display ${isError ? 'error' : 'success'}`;
+
+		if (!isError) {
+			passwordDisplay.style.fontFamily = 'monospace';
+			passwordDisplay.style.fontSize = '1.1rem';
+			passwordDisplay.style.fontWeight = '600';
+			passwordDisplay.style.letterSpacing = '0.5px';
+		}
+	}
+
+	function updatePasswordStrength(password) {
+		if (!passwordStrength) return;
+
+		const strength = calculatePasswordStrength(password);
+		const strengthText = getStrengthText(strength.score);
+		const strengthColor = getStrengthColor(strength.score);
+
+		passwordStrength.innerHTML = `
+			<div class="strength-bar">
+				<div class="strength-fill" style="width: ${strength.score * 20}%; background: ${strengthColor}"></div>
+			</div>
+			<div class="strength-text" style="color: ${strengthColor}">
+				Strength: ${strengthText} (${strength.score}/5)
+			</div>
+			<div class="strength-details">
+				<small>Length: ${password.length} | Entropy: ~${Math.round(strength.entropy)} bits</small>
+			</div>
+		`;
+	}
+
+	function calculatePasswordStrength(password) {
+		let score = 0;
+		let entropy = 0;
+		const length = password.length;
+
+		// Calculate character set size
+		let charsetSize = 0;
+		if (/[a-z]/.test(password)) charsetSize += 26;
+		if (/[A-Z]/.test(password)) charsetSize += 26;
+		if (/[0-9]/.test(password)) charsetSize += 10;
+		if (/[^a-zA-Z0-9]/.test(password)) charsetSize += 32;
+
+		// Calculate entropy
+		entropy = length * Math.log2(charsetSize);
+
+		// Scoring system
+		if (length >= 8) score++;
+		if (length >= 12) score++;
+		if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
+		if (/[0-9]/.test(password)) score++;
+		if (/[^a-zA-Z0-9]/.test(password)) score++;
+
+		return { score, entropy };
+	}
+
+	function getStrengthText(score) {
+		const texts = ["Very Weak", "Weak", "Fair", "Good", "Strong"];
+		return texts[Math.max(0, Math.min(4, score))];
+	}
+
+	function getStrengthColor(score) {
+		const colors = ["#e74c3c", "#e67e22", "#f39c12", "#27ae60", "#00b894"];
+		return colors[Math.max(0, Math.min(4, score))];
 	}
 
 	function generateBypassURLs(url) {
@@ -1919,7 +1938,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Wait a bit to ensure everything is applied
 		await new Promise((resolve) => setTimeout(resolve, 500));
 
-		return `����️ About:Blank Mode Activated!\n\n✅ Page title cleared and locked\n✅ Favicon made completely invisible\n✅ Aggressive title/favicon clearing enabled\n\n😎 Your browser tab now appears completely blank for maximum stealth.\n\n💡 Click the toggle in the top-right corner to hide/show the indicator.\n\n⚠️ Remember to restore original settings when done.`;
+		return `🕵️ About:Blank Mode Activated!\n\n✅ Page title cleared and locked\n✅ Favicon made completely invisible\n✅ Aggressive title/favicon clearing enabled\n\n😎 Your browser tab now appears completely blank for maximum stealth.\n\n💡 Click the toggle in the top-right corner to hide/show the indicator.\n\n⚠️ Remember to restore original settings when done.`;
 	}
 
 	function addAboutBlankToggle() {
