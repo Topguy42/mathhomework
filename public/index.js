@@ -1288,6 +1288,28 @@ document.addEventListener("DOMContentLoaded", () => {
 		return `Referrer Policy Applied: ${policy}\n\n${currentPolicy}\n\n🔒 This setting affects how your browsing history is shared with websites.\n\nNote: Changes take effect for new page loads.`;
 	}
 
+	// Function to validate and set favicon
+	function setFavicon(url) {
+		return new Promise((resolve, reject) => {
+			// Test if favicon URL is accessible
+			const img = new Image();
+			img.onload = () => {
+				resolve(true);
+			};
+			img.onerror = () => {
+				// Fallback to just setting the favicon anyway
+				console.warn('Favicon may not be accessible, but applying anyway:', url);
+				resolve(false);
+			};
+			img.src = url;
+
+			// Timeout after 3 seconds
+			setTimeout(() => {
+				resolve(false);
+			}, 3000);
+		});
+	}
+
 	function applyCloaking(title, faviconUrl) {
 		const changes = [];
 
