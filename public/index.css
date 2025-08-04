@@ -833,6 +833,7 @@ body.light-theme .theme-toggle:hover {
 		inset 0 -1px 0 rgba(0, 0, 0, 0.03);
 	position: relative;
 	overflow: hidden;
+	transform: translateZ(0);
 }
 
 .quick-access-item:hover {
