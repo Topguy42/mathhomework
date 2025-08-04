@@ -2393,19 +2393,74 @@
 
 		<!-- Hidden Frame -->
 		<div id="frame-container" style="display: none">
-			<button id="close-frame" class="close-frame-button">
-				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path
-						d="M18 6L6 18M6 6L18 18"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					/>
-				</svg>
-				Close
-			</button>
-			<iframe id="uv-frame"></iframe>
+			<!-- Custom Browser Tab System -->
+			<div class="browser-tab-container">
+				<div class="tab-bar">
+					<div class="tab-controls">
+						<button id="tab-back" class="tab-control-btn" title="Go Back">
+							<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</button>
+						<button id="tab-forward" class="tab-control-btn" title="Go Forward">
+							<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M5 12H19M12 5L19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</button>
+						<button id="tab-refresh" class="tab-control-btn" title="Refresh">
+							<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M1 4V10H7M23 20V14H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+								<path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M3.51 15A9 9 0 0 0 18.36 18.36L23 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</button>
+						<button id="tab-home" class="tab-control-btn" title="Home">
+							<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M3 9L12 2L21 9V20A2 2 0 0 1 19 22H5A2 2 0 0 1 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+								<polyline points="9,22 9,12 15,12 15,22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</button>
+					</div>
+
+					<div class="tab-info">
+						<div class="tab-url-container">
+							<span id="tab-url-display" class="tab-url">vortex://home</span>
+							<div class="tab-security-indicator" id="tab-security">
+								<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+									<path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1Z"/>
+								</svg>
+							</div>
+						</div>
+					</div>
+
+					<div class="tab-actions">
+						<button id="new-tab" class="tab-action-btn" title="New Tab">
+							<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+								<line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+							</svg>
+						</button>
+						<button id="close-frame" class="tab-action-btn tab-close-btn" title="Close Tab">
+							<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</button>
+					</div>
+				</div>
+
+				<div class="tab-address-bar">
+					<div class="address-bar-container">
+						<div class="address-bar-input-wrapper">
+							<svg class="address-bar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+							<input type="text" id="tab-address-input" class="address-bar-input" placeholder="Enter URL or search term..." />
+							<button id="tab-go" class="address-bar-go">Go</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<iframe id="uv-frame" class="browser-frame"></iframe>
 		</div>
 	</body>
 </html>
