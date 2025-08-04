@@ -914,7 +914,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				lowercase: includeLowercase?.checked || false,
 				numbers: includeNumbers?.checked || false,
 				symbols: includeSymbols?.checked || false,
-				excludeAmbiguous: excludeAmbiguous?.checked || false
+				excludeAmbiguous: excludeAmbiguous?.checked || false,
 			};
 
 			setLoading(generatePasswordBtn, true);
@@ -1288,7 +1288,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			lowercase = true,
 			numbers = true,
 			symbols = true,
-			excludeAmbiguous = false
+			excludeAmbiguous = false,
 		} = options;
 
 		// Validate options
@@ -1358,25 +1358,25 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	function shuffleString(str) {
-		const array = str.split('');
+		const array = str.split("");
 		for (let i = array.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));
 			[array[i], array[j]] = [array[j], array[i]];
 		}
-		return array.join('');
+		return array.join("");
 	}
 
 	function displayPassword(password, isError = false) {
 		if (!passwordDisplay) return;
 
 		passwordDisplay.textContent = password;
-		passwordDisplay.className = `password-display ${isError ? 'error' : 'success'}`;
+		passwordDisplay.className = `password-display ${isError ? "error" : "success"}`;
 
 		if (!isError) {
-			passwordDisplay.style.fontFamily = 'monospace';
-			passwordDisplay.style.fontSize = '1.1rem';
-			passwordDisplay.style.fontWeight = '600';
-			passwordDisplay.style.letterSpacing = '0.5px';
+			passwordDisplay.style.fontFamily = "monospace";
+			passwordDisplay.style.fontSize = "1.1rem";
+			passwordDisplay.style.fontWeight = "600";
+			passwordDisplay.style.letterSpacing = "0.5px";
 		}
 	}
 
