@@ -579,11 +579,15 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Back navigation
 	if (tabBack) {
 		tabBack.addEventListener("click", () => {
+			console.log("Back button clicked - Current index:", historyIndex, "History:", browserHistory);
 			if (historyIndex > 0) {
 				historyIndex--;
 				const url = browserHistory[historyIndex];
+				console.log("Going back to:", url, "New index:", historyIndex);
 				navigateToUrl(url, false);
 				updateNavigationButtons();
+			} else {
+				console.log("Cannot go back - at beginning of history");
 			}
 		});
 	}
@@ -591,11 +595,15 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Forward navigation
 	if (tabForward) {
 		tabForward.addEventListener("click", () => {
+			console.log("Forward button clicked - Current index:", historyIndex, "History length:", browserHistory.length);
 			if (historyIndex < browserHistory.length - 1) {
 				historyIndex++;
 				const url = browserHistory[historyIndex];
+				console.log("Going forward to:", url, "New index:", historyIndex);
 				navigateToUrl(url, false);
 				updateNavigationButtons();
+			} else {
+				console.log("Cannot go forward - at end of history");
 			}
 		});
 	}
@@ -1802,7 +1810,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				// Immediately enable anti-GoGuardian protection
 				enableAntiGoGuardian();
 				showNotification(
-					"🛡️ Anti-GoGuardian protection enabled! Tab closure will now require confirmation.",
+					"🛡��� Anti-GoGuardian protection enabled! Tab closure will now require confirmation.",
 					"success"
 				);
 			} else {
