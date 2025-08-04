@@ -4513,3 +4513,56 @@ body.aboutblank-mode #aboutblank-toggle {
 	color: #666 !important;
 	border: 1px solid #ddd !important;
 }
+
+/* Website Unblocker specific styles */
+.tool-input-wide {
+	width: 100%;
+	min-width: 300px;
+}
+
+.unblocker-tips {
+	background: rgba(0, 212, 170, 0.1);
+	border: 1px solid rgba(0, 212, 170, 0.2);
+	border-radius: 12px;
+	padding: 1rem;
+	margin: 1rem 0;
+	backdrop-filter: blur(10px);
+}
+
+.tips-title {
+	font-size: 1rem;
+	font-weight: 600;
+	color: var(--text-primary);
+	margin-bottom: 0.5rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.tips-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.tips-list li {
+	color: var(--text-secondary);
+	font-size: 0.875rem;
+	margin-bottom: 0.25rem;
+	padding-left: 1rem;
+	position: relative;
+}
+
+.tips-list li:before {
+	content: "•";
+	color: var(--accent-color);
+	position: absolute;
+	left: 0;
+	font-weight: bold;
+}
+
+.tool-result {
+	white-space: pre-wrap;
+	word-break: break-word;
+	line-height: 1.5;
+}
