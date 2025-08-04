@@ -1935,7 +1935,7 @@
 								<span class="tool-label">DNS Tools</span>
 							</div>
 
-							<div class="tool-card" data-tool="proxy-finder">
+							<div class="tool-card" data-tool="password-generator">
 								<div class="tool-icon">
 									<svg
 										viewBox="0 0 24 24"
@@ -1943,11 +1943,11 @@
 										xmlns="http://www.w3.org/2000/svg"
 									>
 										<path
-											d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+											d="M12.65 10A4 4 0 0 0 9 6 4 4 0 0 0 5 10A4 4 0 0 0 9 14C9.55 14 10.08 13.87 10.56 13.63L20.5 23.5L22 22L12.65 10ZM9 12A2 2 0 0 1 7 10A2 2 0 0 1 9 8A2 2 0 0 1 11 10A2 2 0 0 1 9 12Z"
 										/>
 									</svg>
 								</div>
-								<span class="tool-label">Proxy Finder</span>
+								<span class="tool-label">Password Generator</span>
 							</div>
 
 							<div class="tool-card" data-tool="filter-bypass">
@@ -2096,8 +2096,8 @@
 								<div id="dns-tools-result" class="tool-result"></div>
 							</div>
 
-							<!-- Proxy Finder -->
-							<div id="proxy-finder-interface" class="tool-interface">
+							<!-- Password Generator -->
+							<div id="password-generator-interface" class="tool-interface">
 								<h3 class="tool-interface-title">
 									<svg
 										viewBox="0 0 24 24"
@@ -2105,36 +2105,92 @@
 										xmlns="http://www.w3.org/2000/svg"
 									>
 										<path
-											d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+											d="M12.65 10A4 4 0 0 0 9 6 4 4 0 0 0 5 10A4 4 0 0 0 9 14C9.55 14 10.08 13.87 10.56 13.63L20.5 23.5L22 22L12.65 10ZM9 12A2 2 0 0 1 7 10A2 2 0 0 1 9 8A2 2 0 0 1 11 10A2 2 0 0 1 9 12Z"
 										/>
 									</svg>
-									Proxy Finder
+									Password Generator
 								</h3>
 								<p class="tool-interface-description">
-									Find and test public proxy servers
+									Generate secure, random passwords with customizable options
+									for maximum security
 								</p>
+
+								<div class="password-options">
+									<div class="option-group">
+										<label class="option-label">
+											Password Length: <span id="length-display">16</span>
+										</label>
+										<input
+											type="range"
+											id="password-length"
+											class="length-slider"
+											min="4"
+											max="64"
+											value="16"
+										/>
+									</div>
+
+									<div class="option-group">
+										<div class="checkbox-grid">
+											<label class="checkbox-option">
+												<input type="checkbox" id="include-uppercase" checked />
+												<span class="checkbox-label">Uppercase (A-Z)</span>
+											</label>
+											<label class="checkbox-option">
+												<input type="checkbox" id="include-lowercase" checked />
+												<span class="checkbox-label">Lowercase (a-z)</span>
+											</label>
+											<label class="checkbox-option">
+												<input type="checkbox" id="include-numbers" checked />
+												<span class="checkbox-label">Numbers (0-9)</span>
+											</label>
+											<label class="checkbox-option">
+												<input type="checkbox" id="include-symbols" checked />
+												<span class="checkbox-label">Symbols (!@#$%)</span>
+											</label>
+											<label class="checkbox-option">
+												<input type="checkbox" id="exclude-ambiguous" />
+												<span class="checkbox-label"
+													>Exclude ambiguous (0,O,l,1)</span
+												>
+											</label>
+										</div>
+									</div>
+								</div>
+
 								<div class="tool-input-container">
-									<select id="proxy-country" class="tool-select">
-										<option value="all">All Countries</option>
-										<option value="US">United States</option>
-										<option value="UK">United Kingdom</option>
-										<option value="CA">Canada</option>
-										<option value="DE">Germany</option>
-										<option value="FR">France</option>
-										<option value="JP">Japan</option>
-									</select>
-									<select id="proxy-type" class="tool-select">
-										<option value="all">All Types</option>
-										<option value="http">HTTP</option>
-										<option value="https">HTTPS</option>
-										<option value="socks4">SOCKS4</option>
-										<option value="socks5">SOCKS5</option>
-									</select>
-									<button id="proxy-finder-btn" class="tool-button">
-										Find Proxies
+									<button
+										id="generate-password-btn"
+										class="tool-button primary"
+									>
+										🔐 Generate Password
+									</button>
+									<button
+										id="copy-password-btn"
+										class="tool-button secondary"
+										disabled
+									>
+										📋 Copy Password
 									</button>
 								</div>
-								<div id="proxy-finder-result" class="tool-result"></div>
+
+								<div class="password-output">
+									<div class="password-display" id="password-display">
+										Click "Generate Password" to create a secure password
+									</div>
+									<div class="password-strength" id="password-strength"></div>
+								</div>
+
+								<div class="password-tips">
+									<h4 class="tips-title">🛡️ Security Tips:</h4>
+									<ul class="tips-list">
+										<li>Use a unique password for each account</li>
+										<li>Longer passwords are generally more secure</li>
+										<li>Include a mix of characters for best security</li>
+										<li>Consider using a password manager</li>
+										<li>Never share passwords or write them down</li>
+									</ul>
+								</div>
 							</div>
 
 							<!-- Filter Bypass -->

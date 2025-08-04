@@ -881,25 +881,78 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	// Proxy Finder functionality
-	const proxyFinderBtn = document.getElementById("proxy-finder-btn");
-	const proxyCountry = document.getElementById("proxy-country");
-	const proxyType = document.getElementById("proxy-type");
-	const proxyFinderResult = document.getElementById("proxy-finder-result");
+	// Password Generator functionality
+	const generatePasswordBtn = document.getElementById("generate-password-btn");
+	const copyPasswordBtn = document.getElementById("copy-password-btn");
+	const passwordDisplay = document.getElementById("password-display");
+	const passwordStrength = document.getElementById("password-strength");
+	const lengthSlider = document.getElementById("password-length");
+	const lengthDisplay = document.getElementById("length-display");
 
-	if (proxyFinderBtn) {
-		proxyFinderBtn.addEventListener("click", async () => {
-			const country = proxyCountry.value;
-			const type = proxyType.value;
+	// Checkboxes
+	const includeUppercase = document.getElementById("include-uppercase");
+	const includeLowercase = document.getElementById("include-lowercase");
+	const includeNumbers = document.getElementById("include-numbers");
+	const includeSymbols = document.getElementById("include-symbols");
+	const excludeAmbiguous = document.getElementById("exclude-ambiguous");
 
-			setLoading(proxyFinderBtn, true);
+	let currentPassword = "";
+
+	// Update length display
+	if (lengthSlider && lengthDisplay) {
+		lengthSlider.addEventListener("input", () => {
+			lengthDisplay.textContent = lengthSlider.value;
+		});
+	}
+
+	// Generate password
+	if (generatePasswordBtn) {
+		generatePasswordBtn.addEventListener("click", () => {
+			const options = {
+				length: parseInt(lengthSlider?.value || 16),
+				uppercase: includeUppercase?.checked || false,
+				lowercase: includeLowercase?.checked || false,
+				numbers: includeNumbers?.checked || false,
+				symbols: includeSymbols?.checked || false,
+				excludeAmbiguous: excludeAmbiguous?.checked || false,
+			};
+
+			setLoading(generatePasswordBtn, true);
 			try {
-				const result = await findProxies(country, type);
-				showResult(proxyFinderResult, result, "success");
+				const password = generateSecurePassword(options);
+				currentPassword = password;
+				displayPassword(password);
+				updatePasswordStrength(password);
+				if (copyPasswordBtn) {
+					copyPasswordBtn.disabled = false;
+				}
 			} catch (error) {
-				showResult(proxyFinderResult, `Error: ${error.message}`, "error");
+				displayPassword(`Error: ${error.message}`, true);
 			}
-			setLoading(proxyFinderBtn, false);
+			setLoading(generatePasswordBtn, false);
+		});
+	}
+
+	// Copy password
+	if (copyPasswordBtn) {
+		copyPasswordBtn.addEventListener("click", async () => {
+			if (!currentPassword) return;
+
+			try {
+				await navigator.clipboard.writeText(currentPassword);
+				copyPasswordBtn.textContent = "✅ Copied!";
+				copyPasswordBtn.classList.add("success");
+
+				setTimeout(() => {
+					copyPasswordBtn.textContent = "📋 Copy Password";
+					copyPasswordBtn.classList.remove("success");
+				}, 2000);
+			} catch (error) {
+				copyPasswordBtn.textContent = "❌ Failed";
+				setTimeout(() => {
+					copyPasswordBtn.textContent = "📋 Copy Password";
+				}, 2000);
+			}
 		});
 	}
 
@@ -1228,69 +1281,158 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	async function findProxies(country, type) {
-		// Simulate proxy finding
-		const proxies = [
-			{
-				ip: "203.142.69.66",
-				port: "8080",
-				country: "US",
-				type: "HTTP",
-				speed: "Fast",
-			},
-			{
-				ip: "45.32.101.24",
-				port: "3128",
-				country: "UK",
-				type: "HTTPS",
-				speed: "Medium",
-			},
-			{
-				ip: "139.59.1.14",
-				port: "8080",
-				country: "CA",
-				type: "HTTP",
-				speed: "Fast",
-			},
-			{
-				ip: "178.128.87.16",
-				port: "1080",
-				country: "DE",
-				type: "SOCKS5",
-				speed: "Slow",
-			},
-			{
-				ip: "104.248.63.15",
-				port: "8888",
-				country: "FR",
-				type: "HTTP",
-				speed: "Medium",
-			},
-		];
+	function generateSecurePassword(options) {
+		const {
+			length = 16,
+			uppercase = true,
+			lowercase = true,
+			numbers = true,
+			symbols = true,
+			excludeAmbiguous = false,
+		} = options;
 
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				let filteredProxies = proxies;
-				if (country !== "all") {
-					filteredProxies = proxies.filter((p) => p.country === country);
-				}
-				if (type !== "all") {
-					filteredProxies = filteredProxies.filter(
-						(p) => p.type.toLowerCase() === type
-					);
-				}
+		// Validate options
+		if (length < 4 || length > 64) {
+			throw new Error("Password length must be between 4 and 64 characters");
+		}
 
-				const result = filteredProxies
-					.map(
-						(p) => `${p.ip}:${p.port} (${p.country}) - ${p.type} - ${p.speed}`
-					)
-					.join("\n");
+		if (!uppercase && !lowercase && !numbers && !symbols) {
+			throw new Error("At least one character type must be selected");
+		}
 
-				resolve(
-					`Found ${filteredProxies.length} proxy servers:\n\n${result}\n\n⚠️ Warning: Use proxies responsibly and verify their reliability before use.`
-				);
-			}, 1500);
-		});
+		// Character sets
+		let uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		let lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
+		let numberChars = "0123456789";
+		let symbolChars = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+		// Remove ambiguous characters if requested
+		if (excludeAmbiguous) {
+			uppercaseChars = uppercaseChars.replace(/[O]/g, "");
+			lowercaseChars = lowercaseChars.replace(/[l]/g, "");
+			numberChars = numberChars.replace(/[01]/g, "");
+			symbolChars = symbolChars.replace(/[|]/g, "");
+		}
+
+		// Build character pool
+		let charPool = "";
+		const requiredChars = [];
+
+		if (uppercase) {
+			charPool += uppercaseChars;
+			requiredChars.push(getRandomChar(uppercaseChars));
+		}
+		if (lowercase) {
+			charPool += lowercaseChars;
+			requiredChars.push(getRandomChar(lowercaseChars));
+		}
+		if (numbers) {
+			charPool += numberChars;
+			requiredChars.push(getRandomChar(numberChars));
+		}
+		if (symbols) {
+			charPool += symbolChars;
+			requiredChars.push(getRandomChar(symbolChars));
+		}
+
+		// Generate password
+		let password = "";
+
+		// Add required characters first
+		for (const char of requiredChars) {
+			password += char;
+		}
+
+		// Fill remaining length with random characters
+		for (let i = password.length; i < length; i++) {
+			password += getRandomChar(charPool);
+		}
+
+		// Shuffle the password to avoid predictable patterns
+		return shuffleString(password);
+	}
+
+	function getRandomChar(charSet) {
+		const randomIndex = Math.floor(Math.random() * charSet.length);
+		return charSet[randomIndex];
+	}
+
+	function shuffleString(str) {
+		const array = str.split("");
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+		}
+		return array.join("");
+	}
+
+	function displayPassword(password, isError = false) {
+		if (!passwordDisplay) return;
+
+		passwordDisplay.textContent = password;
+		passwordDisplay.className = `password-display ${isError ? "error" : "success"}`;
+
+		if (!isError) {
+			passwordDisplay.style.fontFamily = "monospace";
+			passwordDisplay.style.fontSize = "1.1rem";
+			passwordDisplay.style.fontWeight = "600";
+			passwordDisplay.style.letterSpacing = "0.5px";
+		}
+	}
+
+	function updatePasswordStrength(password) {
+		if (!passwordStrength) return;
+
+		const strength = calculatePasswordStrength(password);
+		const strengthText = getStrengthText(strength.score);
+		const strengthColor = getStrengthColor(strength.score);
+
+		passwordStrength.innerHTML = `
+			<div class="strength-bar">
+				<div class="strength-fill" style="width: ${strength.score * 20}%; background: ${strengthColor}"></div>
+			</div>
+			<div class="strength-text" style="color: ${strengthColor}">
+				Strength: ${strengthText} (${strength.score}/5)
+			</div>
+			<div class="strength-details">
+				<small>Length: ${password.length} | Entropy: ~${Math.round(strength.entropy)} bits</small>
+			</div>
+		`;
+	}
+
+	function calculatePasswordStrength(password) {
+		let score = 0;
+		let entropy = 0;
+		const length = password.length;
+
+		// Calculate character set size
+		let charsetSize = 0;
+		if (/[a-z]/.test(password)) charsetSize += 26;
+		if (/[A-Z]/.test(password)) charsetSize += 26;
+		if (/[0-9]/.test(password)) charsetSize += 10;
+		if (/[^a-zA-Z0-9]/.test(password)) charsetSize += 32;
+
+		// Calculate entropy
+		entropy = length * Math.log2(charsetSize);
+
+		// Scoring system
+		if (length >= 8) score++;
+		if (length >= 12) score++;
+		if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
+		if (/[0-9]/.test(password)) score++;
+		if (/[^a-zA-Z0-9]/.test(password)) score++;
+
+		return { score, entropy };
+	}
+
+	function getStrengthText(score) {
+		const texts = ["Very Weak", "Weak", "Fair", "Good", "Strong"];
+		return texts[Math.max(0, Math.min(4, score))];
+	}
+
+	function getStrengthColor(score) {
+		const colors = ["#e74c3c", "#e67e22", "#f39c12", "#27ae60", "#00b894"];
+		return colors[Math.max(0, Math.min(4, score))];
 	}
 
 	function generateBypassURLs(url) {

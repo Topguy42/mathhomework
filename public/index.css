@@ -4513,3 +4513,252 @@ body.aboutblank-mode #aboutblank-toggle {
 	color: #666 !important;
 	border: 1px solid #ddd !important;
 }
+
+/* Password Generator specific styles */
+.password-options {
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
+	border-radius: 12px;
+	padding: 1.5rem;
+	margin: 1.5rem 0;
+	backdrop-filter: blur(10px);
+}
+
+.option-group {
+	margin-bottom: 1.5rem;
+}
+
+.option-group:last-child {
+	margin-bottom: 0;
+}
+
+.option-label {
+	display: block;
+	color: var(--text-primary);
+	font-weight: 600;
+	margin-bottom: 0.75rem;
+	font-size: 0.95rem;
+}
+
+.length-slider {
+	width: 100%;
+	height: 6px;
+	background: var(--glass-bg-light);
+	border-radius: 3px;
+	outline: none;
+	border: 1px solid var(--glass-border);
+	cursor: pointer;
+}
+
+.length-slider::-webkit-slider-thumb {
+	appearance: none;
+	width: 20px;
+	height: 20px;
+	background: var(--accent-color);
+	border-radius: 50%;
+	cursor: pointer;
+	box-shadow: 0 2px 6px rgba(0, 212, 170, 0.3);
+}
+
+.length-slider::-moz-range-thumb {
+	width: 20px;
+	height: 20px;
+	background: var(--accent-color);
+	border-radius: 50%;
+	cursor: pointer;
+	border: none;
+	box-shadow: 0 2px 6px rgba(0, 212, 170, 0.3);
+}
+
+.checkbox-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 0.75rem;
+}
+
+.checkbox-option {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	cursor: pointer;
+	padding: 0.5rem;
+	border-radius: 8px;
+	transition: background 0.2s ease;
+	border: 1px solid transparent;
+}
+
+.checkbox-option:hover {
+	background: var(--glass-bg-light);
+	border-color: var(--glass-border);
+}
+
+.checkbox-option input[type="checkbox"] {
+	width: 18px;
+	height: 18px;
+	accent-color: var(--accent-color);
+	cursor: pointer;
+}
+
+.checkbox-label {
+	color: var(--text-secondary);
+	font-size: 0.9rem;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+.tool-button.primary {
+	background: var(--gradient-primary);
+	border: 2px solid var(--glass-border-light);
+}
+
+.tool-button.secondary {
+	background: var(--glass-bg-light);
+	border: 2px solid var(--glass-border);
+	color: var(--text-primary);
+}
+
+.tool-button.secondary:hover {
+	background: var(--glass-bg-strong);
+}
+
+.tool-button.secondary:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.tool-button.success {
+	background: var(--success) !important;
+	color: white !important;
+}
+
+.password-output {
+	margin: 1.5rem 0;
+}
+
+.password-display {
+	background: var(--glass-bg-light);
+	border: 2px solid var(--glass-border);
+	border-radius: 12px;
+	padding: 1.25rem;
+	margin-bottom: 1rem;
+	font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+	font-size: 1.1rem;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+	color: var(--text-primary);
+	word-break: break-all;
+	min-height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	backdrop-filter: blur(15px);
+	transition: all 0.3s ease;
+}
+
+.password-display.success {
+	border-color: var(--success);
+	background: rgba(16, 185, 129, 0.1);
+	box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+.password-display.error {
+	border-color: var(--error);
+	background: rgba(239, 68, 68, 0.1);
+	color: var(--error);
+	font-family: inherit;
+	font-size: 0.9rem;
+	font-weight: 500;
+}
+
+.password-strength {
+	margin-top: 1rem;
+}
+
+.strength-bar {
+	width: 100%;
+	height: 8px;
+	background: var(--glass-bg);
+	border-radius: 4px;
+	overflow: hidden;
+	border: 1px solid var(--glass-border);
+	margin-bottom: 0.5rem;
+}
+
+.strength-fill {
+	height: 100%;
+	transition:
+		width 0.5s ease,
+		background 0.3s ease;
+	border-radius: 4px;
+}
+
+.strength-text {
+	font-weight: 600;
+	font-size: 0.95rem;
+	margin-bottom: 0.25rem;
+}
+
+.strength-details {
+	color: var(--text-muted);
+	font-size: 0.8rem;
+}
+
+.password-tips {
+	background: rgba(0, 184, 148, 0.1);
+	border: 1px solid rgba(0, 184, 148, 0.2);
+	border-radius: 12px;
+	padding: 1rem;
+	margin: 1.5rem 0;
+	backdrop-filter: blur(10px);
+}
+
+.tips-title {
+	font-size: 1rem;
+	font-weight: 600;
+	color: var(--text-primary);
+	margin-bottom: 0.5rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.tips-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.tips-list li {
+	color: var(--text-secondary);
+	font-size: 0.875rem;
+	margin-bottom: 0.25rem;
+	padding-left: 1rem;
+	position: relative;
+}
+
+.tips-list li:before {
+	content: "•";
+	color: var(--success);
+	position: absolute;
+	left: 0;
+	font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+	.checkbox-grid {
+		grid-template-columns: 1fr;
+		gap: 0.5rem;
+	}
+
+	.password-display {
+		font-size: 1rem;
+		padding: 1rem;
+		word-break: break-all;
+	}
+
+	.password-options {
+		padding: 1rem;
+	}
+}
