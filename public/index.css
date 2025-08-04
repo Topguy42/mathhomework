@@ -1267,11 +1267,16 @@ body.light-theme .theme-toggle:hover {
 }
 
 .app-card:hover {
-	border-color: rgba(0, 212, 170, 0.4);
+	border-color: var(--glass-border-light);
+	background: var(--glass-bg-light);
 	box-shadow:
-		0 8px 30px rgba(0, 212, 170, 0.2),
-		inset 0 1px 0 rgba(255, 255, 255, 0.08);
-	transform: translateY(-2px);
+		0 20px 60px var(--glass-shadow-strong),
+		0 12px 30px rgba(0, 0, 0, 0.15),
+		0 6px 15px rgba(0, 0, 0, 0.08),
+		inset 0 3px 0 rgba(255, 255, 255, 0.12),
+		inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+	transform: translateY(-4px) scale(1.02);
+	backdrop-filter: blur(45px) saturate(180%);
 }
 
 .app-card-header {
