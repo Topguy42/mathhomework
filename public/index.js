@@ -517,6 +517,60 @@ document.addEventListener("DOMContentLoaded", () => {
 		closeFrameButton.addEventListener("click", closeFrame);
 	}
 
+	// Address bar functionality
+	let isEditingAddress = false;
+
+	// Click on URL container to edit
+	if (tabUrlContainer) {
+		tabUrlContainer.addEventListener("click", () => {
+			if (!isEditingAddress) {
+				startEditingAddress();
+			}
+		});
+	}
+
+	// Address input handlers
+	if (tabAddressInput) {
+		tabAddressInput.addEventListener("keydown", (event) => {
+			if (event.key === "Enter") {
+				const url = tabAddressInput.value.trim();
+				if (url) {
+					navigateToUrl(url);
+					stopEditingAddress();
+				}
+			} else if (event.key === "Escape") {
+				stopEditingAddress();
+			}
+		});
+
+		tabAddressInput.addEventListener("blur", () => {
+			// Small delay to allow click events to process
+			setTimeout(() => {
+				stopEditingAddress();
+			}, 100);
+		});
+	}
+
+	function startEditingAddress() {
+		if (tabAddressInput && tabUrlDisplay) {
+			isEditingAddress = true;
+			tabAddressInput.style.display = "block";
+			tabUrlDisplay.style.display = "none";
+			tabAddressInput.value = currentUrl || "";
+			tabAddressInput.focus();
+			tabAddressInput.select();
+		}
+	}
+
+	function stopEditingAddress() {
+		if (tabAddressInput && tabUrlDisplay) {
+			isEditingAddress = false;
+			tabAddressInput.style.display = "none";
+			tabUrlDisplay.style.display = "block";
+			tabAddressInput.value = "";
+		}
+	}
+
 	// Keyboard shortcuts for browser navigation
 	document.addEventListener("keydown", (event) => {
 		if (document.body.classList.contains("frame-active")) {
