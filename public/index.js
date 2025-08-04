@@ -1822,6 +1822,21 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
+	// Add immediate trigger for compact mode
+	const compactModeToggle = document.getElementById("compact-mode");
+	if (compactModeToggle) {
+		compactModeToggle.addEventListener("change", (e) => {
+			// Apply compact mode immediately
+			if (e.target.checked) {
+				document.body.classList.add("compact-mode");
+				showNotification("📏 Compact mode enabled", "success");
+			} else {
+				document.body.classList.remove("compact-mode");
+				showNotification("📏 Compact mode disabled", "info");
+			}
+		});
+	}
+
 	// Theme preview functionality - always visible now
 	if (themePreviewBtn) {
 		themePreviewBtn.addEventListener("click", () => {
@@ -2619,7 +2634,7 @@ setInterval(() => {
 		// Add visual indicator that protection is active
 		const indicator = document.createElement("div");
 		indicator.id = "anti-goguardian-indicator";
-		indicator.innerHTML = "🛡️ Protection Active";
+		indicator.innerHTML = "🛡��� Protection Active";
 		indicator.style.cssText = `
 			position: fixed;
 			top: 10px;
