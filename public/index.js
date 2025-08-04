@@ -21,6 +21,309 @@ const error = document.getElementById("uv-error");
 const errorCode = document.getElementById("uv-error-code");
 const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
 
+// Browser Tab System Variables
+let browserHistory = [];
+let historyIndex = -1;
+let currentUrl = "";
+
+// Navigate to URL through proxy
+async function navigateToUrl(url, addToHistoryFlag = true) {
+	if (!url) return;
+
+	const frameContainer = document.getElementById("frame-container");
+	const frame = document.getElementById("uv-frame");
+
+	// Show frame container first
+	frameContainer.style.display = "flex";
+	document.body.classList.add("frame-active");
+
+	// Show loading animation
+	showLoading(url);
+	setNavigationLoading(true);
+
+	try {
+		await registerSW();
+
+		let wispUrl =
+			(location.protocol === "https:" ? "wss" : "ws") +
+			"://" +
+			location.host +
+			"/wisp/";
+
+		if ((await connection.getTransport()) !== "/epoxy/index.mjs") {
+			await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
+		}
+
+		// Use the same search logic as the main form
+		const searchEngine =
+			document.getElementById("uv-search-engine")?.value ||
+			"https://www.google.com/search?q=%s";
+		const finalUrl = search(url, searchEngine);
+		const proxyUrl = __uv$config.prefix + __uv$config.encodeUrl(finalUrl);
+
+		frame.src = proxyUrl;
+
+		if (addToHistoryFlag) {
+			addToHistory(finalUrl);
+		} else {
+			updateUrlDisplay(finalUrl);
+		}
+
+		// Set up frame load event listeners
+		frame.onload = () => {
+			setNavigationLoading(false);
+			hideLoading();
+			// Ensure navigation buttons are updated after load
+			updateNavigationButtons();
+		};
+
+		frame.onerror = () => {
+			setNavigationLoading(false);
+			hideLoading();
+			console.error("Failed to load URL:", finalUrl);
+
+			// Show error in loading overlay briefly
+			const loadingSubtitle = document.getElementById("loading-subtitle");
+			if (loadingSubtitle) {
+				loadingSubtitle.textContent = "Failed to load page";
+				loadingSubtitle.style.color = "var(--error)";
+			}
+		};
+	} catch (err) {
+		console.error("Failed to navigate:", err);
+		setNavigationLoading(false);
+		hideLoading();
+
+		// Show error in loading overlay
+		const loadingSubtitle = document.getElementById("loading-subtitle");
+		if (loadingSubtitle) {
+			loadingSubtitle.textContent = "Connection failed";
+			loadingSubtitle.style.color = "var(--error)";
+		}
+	}
+}
+
+// Loading animation control
+let loadingTimeout;
+let progressInterval;
+let currentStep = 1;
+
+function showLoading(url = "") {
+	const loadingOverlay = document.getElementById("loading-overlay");
+	const loadingSubtitle = document.getElementById("loading-subtitle");
+	const progressFill = document.getElementById("progress-fill");
+
+	// Reset loading state
+	currentStep = 1;
+	resetLoadingSteps();
+
+	if (loadingOverlay) {
+		loadingOverlay.classList.remove("hidden");
+	}
+
+	// Update subtitle with URL info
+	if (loadingSubtitle) {
+		if (url) {
+			try {
+				const urlObj = new URL(url);
+				loadingSubtitle.textContent = `Loading ${urlObj.hostname}...`;
+			} catch (e) {
+				loadingSubtitle.textContent = `Loading ${url}...`;
+			}
+		} else {
+			loadingSubtitle.textContent = "Connecting through Vortex proxy";
+		}
+	}
+
+	// Start progress animation
+	if (progressFill) {
+		progressFill.style.width = "0%";
+
+		// Simulate loading progress
+		let progress = 0;
+		progressInterval = setInterval(() => {
+			progress += Math.random() * 15;
+			if (progress > 90) progress = 90; // Don't complete until actual load
+			progressFill.style.width = progress + "%";
+
+			// Update steps based on progress
+			if (progress > 30 && currentStep === 1) {
+				updateLoadingStep(2);
+			} else if (progress > 60 && currentStep === 2) {
+				updateLoadingStep(3);
+			}
+		}, 200);
+	}
+}
+
+function hideLoading() {
+	const loadingOverlay = document.getElementById("loading-overlay");
+	const progressFill = document.getElementById("progress-fill");
+
+	// Complete the progress bar
+	if (progressFill) {
+		progressFill.style.width = "100%";
+	}
+
+	// Mark final step as completed
+	updateLoadingStep(3, true);
+
+	// Hide loading overlay after a short delay
+	clearInterval(progressInterval);
+	loadingTimeout = setTimeout(() => {
+		if (loadingOverlay) {
+			loadingOverlay.classList.add("hidden");
+		}
+	}, 500);
+}
+
+function resetLoadingSteps() {
+	for (let i = 1; i <= 3; i++) {
+		const step = document.getElementById(`step-${i}`);
+		if (step) {
+			step.classList.remove("active", "completed");
+		}
+	}
+	// Activate first step
+	const step1 = document.getElementById("step-1");
+	if (step1) {
+		step1.classList.add("active");
+	}
+}
+
+function updateLoadingStep(stepNumber, completed = false) {
+	// Remove active from current step
+	const currentStepEl = document.getElementById(`step-${currentStep}`);
+	if (currentStepEl) {
+		currentStepEl.classList.remove("active");
+		if (currentStep < stepNumber || completed) {
+			currentStepEl.classList.add("completed");
+		}
+	}
+
+	// Activate new step (unless we're completing the final step)
+	if (!completed || stepNumber < 3) {
+		const newStepEl = document.getElementById(`step-${stepNumber}`);
+		if (newStepEl) {
+			newStepEl.classList.add("active");
+		}
+		currentStep = stepNumber;
+	}
+
+	// If completing final step, mark it as completed
+	if (completed && stepNumber === 3) {
+		const finalStep = document.getElementById(`step-${stepNumber}`);
+		if (finalStep) {
+			finalStep.classList.remove("active");
+			finalStep.classList.add("completed");
+		}
+	}
+}
+
+// Set loading state for navigation
+function setNavigationLoading(isLoading) {
+	const refreshBtn = document.getElementById("tab-refresh");
+
+	if (refreshBtn) {
+		if (isLoading) {
+			refreshBtn.classList.add("loading");
+		} else {
+			refreshBtn.classList.remove("loading");
+		}
+	}
+}
+
+// Add URL to history
+function addToHistory(url) {
+	if (url && url !== currentUrl) {
+		// Remove any forward history if we're navigating to a new page
+		if (historyIndex < browserHistory.length - 1) {
+			browserHistory = browserHistory.slice(0, historyIndex + 1);
+		}
+
+		browserHistory.push(url);
+		historyIndex = browserHistory.length - 1;
+		updateNavigationButtons();
+		updateUrlDisplay(url);
+	}
+}
+
+// Update navigation button states
+function updateNavigationButtons() {
+	const tabBack = document.getElementById("tab-back");
+	const tabForward = document.getElementById("tab-forward");
+
+	if (tabBack) {
+		const canGoBack = historyIndex > 0;
+		tabBack.disabled = !canGoBack;
+		tabBack.title = canGoBack
+			? `Go back to ${getDisplayUrl(browserHistory[historyIndex - 1])}`
+			: "No previous page";
+	}
+
+	if (tabForward) {
+		const canGoForward = historyIndex < browserHistory.length - 1;
+		tabForward.disabled = !canGoForward;
+		tabForward.title = canGoForward
+			? `Go forward to ${getDisplayUrl(browserHistory[historyIndex + 1])}`
+			: "No next page";
+	}
+}
+
+// Helper function to get display URL for tooltips
+function getDisplayUrl(url) {
+	if (!url) return "Unknown";
+	try {
+		const urlObj = new URL(url);
+		return urlObj.hostname;
+	} catch (e) {
+		return url.length > 30 ? url.substring(0, 27) + "..." : url;
+	}
+}
+
+// Update URL display and security indicator
+function updateUrlDisplay(url) {
+	currentUrl = url;
+	let displayUrl = url || "vortex://home";
+
+	// Format URL for display (remove protocol for cleaner look)
+	if (url) {
+		try {
+			const urlObj = new URL(url);
+			displayUrl = urlObj.hostname + urlObj.pathname + urlObj.search;
+			// Truncate very long URLs
+			if (displayUrl.length > 40) {
+				displayUrl = displayUrl.substring(0, 37) + "...";
+			}
+		} catch (e) {
+			// Keep original URL if parsing fails
+			displayUrl = url;
+		}
+	}
+
+	const tabUrlDisplay = document.getElementById("tab-url-display");
+	const tabSecurity = document.getElementById("tab-security");
+
+	if (tabUrlDisplay) {
+		tabUrlDisplay.textContent = displayUrl;
+		tabUrlDisplay.title = url || "Vortex proxy home"; // Show full URL on hover
+	}
+
+	// Update security indicator
+	if (tabSecurity) {
+		if (url && url.startsWith("https://")) {
+			tabSecurity.classList.remove("insecure");
+			tabSecurity.title = "Secure HTTPS connection";
+		} else if (url && url.startsWith("http://")) {
+			tabSecurity.classList.add("insecure");
+			tabSecurity.title = "Insecure HTTP connection";
+		} else {
+			tabSecurity.classList.remove("insecure");
+			tabSecurity.title = "Vortex secure proxy connection";
+		}
+	}
+}
+
 async function loadUrl(url) {
 	try {
 		await registerSW();
@@ -30,22 +333,8 @@ async function loadUrl(url) {
 		throw err;
 	}
 
-	let frameContainer = document.getElementById("frame-container");
-	let frame = document.getElementById("uv-frame");
-
-	// Show frame container and hide background content
-	frameContainer.style.display = "block";
-	document.body.classList.add("frame-active");
-
-	let wispUrl =
-		(location.protocol === "https:" ? "wss" : "ws") +
-		"://" +
-		location.host +
-		"/wisp/";
-	if ((await connection.getTransport()) !== "/epoxy/index.mjs") {
-		await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
-	}
-	frame.src = __uv$config.prefix + __uv$config.encodeUrl(url);
+	// Use the new tab system navigation
+	await navigateToUrl(url);
 }
 
 form.addEventListener("submit", async (event) => {
@@ -274,32 +563,236 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	// Close frame functionality
+	// Browser Tab System Event Listeners
+	const tabBack = document.getElementById("tab-back");
+	const tabForward = document.getElementById("tab-forward");
+	const tabRefresh = document.getElementById("tab-refresh");
+	const tabHome = document.getElementById("tab-home");
+	const newTab = document.getElementById("new-tab");
 	const closeFrameButton = document.getElementById("close-frame");
-	if (closeFrameButton) {
-		closeFrameButton.addEventListener("click", () => {
-			const frameContainer = document.getElementById("frame-container");
-			const frame = document.getElementById("uv-frame");
+	const tabAddressInput = document.getElementById("tab-address-input");
+	const tabUrlDisplay = document.getElementById("tab-url-display");
+	const tabUrlContainer = document.getElementById("tab-url-container");
 
-			// Hide frame and restore background
-			frameContainer.style.display = "none";
-			frame.src = "";
-			document.body.classList.remove("frame-active");
+	// Back navigation
+	if (tabBack) {
+		tabBack.addEventListener("click", (event) => {
+			event.preventDefault();
+			if (historyIndex > 0 && !tabBack.disabled) {
+				historyIndex--;
+				const url = browserHistory[historyIndex];
+				if (url) {
+					// Navigate without adding to history
+					navigateToUrl(url, false);
+					updateNavigationButtons();
+				}
+			}
 		});
 	}
 
-	// Also allow ESC key to close frame
-	document.addEventListener("keydown", (event) => {
-		if (
-			event.key === "Escape" &&
-			document.body.classList.contains("frame-active")
-		) {
-			const frameContainer = document.getElementById("frame-container");
-			const frame = document.getElementById("uv-frame");
+	// Forward navigation
+	if (tabForward) {
+		tabForward.addEventListener("click", (event) => {
+			event.preventDefault();
+			if (historyIndex < browserHistory.length - 1 && !tabForward.disabled) {
+				historyIndex++;
+				const url = browserHistory[historyIndex];
+				if (url) {
+					// Navigate without adding to history
+					navigateToUrl(url, false);
+					updateNavigationButtons();
+				}
+			}
+		});
+	}
 
-			frameContainer.style.display = "none";
-			frame.src = "";
-			document.body.classList.remove("frame-active");
+	// Refresh page
+	if (tabRefresh) {
+		tabRefresh.addEventListener("click", () => {
+			const frame = document.getElementById("uv-frame");
+			if (frame && frame.src) {
+				// Add a timestamp to force refresh
+				const currentSrc = frame.src;
+				const separator = currentSrc.includes("?") ? "&" : "?";
+				frame.src = currentSrc + separator + "_refresh=" + Date.now();
+			}
+		});
+	}
+
+	// Home navigation
+	if (tabHome) {
+		tabHome.addEventListener("click", () => {
+			closeFrame();
+		});
+	}
+
+	// New tab (for now, just goes home)
+	if (newTab) {
+		newTab.addEventListener("click", () => {
+			closeFrame();
+		});
+	}
+
+	// Close frame functionality
+	function closeFrame() {
+		const frameContainer = document.getElementById("frame-container");
+		const frame = document.getElementById("uv-frame");
+		const loadingOverlay = document.getElementById("loading-overlay");
+
+		// Hide frame and restore background
+		frameContainer.style.display = "none";
+		frame.src = "";
+		document.body.classList.remove("frame-active");
+
+		// Hide loading overlay and clear timers
+		if (loadingOverlay) {
+			loadingOverlay.classList.add("hidden");
+		}
+		clearTimeout(loadingTimeout);
+		clearInterval(progressInterval);
+
+		// Reset browser state
+		browserHistory = [];
+		historyIndex = -1;
+		currentUrl = "";
+		isEditingAddress = false;
+		updateNavigationButtons();
+		updateUrlDisplay("");
+		stopEditingAddress();
+	}
+
+	if (closeFrameButton) {
+		closeFrameButton.addEventListener("click", closeFrame);
+	}
+
+	// Initialize navigation button states
+	updateNavigationButtons();
+
+	// Address bar functionality
+	let isEditingAddress = false;
+
+	function startEditingAddress() {
+		const tabAddressInput = document.getElementById("tab-address-input");
+		const tabUrlDisplay = document.getElementById("tab-url-display");
+
+		if (tabAddressInput && tabUrlDisplay) {
+			isEditingAddress = true;
+			tabAddressInput.style.display = "block";
+			tabUrlDisplay.style.display = "none";
+			tabAddressInput.value = currentUrl || "";
+			tabAddressInput.focus();
+			tabAddressInput.select();
+		}
+	}
+
+	function stopEditingAddress() {
+		const tabAddressInput = document.getElementById("tab-address-input");
+		const tabUrlDisplay = document.getElementById("tab-url-display");
+
+		if (tabAddressInput && tabUrlDisplay) {
+			isEditingAddress = false;
+			tabAddressInput.style.display = "none";
+			tabUrlDisplay.style.display = "block";
+			tabAddressInput.value = "";
+		}
+	}
+
+	// Click on URL container to edit
+	if (tabUrlContainer) {
+		tabUrlContainer.addEventListener("click", () => {
+			if (!isEditingAddress) {
+				startEditingAddress();
+			}
+		});
+	}
+
+	// Address input handlers
+	if (tabAddressInput) {
+		tabAddressInput.addEventListener("keydown", (event) => {
+			if (event.key === "Enter") {
+				const url = tabAddressInput.value.trim();
+				if (url) {
+					navigateToUrl(url);
+					stopEditingAddress();
+				}
+			} else if (event.key === "Escape") {
+				stopEditingAddress();
+			}
+		});
+
+		tabAddressInput.addEventListener("blur", () => {
+			// Small delay to allow click events to process
+			setTimeout(() => {
+				stopEditingAddress();
+			}, 100);
+		});
+	}
+
+	// Keyboard shortcuts for browser navigation
+	document.addEventListener("keydown", (event) => {
+		if (document.body.classList.contains("frame-active")) {
+			// Don't handle shortcuts if user is typing in address bar
+			if (
+				document.activeElement === document.getElementById("tab-address-input")
+			) {
+				return;
+			}
+
+			// ESC key to close frame
+			if (event.key === "Escape") {
+				closeFrame();
+				return;
+			}
+
+			// Ctrl+L or F6 to focus address bar
+			if ((event.ctrlKey && event.key === "l") || event.key === "F6") {
+				event.preventDefault();
+				startEditingAddress();
+				return;
+			}
+
+			// Alt+Left Arrow for back
+			if (event.altKey && event.key === "ArrowLeft") {
+				event.preventDefault();
+				if (historyIndex > 0) {
+					historyIndex--;
+					const url = browserHistory[historyIndex];
+					navigateToUrl(url, false);
+					updateNavigationButtons();
+				}
+				return;
+			}
+
+			// Alt+Right Arrow for forward
+			if (event.altKey && event.key === "ArrowRight") {
+				event.preventDefault();
+				if (historyIndex < browserHistory.length - 1) {
+					historyIndex++;
+					const url = browserHistory[historyIndex];
+					navigateToUrl(url, false);
+					updateNavigationButtons();
+				}
+				return;
+			}
+
+			// F5 or Ctrl+R for refresh
+			if (event.key === "F5" || (event.ctrlKey && event.key === "r")) {
+				event.preventDefault();
+				const frame = document.getElementById("uv-frame");
+				if (frame && frame.src) {
+					const currentSrc = frame.src;
+					const separator = currentSrc.includes("?") ? "&" : "?";
+					frame.src = currentSrc + separator + "_refresh=" + Date.now();
+				}
+				return;
+			}
+
+			// Alt+Home for home
+			if (event.altKey && event.key === "Home") {
+				event.preventDefault();
+				closeFrame();
+				return;
+			}
 		}
 	});
 
@@ -1140,7 +1633,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		sections.push("🛡️ SECURITY STATUS");
 		sections.push(`${info.security.httpsUsed ? "✅" : "❌"} HTTPS Encryption`);
 		sections.push(
-			`${info.network.localIPs.includes("WebRTC blocked") || info.network.localIPs.includes("WebRTC not supported") ? "✅" : "⚠️"} WebRTC Leak Protection`
+			`${info.network.localIPs.includes("WebRTC blocked") || info.network.localIPs.includes("WebRTC not supported") ? "✅" : "⚠���"} WebRTC Leak Protection`
 		);
 		sections.push(
 			`${info.system.webglVendor === "Blocked" ? "✅" : "⚠️"} WebGL Fingerprint Protection`
