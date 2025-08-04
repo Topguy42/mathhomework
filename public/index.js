@@ -1754,7 +1754,7 @@ setInterval(() => {
 	function disableAboutBlankMode() {
 		// Since about:blank mode opens a new tab, disabling just means
 		// not opening new tabs when toggled on again
-		showNotification("About:blank mode disabled. No new tabs will be opened.", "success");
+		// Silent operation - no notifications
 	}
 
 	// Anti-GoGuardian functions
