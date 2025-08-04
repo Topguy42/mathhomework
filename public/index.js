@@ -483,7 +483,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		websiteTitleInput: !!websiteTitleInput,
 		faviconUrlInput: !!faviconUrlInput,
 		cloakerResult: !!cloakerResult,
-		presetButtons: presetButtons.length
+		presetButtons: presetButtons.length,
 	});
 
 	// Store original values
@@ -1317,7 +1317,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			if (e.target.checked) {
 				// Immediately enable anti-GoGuardian protection
 				enableAntiGoGuardian();
-				showNotification("🛡️ Anti-GoGuardian protection enabled! Tab closure will now require confirmation.", "success");
+				showNotification(
+					"🛡️ Anti-GoGuardian protection enabled! Tab closure will now require confirmation.",
+					"success"
+				);
 			} else {
 				// Disable protection when toggled off
 				disableAntiGoGuardian();
@@ -2001,7 +2004,8 @@ setInterval(() => {
 		beforeUnloadHandler = function (e) {
 			e.preventDefault();
 			// Custom message that appears as "Do you want to save your changes?"
-			const message = "You have unsaved changes. Are you sure you want to leave this page?";
+			const message =
+				"You have unsaved changes. Are you sure you want to leave this page?";
 			e.returnValue = message;
 			return message;
 		};
@@ -2013,11 +2017,16 @@ setInterval(() => {
 		window.close = function () {
 			console.log("Tab close attempt blocked by Anti-GoGuardian");
 			// Show protection notification
-			if (typeof showNotification === 'function') {
-				showNotification("🛡️ Tab closure blocked by Anti-GoGuardian protection", "warning");
+			if (typeof showNotification === "function") {
+				showNotification(
+					"🛡️ Tab closure blocked by Anti-GoGuardian protection",
+					"warning"
+				);
 			}
 			// Show confirmation dialog
-			const userConfirm = confirm("You have unsaved work. Are you sure you want to close this tab?");
+			const userConfirm = confirm(
+				"You have unsaved work. Are you sure you want to close this tab?"
+			);
 			if (!userConfirm) {
 				return false;
 			}
@@ -2031,30 +2040,38 @@ setInterval(() => {
 		const originalReplace = window.location.replace;
 		const originalReload = window.location.reload;
 
-		window.location.assign = function(url) {
-			const userConfirm = confirm("You have unsaved work. Are you sure you want to navigate away from this page?");
+		window.location.assign = function (url) {
+			const userConfirm = confirm(
+				"You have unsaved work. Are you sure you want to navigate away from this page?"
+			);
 			if (userConfirm) {
 				originalAssign.call(window.location, url);
 			}
 		};
 
-		window.location.replace = function(url) {
-			const userConfirm = confirm("You have unsaved work. Are you sure you want to navigate away from this page?");
+		window.location.replace = function (url) {
+			const userConfirm = confirm(
+				"You have unsaved work. Are you sure you want to navigate away from this page?"
+			);
 			if (userConfirm) {
 				originalReplace.call(window.location, url);
 			}
 		};
 
-		window.location.reload = function(forceReload) {
-			const userConfirm = confirm("You have unsaved work. Are you sure you want to reload this page?");
+		window.location.reload = function (forceReload) {
+			const userConfirm = confirm(
+				"You have unsaved work. Are you sure you want to reload this page?"
+			);
 			if (userConfirm) {
 				originalReload.call(window.location, forceReload);
 			}
 		};
 
 		// Prevent back/forward navigation
-		window.addEventListener('popstate', function(e) {
-			const userConfirm = confirm("You have unsaved work. Are you sure you want to navigate away from this page?");
+		window.addEventListener("popstate", function (e) {
+			const userConfirm = confirm(
+				"You have unsaved work. Are you sure you want to navigate away from this page?"
+			);
 			if (!userConfirm) {
 				// Push current state back to prevent navigation
 				history.pushState(null, null, window.location.href);
@@ -2103,13 +2120,13 @@ setInterval(() => {
 			close: originalClose,
 			assign: originalAssign,
 			replace: originalReplace,
-			reload: originalReload
+			reload: originalReload,
 		};
 
 		// Add visual indicator that protection is active
-		const indicator = document.createElement('div');
-		indicator.id = 'anti-goguardian-indicator';
-		indicator.innerHTML = '🛡️ Protection Active';
+		const indicator = document.createElement("div");
+		indicator.id = "anti-goguardian-indicator";
+		indicator.innerHTML = "🛡️ Protection Active";
 		indicator.style.cssText = `
 			position: fixed;
 			top: 10px;
@@ -2128,7 +2145,7 @@ setInterval(() => {
 		`;
 
 		// Add CSS animation
-		const style = document.createElement('style');
+		const style = document.createElement("style");
 		style.textContent = `
 			@keyframes fadeIn {
 				from { opacity: 0; transform: translateY(-10px); }
@@ -2142,7 +2159,10 @@ setInterval(() => {
 	}
 
 	// Manual test function for cloaker (accessible via console)
-	window.testCloaker = function(title = "Google Classroom", favicon = "https://classroom.google.com/favicon.ico") {
+	window.testCloaker = function (
+		title = "Google Classroom",
+		favicon = "https://classroom.google.com/favicon.ico"
+	) {
 		console.log("Testing cloaker with:", { title, favicon });
 		try {
 			const result = applyCloaking(title, favicon);
@@ -2154,7 +2174,7 @@ setInterval(() => {
 		}
 	};
 
-	window.testRestore = function() {
+	window.testRestore = function () {
 		console.log("Testing restore original");
 		try {
 			const result = restoreOriginal();
@@ -2192,7 +2212,7 @@ setInterval(() => {
 		}
 
 		// Remove visual indicator
-		const indicator = document.getElementById('anti-goguardian-indicator');
+		const indicator = document.getElementById("anti-goguardian-indicator");
 		if (indicator) {
 			indicator.remove();
 		}
