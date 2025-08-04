@@ -1655,6 +1655,50 @@ document.addEventListener("DOMContentLoaded", () => {
 		return `🔄 Original Settings Restored!\n\n${changes.join("\n")}\n\n✅ Your browser tab has been restored to its original appearance.`;
 	}
 
+	async function enableAboutBlankCloaking() {
+		console.log("Enabling about:blank cloaking mode");
+
+		// Clear the title completely
+		document.title = "";
+
+		// Remove all existing favicons
+		const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
+		existingFavicons.forEach((favicon) => favicon.remove());
+
+		// Add completely transparent favicon to make it invisible
+		const blankFavicon = document.createElement("link");
+		blankFavicon.rel = "icon";
+		blankFavicon.href = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><rect width="1" height="1" fill="transparent"/></svg>');
+		document.head.appendChild(blankFavicon);
+
+		// Add shortcut icon version too
+		const blankShortcut = document.createElement("link");
+		blankShortcut.rel = "shortcut icon";
+		blankShortcut.href = blankFavicon.href;
+		document.head.appendChild(blankShortcut);
+
+		// Set up periodic title clearing to maintain blank appearance
+		if (window.aboutBlankInterval) {
+			clearInterval(window.aboutBlankInterval);
+		}
+
+		window.aboutBlankInterval = setInterval(() => {
+			if (document.title !== "") {
+				document.title = "";
+			}
+		}, 100);
+
+		// Add subtle visual indicator (optional - can be toggled)
+		document.body.classList.add("about-blank-active");
+
+		// Store that we're in about:blank mode
+		window.isAboutBlankMode = true;
+
+		console.log("✅ About:blank cloaking enabled");
+
+		return `🕵️ About:Blank Mode Activated!\n\n✅ Page title cleared\n✅ Favicon made invisible\n✅ Automatic title clearing enabled\n\n😎 Your browser tab now appears completely blank for maximum stealth.\n\n⚠️ Remember to restore original settings when done to avoid confusion.`;
+	}
+
 	async function anonymousSearch(query, provider) {
 		const searchUrls = {
 			google: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
