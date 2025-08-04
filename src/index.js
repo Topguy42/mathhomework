@@ -6,8 +6,8 @@ import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 
 // static paths
-import { publicPath } from "ultraviolet-static";
-import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
+import { publicPath } from "uv-assets";
+import { uvPath } from "uv-core";
 import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 
