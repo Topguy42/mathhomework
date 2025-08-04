@@ -3354,6 +3354,65 @@ body.blue-theme .launch-button:hover {
 	background: var(--primary-dark);
 }
 
+body.blue-theme {
+	background:
+		radial-gradient(
+			circle at 20% 20%,
+			rgba(52, 152, 219, 0.15) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 80% 80%,
+			rgba(116, 185, 255, 0.15) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 40% 60%,
+			rgba(52, 152, 219, 0.1) 0%,
+			transparent 50%
+		),
+		linear-gradient(
+			135deg,
+			#0c1e3d 0%,
+			#1e3a5f 50%,
+			#0c1e3d 100%
+		);
+}
+
+body.blue-theme .background-animation {
+	background:
+		radial-gradient(
+			circle at 30% 30%,
+			rgba(52, 152, 219, 0.08) 0%,
+			transparent 60%
+		),
+		radial-gradient(
+			circle at 70% 70%,
+			rgba(116, 185, 255, 0.08) 0%,
+			transparent 60%
+		);
+}
+
+body.blue-theme .gradient-overlay {
+	background:
+		radial-gradient(
+			ellipse at 25% 25%,
+			rgba(52, 152, 219, 0.12) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			ellipse at 75% 75%,
+			rgba(116, 185, 255, 0.08) 0%,
+			transparent 50%
+		),
+		linear-gradient(
+			180deg,
+			rgba(52, 152, 219, 0.03) 0%,
+			transparent 50%,
+			rgba(52, 152, 219, 0.03) 100%
+		);
+}
+
 body.blue-theme .nav-logo {
 	background: linear-gradient(135deg, #3498db, #74b9ff);
 	box-shadow:
