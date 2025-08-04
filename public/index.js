@@ -1713,7 +1713,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		console.log("✅ About:blank cloaking enabled");
 
-		return `🕵️ About:Blank Mode Activated!\n\n✅ Page title cleared\n✅ Favicon made invisible\n✅ Automatic title clearing enabled\n\n😎 Your browser tab now appears completely blank for maximum stealth.\n\n⚠️ Remember to restore original settings when done to avoid confusion.`;
+		return `🕵️ About:Blank Mode Activated!\n\n✅ Page title cleared\n✅ Favicon made invisible\n✅ Automatic title clearing enabled\n\n😎 Your browser tab now appears completely blank for maximum stealth.\n\n💡 Click the toggle in the top-right corner to hide/show the indicator.\n\n⚠️ Remember to restore original settings when done to avoid confusion.`;
+	}
+
+	function addAboutBlankToggle() {
+		// Remove existing toggle if present
+		const existingToggle = document.getElementById("about-blank-toggle");
+		if (existingToggle) {
+			existingToggle.remove();
+		}
+
+		// Create toggle button
+		const toggleBtn = document.createElement("button");
+		toggleBtn.id = "about-blank-toggle";
+		toggleBtn.innerHTML = "👁️";
+		toggleBtn.title = "Toggle about:blank indicator visibility";
+		toggleBtn.style.cssText = `
+			position: fixed;
+			top: 10px;
+			left: 10px;
+			width: 32px;
+			height: 32px;
+			border: none;
+			border-radius: 50%;
+			background: rgba(0, 0, 0, 0.7);
+			color: white;
+			font-size: 14px;
+			cursor: pointer;
+			z-index: 10001;
+			transition: all 0.3s ease;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		`;
+
+		// Add hover effects
+		toggleBtn.addEventListener("mouseenter", () => {
+			toggleBtn.style.background = "rgba(0, 0, 0, 0.9)";
+			toggleBtn.style.transform = "scale(1.1)";
+		});
+
+		toggleBtn.addEventListener("mouseleave", () => {
+			toggleBtn.style.background = "rgba(0, 0, 0, 0.7)";
+			toggleBtn.style.transform = "scale(1)";
+		});
+
+		// Add click functionality
+		let indicatorVisible = true;
+		toggleBtn.addEventListener("click", () => {
+			indicatorVisible = !indicatorVisible;
+
+			if (indicatorVisible) {
+				document.body.classList.add("about-blank-active");
+				toggleBtn.innerHTML = "👁️";
+				toggleBtn.title = "Hide indicator";
+			} else {
+				document.body.classList.remove("about-blank-active");
+				toggleBtn.innerHTML = "👁️‍🗨️";
+				toggleBtn.title = "Show indicator";
+			}
+		});
+
+		document.body.appendChild(toggleBtn);
 	}
 
 	async function anonymousSearch(query, provider) {
