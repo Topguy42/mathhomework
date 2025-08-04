@@ -533,20 +533,25 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	// Restore original
-	if (restoreOriginalBtn) {
+	if (restoreOriginalBtn && cloakerResult) {
 		restoreOriginalBtn.addEventListener("click", () => {
+			console.log("Restore original button clicked");
 			setLoading(restoreOriginalBtn, true);
 			try {
 				const result = restoreOriginal();
 				showResult(cloakerResult, result, "success");
 				// Clear input fields
-				websiteTitleInput.value = "";
-				faviconUrlInput.value = "";
+				if (websiteTitleInput) websiteTitleInput.value = "";
+				if (faviconUrlInput) faviconUrlInput.value = "";
+				console.log("Original settings restored");
 			} catch (error) {
+				console.error("Restore error:", error);
 				showResult(cloakerResult, `Error: ${error.message}`, "error");
 			}
 			setLoading(restoreOriginalBtn, false);
 		});
+	} else {
+		console.error("Restore button or result element not found");
 	}
 
 	// Preset buttons
@@ -645,7 +650,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				return `❌ Site may be blocked or inaccessible\n\nURL: ${cleanUrl}\nStatus: ${data.status.http_code}\n\nSuggested alternatives:\n• Try proxy access\n• Check for typos in URL\n• Site might be temporarily down`;
 			}
 		} catch (error) {
-			return `�� Unable to check site access\n\nPossible reasons:\n• Network connectivity issues\n�� Site is completely blocked\n• Invalid URL format\n\nTry using our proxy to access the site directly.`;
+			return `❌ Unable to check site access\n\nPossible reasons:\n• Network connectivity issues\n�� Site is completely blocked\n• Invalid URL format\n\nTry using our proxy to access the site directly.`;
 		}
 	}
 
