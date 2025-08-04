@@ -80,21 +80,25 @@
 							sessionStorage.setItem('vortex-original-title', document.title);
 							sessionStorage.setItem('vortex-aboutblank-active', 'true');
 
-							// Replace current URL with something innocent (same origin)
-							window.history.replaceState({}, '', '/search');
+							// Method 1: Try to open about:blank and replace current tab
+							try {
+								// Open about:blank in current window
+								window.location.replace('about:blank');
+								return;
+							} catch (e) {
+								// Fallback if about:blank is blocked
+							}
+
+							// Method 2: Replace with innocent URL path
+							try {
+								window.history.replaceState({}, '', '/');
+							} catch (e) {
+								// Even this failed, just continue with visual changes
+							}
 
 							// Set blank title and apply styling
 							document.title = '';
 							document.body.classList.add('aboutblank-mode');
-
-							// Clear browser cache entries for this session
-							if ('serviceWorker' in navigator) {
-								navigator.serviceWorker.getRegistrations().then(function(registrations) {
-									registrations.forEach(function(registration) {
-										registration.unregister();
-									});
-								});
-							}
 
 							// Add discrete toggle button
 							let toggleBtn = document.getElementById('aboutblank-toggle');
@@ -898,7 +902,7 @@
 								</div>
 								<p class="game-description">Space tunnel runner</p>
 								<div class="game-rating">
-									<span class="star">��</span>
+									<span class="star">★</span>
 									<span class="rating-value">4.5</span>
 									<span class="rating-label">rating</span>
 								</div>
