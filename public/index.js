@@ -251,12 +251,15 @@ function updateNavigationButtons() {
 	const tabBack = document.getElementById("tab-back");
 	const tabForward = document.getElementById("tab-forward");
 
+	console.log("Updating navigation buttons - Index:", historyIndex, "History length:", browserHistory.length);
+
 	if (tabBack) {
 		const canGoBack = historyIndex > 0;
 		tabBack.disabled = !canGoBack;
 		tabBack.title = canGoBack
 			? `Go back to ${getDisplayUrl(browserHistory[historyIndex - 1])}`
 			: "No previous page";
+		console.log("Back button - Can go back:", canGoBack, "Disabled:", tabBack.disabled);
 	}
 
 	if (tabForward) {
@@ -265,6 +268,7 @@ function updateNavigationButtons() {
 		tabForward.title = canGoForward
 			? `Go forward to ${getDisplayUrl(browserHistory[historyIndex + 1])}`
 			: "No next page";
+		console.log("Forward button - Can go forward:", canGoForward, "Disabled:", tabForward.disabled);
 	}
 }
 
