@@ -1355,104 +1355,133 @@ document.addEventListener("DOMContentLoaded", () => {
 			console.log("Setting favicon:", faviconUrl);
 
 			try {
-				// First, test if the favicon URL is accessible
-				const testImage = new Image();
-				testImage.crossOrigin = "anonymous";
-
-				testImage.onload = () => {
-					console.log("Favicon URL is accessible:", faviconUrl);
-					setFaviconDirectly(faviconUrl);
-				};
-
-				testImage.onerror = () => {
-					console.warn("Favicon URL failed to load, trying direct method:", faviconUrl);
-					setFaviconDirectly(faviconUrl);
-				};
-
-				// Set a timeout to try direct method anyway
-				setTimeout(() => {
-					setFaviconDirectly(faviconUrl);
-				}, 2000);
-
-				testImage.src = faviconUrl;
-
+				// Convert external favicon to data URL to bypass CORS issues
+				await convertFaviconToDataUrl(faviconUrl);
 			} catch (error) {
-				console.error("Error testing favicon:", error);
+				console.error("Error converting favicon:", error);
+				// Fallback to direct method if conversion fails
 				setFaviconDirectly(faviconUrl);
 			}
 
-			function setFaviconDirectly(url) {
-				console.log("Setting favicon directly:", url);
+			async function convertFaviconToDataUrl(url) {
+				console.log("Converting favicon to data URL:", url);
 
-				// Remove ALL existing favicons first
+				try {
+					// Use a CORS proxy or try to fetch the image
+					const response = await fetch(url, {
+						mode: 'cors',
+						credentials: 'omit'
+					});
+
+					if (!response.ok) {
+						throw new Error(`HTTP ${response.status}`);
+					}
+
+					const blob = await response.blob();
+					const reader = new FileReader();
+
+					reader.onload = function(e) {
+						const dataUrl = e.target.result;
+						console.log("✅ Successfully converted favicon to data URL");
+						setFaviconFromDataUrl(dataUrl);
+					};
+
+					reader.onerror = function() {
+						console.warn("Failed to convert to data URL, trying direct method");
+						setFaviconDirectly(url);
+					};
+
+					reader.readAsDataURL(blob);
+
+				} catch (error) {
+					console.warn("Fetch failed, trying alternative methods:", error.message);
+
+					// Try using a canvas approach as fallback
+					const img = new Image();
+					img.crossOrigin = 'anonymous';
+
+					img.onload = function() {
+						try {
+							const canvas = document.createElement('canvas');
+							const ctx = canvas.getContext('2d');
+							canvas.width = img.width || 16;
+							canvas.height = img.height || 16;
+							ctx.drawImage(img, 0, 0);
+							const dataUrl = canvas.toDataURL();
+							console.log("✅ Converted favicon using canvas method");
+							setFaviconFromDataUrl(dataUrl);
+						} catch (canvasError) {
+							console.warn("Canvas conversion failed, using direct method:", canvasError);
+							setFaviconDirectly(url);
+						}
+					};
+
+					img.onerror = function() {
+						console.warn("Image load failed, using direct method");
+						setFaviconDirectly(url);
+					};
+
+					img.src = url;
+				}
+			}
+
+			function setFaviconFromDataUrl(dataUrl) {
+				console.log("Setting favicon from data URL");
+
+				// Remove existing favicons
 				const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
-				console.log("Removing existing favicons:", existingFavicons.length);
 				existingFavicons.forEach((favicon) => favicon.remove());
 
-				// Create cache-busting URL
-				const timestamp = Date.now();
-				const random = Math.random().toString(36).substring(7);
-				const cacheBustUrl = url + (url.includes("?") ? "&" : "?") + `_cb=${timestamp}_${random}`;
-				console.log("Cache bust URL:", cacheBustUrl);
-
-				// Use a more aggressive approach
-				// Method 1: Set blank favicon first
+				// Set blank favicon first to force refresh
 				const blankFavicon = document.createElement("link");
 				blankFavicon.rel = "icon";
-				blankFavicon.href = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><rect width="1" height="1" fill="transparent"/></svg>');
+				blankFavicon.href = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><rect width="1" height="1" fill="white"/></svg>');
 				document.head.appendChild(blankFavicon);
-				console.log("Added blank favicon");
 
-				// Method 2: Replace with real favicon after short delay
+				// Replace with actual favicon after brief delay
 				setTimeout(() => {
-					try {
-						blankFavicon.remove();
-						console.log("Removed blank favicon");
+					blankFavicon.remove();
 
-						// Add the new favicon
-						const newFavicon = document.createElement("link");
-						newFavicon.rel = "icon";
-						newFavicon.href = cacheBustUrl;
-						newFavicon.onload = () => {
-							console.log("✅ New favicon loaded successfully");
-						};
-						newFavicon.onerror = (e) => {
-							console.error("❌ Failed to load new favicon:", e);
-						};
-						document.head.appendChild(newFavicon);
+					const newFavicon = document.createElement("link");
+					newFavicon.rel = "icon";
+					newFavicon.href = dataUrl;
+					document.head.appendChild(newFavicon);
 
-						// Also add shortcut icon for better compatibility
-						const shortcutIcon = document.createElement("link");
-						shortcutIcon.rel = "shortcut icon";
-						shortcutIcon.href = cacheBustUrl;
-						document.head.appendChild(shortcutIcon);
+					const shortcutIcon = document.createElement("link");
+					shortcutIcon.rel = "shortcut icon";
+					shortcutIcon.href = dataUrl;
+					document.head.appendChild(shortcutIcon);
 
-						console.log("Added new favicon elements");
-
-					} catch (error) {
-						console.error("Error in favicon replacement:", error);
-					}
+					console.log("✅ Favicon set successfully from data URL");
 				}, 100);
+			}
 
-				// Method 3: Force refresh the page favicon
-				setTimeout(() => {
-					try {
-						// Force browser to refresh favicon by touching the head
-						const head = document.head;
-						const link = document.createElement('link');
-						link.rel = 'icon';
-						link.href = url + (url.includes("?") ? "&" : "?") + `_force=${Date.now()}`;
-						head.appendChild(link);
+			function setFaviconDirectly(url) {
+				console.log("Setting favicon directly (fallback method):", url);
 
-						console.log("Added force refresh favicon");
-					} catch (error) {
-						console.error("Error in force refresh:", error);
-					}
-				}, 300);
+				// Remove existing favicons
+				const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
+				existingFavicons.forEach((favicon) => favicon.remove());
+
+				// Try setting favicon directly with cache busting
+				const timestamp = Date.now();
+				const cacheBustUrl = url + (url.includes("?") ? "&" : "?") + `_t=${timestamp}`;
+
+				const newFavicon = document.createElement("link");
+				newFavicon.rel = "icon";
+				newFavicon.href = cacheBustUrl;
+				newFavicon.onload = () => console.log("✅ Direct favicon method succeeded");
+				newFavicon.onerror = () => console.error("❌ Direct favicon method failed");
+				document.head.appendChild(newFavicon);
+
+				const shortcutIcon = document.createElement("link");
+				shortcutIcon.rel = "shortcut icon";
+				shortcutIcon.href = cacheBustUrl;
+				document.head.appendChild(shortcutIcon);
 			}
 
 			// Wait a bit to let the favicon change take effect
-			await new Promise(resolve => setTimeout(resolve, 1000));
+			await new Promise(resolve => setTimeout(resolve, 1500));
 			changes.push(`✅ Favicon changed to: ${faviconUrl}`);
 		}
 
@@ -1460,7 +1489,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			return "❌ No changes applied. Please provide a title or favicon URL.";
 		}
 
-		return `🕵️ Cloaking Applied Successfully!\n\n${changes.join("\n")}\n\n😎 Your browser tab now appears as a different website for privacy.\n\n⚠��� Remember to restore the original settings when you're done to avoid confusion.`;
+		return `🕵️ Cloaking Applied Successfully!\n\n${changes.join("\n")}\n\n😎 Your browser tab now appears as a different website for privacy.\n\n⚠️ Remember to restore the original settings when you're done to avoid confusion.`;
 	}
 
 	function restoreOriginal() {
@@ -1864,7 +1893,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		const recommendations = [];
 
 		if (!info.security.httpsUsed) {
-			recommendations.push("�� Use HTTPS whenever possible");
+			recommendations.push("• Use HTTPS whenever possible");
 		}
 
 		if (!info.network.localIPs.includes("WebRTC blocked")) {
