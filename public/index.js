@@ -160,8 +160,8 @@ function updateUrlDisplay(url) {
 			const urlObj = new URL(url);
 			displayUrl = urlObj.hostname + urlObj.pathname + urlObj.search;
 			// Truncate very long URLs
-			if (displayUrl.length > 50) {
-				displayUrl = displayUrl.substring(0, 47) + "...";
+			if (displayUrl.length > 40) {
+				displayUrl = displayUrl.substring(0, 37) + "...";
 			}
 		} catch (e) {
 			// Keep original URL if parsing fails
