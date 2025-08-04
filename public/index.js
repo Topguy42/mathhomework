@@ -91,23 +91,12 @@ async function navigateToUrl(url, addToHistoryFlag = true) {
 // Set loading state for navigation
 function setNavigationLoading(isLoading) {
 	const refreshBtn = document.getElementById("tab-refresh");
-	const goBtn = document.getElementById("tab-go");
 
 	if (refreshBtn) {
 		if (isLoading) {
 			refreshBtn.classList.add("loading");
 		} else {
 			refreshBtn.classList.remove("loading");
-		}
-	}
-
-	if (goBtn) {
-		if (isLoading) {
-			goBtn.textContent = "...";
-			goBtn.disabled = true;
-		} else {
-			goBtn.textContent = "Go";
-			goBtn.disabled = false;
 		}
 	}
 }
