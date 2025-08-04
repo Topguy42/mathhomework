@@ -1977,15 +1977,17 @@ body.frame-active .top-nav {
 	align-items: center;
 	justify-content: center;
 	padding: 1rem 0.5rem;
-	background: rgba(0, 26, 26, 0.6);
-	border: 2px solid rgba(0, 212, 170, 0.2);
-	border-radius: 12px;
+	background: var(--glass-bg);
+	border: 2px solid var(--glass-border);
+	border-radius: 16px;
 	cursor: pointer;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-	backdrop-filter: blur(25px);
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	backdrop-filter: blur(30px) saturate(150%);
 	box-shadow:
-		0 4px 20px rgba(0, 0, 0, 0.2),
-		inset 0 1px 0 rgba(255, 255, 255, 0.05);
+		0 8px 32px var(--glass-shadow),
+		0 4px 16px rgba(0, 0, 0, 0.08),
+		inset 0 2px 0 rgba(255, 255, 255, 0.08),
+		inset 0 -1px 0 rgba(0, 0, 0, 0.03);
 	min-height: 85px;
 	text-align: center;
 }
