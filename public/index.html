@@ -2096,8 +2096,8 @@
 								<div id="dns-tools-result" class="tool-result"></div>
 							</div>
 
-							<!-- Website Unblocker -->
-							<div id="website-unblocker-interface" class="tool-interface">
+							<!-- Password Generator -->
+							<div id="password-generator-interface" class="tool-interface">
 								<h3 class="tool-interface-title">
 									<svg
 										viewBox="0 0 24 24"
@@ -2105,43 +2105,82 @@
 										xmlns="http://www.w3.org/2000/svg"
 									>
 										<path
-											d="M18.36 9l.6 3H5.04l.6-3h12.72M20 4H4v2h16V4zm0 3H4l-1 5v2h1v6h10v-6h4v6h2v-6h1v-2l-1-5zM6 18v-4h6v4H6z"
+											d="M12.65 10A4 4 0 0 0 9 6 4 4 0 0 0 5 10A4 4 0 0 0 9 14C9.55 14 10.08 13.87 10.56 13.63L20.5 23.5L22 22L12.65 10ZM9 12A2 2 0 0 1 7 10A2 2 0 0 1 9 8A2 2 0 0 1 11 10A2 2 0 0 1 9 12Z"
 										/>
 									</svg>
-									Website Unblocker
+									Password Generator
 								</h3>
 								<p class="tool-interface-description">
-									Get multiple ways to access blocked websites using advanced bypass techniques
+									Generate secure, random passwords with customizable options for maximum security
 								</p>
+
+								<div class="password-options">
+									<div class="option-group">
+										<label class="option-label">
+											Password Length: <span id="length-display">16</span>
+										</label>
+										<input
+											type="range"
+											id="password-length"
+											class="length-slider"
+											min="4"
+											max="64"
+											value="16"
+										/>
+									</div>
+
+									<div class="option-group">
+										<div class="checkbox-grid">
+											<label class="checkbox-option">
+												<input type="checkbox" id="include-uppercase" checked />
+												<span class="checkbox-label">Uppercase (A-Z)</span>
+											</label>
+											<label class="checkbox-option">
+												<input type="checkbox" id="include-lowercase" checked />
+												<span class="checkbox-label">Lowercase (a-z)</span>
+											</label>
+											<label class="checkbox-option">
+												<input type="checkbox" id="include-numbers" checked />
+												<span class="checkbox-label">Numbers (0-9)</span>
+											</label>
+											<label class="checkbox-option">
+												<input type="checkbox" id="include-symbols" checked />
+												<span class="checkbox-label">Symbols (!@#$%)</span>
+											</label>
+											<label class="checkbox-option">
+												<input type="checkbox" id="exclude-ambiguous" />
+												<span class="checkbox-label">Exclude ambiguous (0,O,l,1)</span>
+											</label>
+										</div>
+									</div>
+								</div>
+
 								<div class="tool-input-container">
-									<input
-										id="website-unblocker-input"
-										type="text"
-										placeholder="Enter blocked website URL (e.g., youtube.com)"
-										class="tool-input-wide"
-									/>
-									<select id="unblocker-method" class="tool-select">
-										<option value="all">All Methods</option>
-										<option value="proxy">Proxy Access</option>
-										<option value="alternative">Alternative URLs</option>
-										<option value="archive">Archive Sites</option>
-										<option value="translate">Translate Services</option>
-										<option value="dns">DNS Methods</option>
-									</select>
-									<button id="website-unblocker-btn" class="tool-button">
-										Generate Bypass Links
+									<button id="generate-password-btn" class="tool-button primary">
+										🔐 Generate Password
+									</button>
+									<button id="copy-password-btn" class="tool-button secondary" disabled>
+										📋 Copy Password
 									</button>
 								</div>
-								<div class="unblocker-tips">
-									<h4 class="tips-title">💡 Quick Tips:</h4>
+
+								<div class="password-output">
+									<div class="password-display" id="password-display">
+										Click "Generate Password" to create a secure password
+									</div>
+									<div class="password-strength" id="password-strength"></div>
+								</div>
+
+								<div class="password-tips">
+									<h4 class="tips-title">🛡️ Security Tips:</h4>
 									<ul class="tips-list">
-										<li>Try multiple methods if one doesn't work</li>
-										<li>Use HTTPS instead of HTTP when available</li>
-										<li>Clear your cache and cookies between attempts</li>
-										<li>Mobile versions of sites often work better</li>
+										<li>Use a unique password for each account</li>
+										<li>Longer passwords are generally more secure</li>
+										<li>Include a mix of characters for best security</li>
+										<li>Consider using a password manager</li>
+										<li>Never share passwords or write them down</li>
 									</ul>
 								</div>
-								<div id="website-unblocker-result" class="tool-result"></div>
 							</div>
 
 							<!-- Filter Bypass -->
