@@ -993,7 +993,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Apply cloaker
 	if (applyCloakerBtn && cloakerResult) {
-		applyCloakerBtn.addEventListener("click", () => {
+		applyCloakerBtn.addEventListener("click", async () => {
 			console.log("Apply cloaker button clicked");
 
 			const newTitle = websiteTitleInput ? websiteTitleInput.value.trim() : "";
