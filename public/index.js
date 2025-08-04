@@ -3487,6 +3487,24 @@ body {
 		return `Protection test complete: ${passedCount}/${totalCount} measures active. Check console for details.`;
 	};
 
+	// Quick theme testing
+	window.testTheme = function(theme = 'light') {
+		console.log('🎨 Testing theme:', theme);
+
+		// Apply theme directly
+		document.body.className = '';
+		if (theme !== 'dark') {
+			document.body.classList.add(`${theme}-theme`);
+		}
+
+		// Update toggle
+		if (window.updateThemeToggleFromSettings) {
+			updateThemeToggleFromSettings(theme);
+		}
+
+		return `Theme '${theme}' applied. Available themes: dark, light, blue, purple, green, red, orange, pink, cyber, matrix`;
+	};
+
 	// Function to get current favicons
 	window.getCurrentFavicons = function() {
 		const favicons = document.querySelectorAll('link[rel*="icon"]');
