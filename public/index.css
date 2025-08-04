@@ -3538,6 +3538,23 @@ body.pink-theme {
 	--error: #e17055;
 }
 
+body.pink-theme .search-button,
+body.pink-theme .play-button,
+body.pink-theme .launch-button {
+	background: var(--primary-color);
+	border-color: var(--primary-dark);
+}
+
+body.pink-theme .search-button:hover,
+body.pink-theme .play-button:hover,
+body.pink-theme .launch-button:hover {
+	background: var(--primary-dark);
+}
+
+body.pink-theme .nav-logo {
+	background: var(--gradient-primary);
+}
+
 /* Cyberpunk Theme */
 body.cyber-theme {
 	--primary-color: #00ffff;
