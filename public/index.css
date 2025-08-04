@@ -1508,22 +1508,6 @@ body {
 	.tab-url {
 		font-size: 0.8rem;
 	}
-
-	.address-bar-input {
-		padding: 0.75rem 0.875rem 0.75rem 2.5rem;
-		font-size: 0.9rem;
-	}
-
-	.address-bar-icon {
-		left: 0.875rem;
-		width: 16px;
-		height: 16px;
-	}
-
-	.address-bar-go {
-		padding: 0.5rem 1rem;
-		font-size: 0.8rem;
-	}
 }
 
 @media (max-width: 480px) {
