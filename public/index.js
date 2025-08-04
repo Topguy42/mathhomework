@@ -363,115 +363,15 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	// Browser Tab System
-	let browserHistory = [];
-	let historyIndex = -1;
-	let currentUrl = "";
-
-	// Tab control buttons
+	// Browser Tab System Event Listeners
 	const tabBack = document.getElementById("tab-back");
 	const tabForward = document.getElementById("tab-forward");
 	const tabRefresh = document.getElementById("tab-refresh");
 	const tabHome = document.getElementById("tab-home");
 	const newTab = document.getElementById("new-tab");
 	const closeFrameButton = document.getElementById("close-frame");
-
-	// Address bar elements
 	const tabAddressInput = document.getElementById("tab-address-input");
 	const tabGo = document.getElementById("tab-go");
-	const tabUrlDisplay = document.getElementById("tab-url-display");
-	const tabSecurity = document.getElementById("tab-security");
-
-	// Update navigation button states
-	function updateNavigationButtons() {
-		if (tabBack) tabBack.disabled = historyIndex <= 0;
-		if (tabForward) tabForward.disabled = historyIndex >= browserHistory.length - 1;
-	}
-
-	// Update URL display and security indicator
-	function updateUrlDisplay(url) {
-		currentUrl = url;
-		const displayUrl = url || "vortex://home";
-
-		if (tabUrlDisplay) {
-			tabUrlDisplay.textContent = displayUrl;
-		}
-
-		if (tabAddressInput) {
-			tabAddressInput.value = url || "";
-		}
-
-		// Update security indicator
-		if (tabSecurity) {
-			if (url && url.startsWith("https://")) {
-				tabSecurity.classList.remove("insecure");
-				tabSecurity.title = "Secure connection";
-			} else if (url && url.startsWith("http://")) {
-				tabSecurity.classList.add("insecure");
-				tabSecurity.title = "Insecure connection";
-			} else {
-				tabSecurity.classList.remove("insecure");
-				tabSecurity.title = "Vortex proxy connection";
-			}
-		}
-	}
-
-	// Add URL to history
-	function addToHistory(url) {
-		if (url && url !== currentUrl) {
-			// Remove any forward history if we're navigating to a new page
-			if (historyIndex < browserHistory.length - 1) {
-				browserHistory = browserHistory.slice(0, historyIndex + 1);
-			}
-
-			browserHistory.push(url);
-			historyIndex = browserHistory.length - 1;
-			updateNavigationButtons();
-			updateUrlDisplay(url);
-		}
-	}
-
-	// Navigate to URL through proxy
-	async function navigateToUrl(url, addToHistoryFlag = true) {
-		if (!url) return;
-
-		try {
-			await registerSW();
-		} catch (err) {
-			console.error("Failed to register service worker:", err);
-			return;
-		}
-
-		const frameContainer = document.getElementById("frame-container");
-		const frame = document.getElementById("uv-frame");
-
-		// Show frame container
-		frameContainer.style.display = "flex";
-		document.body.classList.add("frame-active");
-
-		let wispUrl =
-			(location.protocol === "https:" ? "wss" : "ws") +
-			"://" +
-			location.host +
-			"/wisp/";
-
-		if ((await connection.getTransport()) !== "/epoxy/index.mjs") {
-			await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
-		}
-
-		// Use the same search logic as the main form
-		const searchEngine = document.getElementById("uv-search-engine")?.value || "https://www.google.com/search?q=%s";
-		const finalUrl = search(url, searchEngine);
-		const proxyUrl = __uv$config.prefix + __uv$config.encodeUrl(finalUrl);
-
-		frame.src = proxyUrl;
-
-		if (addToHistoryFlag) {
-			addToHistory(finalUrl);
-		} else {
-			updateUrlDisplay(finalUrl);
-		}
-	}
 
 	// Back navigation
 	if (tabBack) {
@@ -1513,7 +1413,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		if (info.network.publicIP !== "Unable to detect") {
-			recommendations.push("��� Use a VPN or proxy to hide your IP address");
+			recommendations.push("• Use a VPN or proxy to hide your IP address");
 		}
 
 		if (info.privacy.geolocation === "Available") {
