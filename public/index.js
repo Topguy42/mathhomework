@@ -132,8 +132,32 @@ function updateNavigationButtons() {
 	const tabBack = document.getElementById("tab-back");
 	const tabForward = document.getElementById("tab-forward");
 
-	if (tabBack) tabBack.disabled = historyIndex <= 0;
-	if (tabForward) tabForward.disabled = historyIndex >= browserHistory.length - 1;
+	if (tabBack) {
+		const canGoBack = historyIndex > 0;
+		tabBack.disabled = !canGoBack;
+		tabBack.title = canGoBack
+			? `Go back to ${getDisplayUrl(browserHistory[historyIndex - 1])}`
+			: "No previous page";
+	}
+
+	if (tabForward) {
+		const canGoForward = historyIndex < browserHistory.length - 1;
+		tabForward.disabled = !canGoForward;
+		tabForward.title = canGoForward
+			? `Go forward to ${getDisplayUrl(browserHistory[historyIndex + 1])}`
+			: "No next page";
+	}
+}
+
+// Helper function to get display URL for tooltips
+function getDisplayUrl(url) {
+	if (!url) return "Unknown";
+	try {
+		const urlObj = new URL(url);
+		return urlObj.hostname;
+	} catch (e) {
+		return url.length > 30 ? url.substring(0, 27) + "..." : url;
+	}
 }
 
 // Update URL display and security indicator
