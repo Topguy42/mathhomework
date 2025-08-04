@@ -1548,6 +1548,10 @@ body.frame-active .main-container {
 	display: none;
 }
 
+body.frame-active .top-nav {
+	display: none;
+}
+
 /* Service Worker Button */
 #uv-register-sw {
 	background: var(--gradient-primary);
