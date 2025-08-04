@@ -438,6 +438,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	const tabHome = document.getElementById("tab-home");
 	const newTab = document.getElementById("new-tab");
 	const closeFrameButton = document.getElementById("close-frame");
+	const tabAddressInput = document.getElementById("tab-address-input");
+	const tabUrlDisplay = document.getElementById("tab-url-display");
+	const tabUrlContainer = document.getElementById("tab-url-container");
 
 	// Back navigation
 	if (tabBack) {
