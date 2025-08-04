@@ -1355,7 +1355,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		const changes = [];
 
 		// Special handling for about:blank mode
-		if (faviconUrl === "about:blank" || (title === "" && faviconUrl === "about:blank")) {
+		if (faviconUrl === "about:blank" || title === "about:blank" ||
+			(title === "" && faviconUrl === "about:blank") ||
+			(title === "" && faviconUrl === "" && document.querySelector('.about-blank-preset.clicked'))) {
 			return await enableAboutBlankCloaking();
 		}
 
