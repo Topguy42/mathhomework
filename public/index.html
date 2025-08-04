@@ -1295,8 +1295,14 @@
 							<!-- General Settings -->
 							<div class="settings-category">
 								<h3 class="category-title">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+										/>
 									</svg>
 									General
 								</h3>
@@ -1304,13 +1310,25 @@
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">Search Engine</label>
-										<p class="setting-description">Choose your default search engine for queries</p>
+										<p class="setting-description">
+											Choose your default search engine for queries
+										</p>
 									</div>
 									<select id="default-search-engine" class="setting-select">
-										<option value="https://www.google.com/search?q=%s">Google</option>
-										<option value="https://www.bing.com/search?q=%s">Bing</option>
-										<option value="https://duckduckgo.com/?q=%s">DuckDuckGo</option>
-										<option value="https://www.startpage.com/sp/search?query=%s">Startpage</option>
+										<option value="https://www.google.com/search?q=%s">
+											Google
+										</option>
+										<option value="https://www.bing.com/search?q=%s">
+											Bing
+										</option>
+										<option value="https://duckduckgo.com/?q=%s">
+											DuckDuckGo
+										</option>
+										<option
+											value="https://www.startpage.com/sp/search?query=%s"
+										>
+											Startpage
+										</option>
 										<option value="https://searx.org/?q=%s">Searx</option>
 									</select>
 								</div>
@@ -1320,13 +1338,20 @@
 										<label class="setting-label">Homepage</label>
 										<p class="setting-description">Set a custom homepage URL</p>
 									</div>
-									<input id="homepage-url" type="text" class="setting-input" placeholder="https://example.com" />
+									<input
+										id="homepage-url"
+										type="text"
+										class="setting-input"
+										placeholder="https://example.com"
+									/>
 								</div>
 
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">Auto-open Links</label>
-										<p class="setting-description">Automatically open external links in proxy</p>
+										<p class="setting-description">
+											Automatically open external links in proxy
+										</p>
 									</div>
 									<label class="setting-toggle">
 										<input type="checkbox" id="auto-open-links" checked />
@@ -1338,8 +1363,14 @@
 							<!-- Safety -->
 							<div class="settings-category">
 								<h3 class="category-title">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M18,8A6,6 0 0,0 12,2A6,6 0 0,0 6,8H4V20H20V8H18M12,4A4,4 0 0,1 16,6V8H8V6A4,4 0 0,1 12,4M12,17A2,2 0 0,1 10,15A2,2 0 0,1 12,13A2,2 0 0,1 14,15A2,2 0 0,1 12,17Z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M18,8A6,6 0 0,0 12,2A6,6 0 0,0 6,8H4V20H20V8H18M12,4A4,4 0 0,1 16,6V8H8V6A4,4 0 0,1 12,4M12,17A2,2 0 0,1 10,15A2,2 0 0,1 12,13A2,2 0 0,1 14,15A2,2 0 0,1 12,17Z"
+										/>
 									</svg>
 									Safety
 								</h3>
@@ -1347,7 +1378,9 @@
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">About:Blank Mode</label>
-										<p class="setting-description">Makes the tab appear as a blank page for stealth browsing</p>
+										<p class="setting-description">
+											Makes the tab appear as a blank page for stealth browsing
+										</p>
 									</div>
 									<label class="setting-toggle">
 										<input type="checkbox" id="aboutblank-mode" />
@@ -1358,7 +1391,10 @@
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">Anti-GoGuardian</label>
-										<p class="setting-description">Prevents GoGuardian and similar tools from force-closing your tab</p>
+										<p class="setting-description">
+											Prevents GoGuardian and similar tools from force-closing
+											your tab
+										</p>
 									</div>
 									<label class="setting-toggle">
 										<input type="checkbox" id="anti-goguardian" />
@@ -1369,7 +1405,9 @@
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">Tab Protection</label>
-										<p class="setting-description">Enables additional protection against tab manipulation</p>
+										<p class="setting-description">
+											Enables additional protection against tab manipulation
+										</p>
 									</div>
 									<label class="setting-toggle">
 										<input type="checkbox" id="tab-protection" checked />
@@ -1380,7 +1418,9 @@
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">History Protection</label>
-										<p class="setting-description">Clears browsing history automatically</p>
+										<p class="setting-description">
+											Clears browsing history automatically
+										</p>
 									</div>
 									<label class="setting-toggle">
 										<input type="checkbox" id="history-protection" />
@@ -1392,8 +1432,14 @@
 							<!-- Privacy & Security -->
 							<div class="settings-category">
 								<h3 class="category-title">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"
+										/>
 									</svg>
 									Privacy & Security
 								</h3>
@@ -1401,7 +1447,9 @@
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">Block Tracking</label>
-										<p class="setting-description">Block tracking scripts and analytics</p>
+										<p class="setting-description">
+											Block tracking scripts and analytics
+										</p>
 									</div>
 									<label class="setting-toggle">
 										<input type="checkbox" id="block-tracking" checked />
@@ -1412,7 +1460,9 @@
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">Block Ads</label>
-										<p class="setting-description">Block advertisements and pop-ups</p>
+										<p class="setting-description">
+											Block advertisements and pop-ups
+										</p>
 									</div>
 									<label class="setting-toggle">
 										<input type="checkbox" id="block-ads" checked />
@@ -1423,7 +1473,9 @@
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">Force HTTPS</label>
-										<p class="setting-description">Automatically redirect to HTTPS when available</p>
+										<p class="setting-description">
+											Automatically redirect to HTTPS when available
+										</p>
 									</div>
 									<label class="setting-toggle">
 										<input type="checkbox" id="force-https" checked />
@@ -1434,7 +1486,9 @@
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">Clear Data on Exit</label>
-										<p class="setting-description">Clear cookies and data when closing</p>
+										<p class="setting-description">
+											Clear cookies and data when closing
+										</p>
 									</div>
 									<label class="setting-toggle">
 										<input type="checkbox" id="clear-on-exit" />
@@ -1446,8 +1500,14 @@
 							<!-- Appearance -->
 							<div class="settings-category">
 								<h3 class="category-title">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"
+										/>
 									</svg>
 									Appearance
 								</h3>
@@ -1455,7 +1515,9 @@
 								<div class="setting-item theme-setting">
 									<div class="setting-info">
 										<label class="setting-label">Theme</label>
-										<p class="setting-description">Choose your preferred color theme</p>
+										<p class="setting-description">
+											Choose your preferred color theme
+										</p>
 									</div>
 									<div class="theme-controls">
 										<select id="theme-select" class="setting-select">
@@ -1471,9 +1533,19 @@
 											<option value="matrix">🔰 Matrix Green</option>
 											<option value="auto">🔄 Auto (System)</option>
 										</select>
-										<button id="theme-preview-btn" class="theme-preview-button" type="button">
-											<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-												<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+										<button
+											id="theme-preview-btn"
+											class="theme-preview-button"
+											type="button"
+										>
+											<svg
+												viewBox="0 0 24 24"
+												fill="currentColor"
+												xmlns="http://www.w3.org/2000/svg"
+											>
+												<path
+													d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+												/>
 											</svg>
 											Preview
 										</button>
@@ -1577,7 +1649,9 @@
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">Animations</label>
-										<p class="setting-description">Enable smooth animations and transitions</p>
+										<p class="setting-description">
+											Enable smooth animations and transitions
+										</p>
 									</div>
 									<label class="setting-toggle">
 										<input type="checkbox" id="enable-animations" checked />
@@ -1588,7 +1662,9 @@
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">Compact Mode</label>
-										<p class="setting-description">Use smaller interface elements</p>
+										<p class="setting-description">
+											Use smaller interface elements
+										</p>
 									</div>
 									<label class="setting-toggle">
 										<input type="checkbox" id="compact-mode" />
@@ -1600,8 +1676,14 @@
 							<!-- Performance -->
 							<div class="settings-category">
 								<h3 class="category-title">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+										/>
 									</svg>
 									Performance
 								</h3>
@@ -1609,7 +1691,9 @@
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">Image Compression</label>
-										<p class="setting-description">Compress images to save bandwidth</p>
+										<p class="setting-description">
+											Compress images to save bandwidth
+										</p>
 									</div>
 									<label class="setting-toggle">
 										<input type="checkbox" id="image-compression" />
@@ -1620,7 +1704,9 @@
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">Cache Size</label>
-										<p class="setting-description">Amount of data to cache locally</p>
+										<p class="setting-description">
+											Amount of data to cache locally
+										</p>
 									</div>
 									<select id="cache-size" class="setting-select">
 										<option value="small">Small (100MB)</option>
@@ -1633,7 +1719,9 @@
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">Preload Links</label>
-										<p class="setting-description">Preload links on hover for faster navigation</p>
+										<p class="setting-description">
+											Preload links on hover for faster navigation
+										</p>
 									</div>
 									<label class="setting-toggle">
 										<input type="checkbox" id="preload-links" checked />
@@ -1645,8 +1733,14 @@
 							<!-- Advanced -->
 							<div class="settings-category">
 								<h3 class="category-title">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"
+										/>
 									</svg>
 									Advanced
 								</h3>
@@ -1666,18 +1760,31 @@
 									</select>
 								</div>
 
-								<div class="setting-item" id="custom-user-agent-item" style="display: none;">
+								<div
+									class="setting-item"
+									id="custom-user-agent-item"
+									style="display: none"
+								>
 									<div class="setting-info">
 										<label class="setting-label">Custom User Agent</label>
-										<p class="setting-description">Enter a custom user agent string</p>
+										<p class="setting-description">
+											Enter a custom user agent string
+										</p>
 									</div>
-									<input id="custom-user-agent" type="text" class="setting-input" placeholder="Mozilla/5.0..." />
+									<input
+										id="custom-user-agent"
+										type="text"
+										class="setting-input"
+										placeholder="Mozilla/5.0..."
+									/>
 								</div>
 
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">JavaScript</label>
-										<p class="setting-description">Enable JavaScript execution</p>
+										<p class="setting-description">
+											Enable JavaScript execution
+										</p>
 									</div>
 									<label class="setting-toggle">
 										<input type="checkbox" id="enable-javascript" checked />
@@ -1688,7 +1795,9 @@
 								<div class="setting-item">
 									<div class="setting-info">
 										<label class="setting-label">WebRTC</label>
-										<p class="setting-description">Allow WebRTC connections (may leak IP)</p>
+										<p class="setting-description">
+											Allow WebRTC connections (may leak IP)
+										</p>
 									</div>
 									<label class="setting-toggle">
 										<input type="checkbox" id="enable-webrtc" />
@@ -1701,20 +1810,38 @@
 						<!-- Action Buttons -->
 						<div class="settings-actions">
 							<button id="save-settings" class="settings-btn save-btn">
-								<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-									<path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+								<svg
+									viewBox="0 0 24 24"
+									fill="currentColor"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"
+									/>
 								</svg>
 								Save Settings
 							</button>
 							<button id="reset-settings" class="settings-btn reset-btn">
-								<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-									<path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+								<svg
+									viewBox="0 0 24 24"
+									fill="currentColor"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+									/>
 								</svg>
 								Reset to Defaults
 							</button>
 							<button id="clear-data" class="settings-btn clear-btn">
-								<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-									<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+								<svg
+									viewBox="0 0 24 24"
+									fill="currentColor"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+									/>
 								</svg>
 								Clear All Data
 							</button>
@@ -1745,14 +1872,21 @@
 					<div class="tools-container">
 						<h2 class="tools-title">Built-in Tools</h2>
 						<p class="tools-description">
-							Useful utilities and extra features to enhance your browsing experience
+							Useful utilities and extra features to enhance your browsing
+							experience
 						</p>
 
 						<div class="tools-grid">
 							<div class="tool-card active" data-tool="site-checker">
 								<div class="tool-icon">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"
+										/>
 									</svg>
 								</div>
 								<span class="tool-label">Site Checker</span>
@@ -1760,8 +1894,14 @@
 
 							<div class="tool-card" data-tool="dns-tools">
 								<div class="tool-icon">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12A2.5 2.5 0 0 0 8.5 9.5a2.5 2.5 0 0 0-2.4 3.2c-.8.3-1.6.8-2.1 1.6-.9 1.5-.6 3.4.8 4.7C5.8 19.4 7.2 20 8.5 20c1.3 0 2.7-.6 3.7-1.6 1-1 1.6-2.4 1.6-3.7a5.9 5.9 0 0 0-.3-1.8A2.5 2.5 0 0 0 8.5 14.5zm7.5-9.5c2.8 0 5 2.2 5 5s-2.2 5-5 5-5-2.2-5-5 2.2-5 5-5z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M8.5 14.5A2.5 2.5 0 0 0 11 12A2.5 2.5 0 0 0 8.5 9.5a2.5 2.5 0 0 0-2.4 3.2c-.8.3-1.6.8-2.1 1.6-.9 1.5-.6 3.4.8 4.7C5.8 19.4 7.2 20 8.5 20c1.3 0 2.7-.6 3.7-1.6 1-1 1.6-2.4 1.6-3.7a5.9 5.9 0 0 0-.3-1.8A2.5 2.5 0 0 0 8.5 14.5zm7.5-9.5c2.8 0 5 2.2 5 5s-2.2 5-5 5-5-2.2-5-5 2.2-5 5-5z"
+										/>
 									</svg>
 								</div>
 								<span class="tool-label">DNS Tools</span>
@@ -1769,8 +1909,14 @@
 
 							<div class="tool-card" data-tool="proxy-finder">
 								<div class="tool-icon">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+										/>
 									</svg>
 								</div>
 								<span class="tool-label">Proxy Finder</span>
@@ -1778,8 +1924,14 @@
 
 							<div class="tool-card" data-tool="filter-bypass">
 								<div class="tool-icon">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+										/>
 									</svg>
 								</div>
 								<span class="tool-label">Filter Bypass</span>
@@ -1787,8 +1939,14 @@
 
 							<div class="tool-card" data-tool="referrer-control">
 								<div class="tool-icon">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M17 7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h10c2.76 0 5-2.24 5-5s-2.24-5-5-5zM7 15c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M17 7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h10c2.76 0 5-2.24 5-5s-2.24-5-5-5zM7 15c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"
+										/>
 									</svg>
 								</div>
 								<span class="tool-label">Referrer Control</span>
@@ -1796,8 +1954,14 @@
 
 							<div class="tool-card" data-tool="cloaker">
 								<div class="tool-icon">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.86 9.14 5 13z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.86 9.14 5 13z"
+										/>
 									</svg>
 								</div>
 								<span class="tool-label">Cloaker</span>
@@ -1805,8 +1969,14 @@
 
 							<div class="tool-card" data-tool="search-engine">
 								<div class="tool-icon">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+										/>
 									</svg>
 								</div>
 								<span class="tool-label">Search Engine</span>
@@ -1814,8 +1984,14 @@
 
 							<div class="tool-card" data-tool="privacy-check">
 								<div class="tool-icon">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"
+										/>
 									</svg>
 								</div>
 								<span class="tool-label">Privacy Check</span>
@@ -1827,15 +2003,29 @@
 							<!-- Site Checker -->
 							<div id="site-checker-interface" class="tool-interface active">
 								<h3 class="tool-interface-title">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"
+										/>
 									</svg>
 									Site Checker
 								</h3>
-								<p class="tool-interface-description">Check if websites are accessible and find alternatives</p>
+								<p class="tool-interface-description">
+									Check if websites are accessible and find alternatives
+								</p>
 								<div class="tool-input-container">
-									<input id="site-checker-input" type="text" placeholder="Enter website URL (e.g., wikipedia.org)" />
-									<button id="site-checker-btn" class="tool-button">Check Website Access</button>
+									<input
+										id="site-checker-input"
+										type="text"
+										placeholder="Enter website URL (e.g., wikipedia.org)"
+									/>
+									<button id="site-checker-btn" class="tool-button">
+										Check Website Access
+									</button>
 								</div>
 								<div id="site-checker-result" class="tool-result"></div>
 							</div>
@@ -1843,14 +2033,26 @@
 							<!-- DNS Tools -->
 							<div id="dns-tools-interface" class="tool-interface">
 								<h3 class="tool-interface-title">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12A2.5 2.5 0 0 0 8.5 9.5a2.5 2.5 0 0 0-2.4 3.2c-.8.3-1.6.8-2.1 1.6-.9 1.5-.6 3.4.8 4.7C5.8 19.4 7.2 20 8.5 20c1.3 0 2.7-.6 3.7-1.6 1-1 1.6-2.4 1.6-3.7a5.9 5.9 0 0 0-.3-1.8A2.5 2.5 0 0 0 8.5 14.5zm7.5-9.5c2.8 0 5 2.2 5 5s-2.2 5-5 5-5-2.2-5-5 2.2-5 5-5z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M8.5 14.5A2.5 2.5 0 0 0 11 12A2.5 2.5 0 0 0 8.5 9.5a2.5 2.5 0 0 0-2.4 3.2c-.8.3-1.6.8-2.1 1.6-.9 1.5-.6 3.4.8 4.7C5.8 19.4 7.2 20 8.5 20c1.3 0 2.7-.6 3.7-1.6 1-1 1.6-2.4 1.6-3.7a5.9 5.9 0 0 0-.3-1.8A2.5 2.5 0 0 0 8.5 14.5zm7.5-9.5c2.8 0 5 2.2 5 5s-2.2 5-5 5-5-2.2-5-5 2.2-5 5-5z"
+										/>
 									</svg>
 									DNS Tools
 								</h3>
-								<p class="tool-interface-description">Lookup DNS records and analyze domain information</p>
+								<p class="tool-interface-description">
+									Lookup DNS records and analyze domain information
+								</p>
 								<div class="tool-input-container">
-									<input id="dns-tools-input" type="text" placeholder="Enter domain name (e.g., google.com)" />
+									<input
+										id="dns-tools-input"
+										type="text"
+										placeholder="Enter domain name (e.g., google.com)"
+									/>
 									<select id="dns-record-type" class="tool-select">
 										<option value="A">A Record</option>
 										<option value="AAAA">AAAA Record</option>
@@ -1859,7 +2061,9 @@
 										<option value="TXT">TXT Record</option>
 										<option value="NS">NS Record</option>
 									</select>
-									<button id="dns-tools-btn" class="tool-button">Lookup DNS</button>
+									<button id="dns-tools-btn" class="tool-button">
+										Lookup DNS
+									</button>
 								</div>
 								<div id="dns-tools-result" class="tool-result"></div>
 							</div>
@@ -1867,12 +2071,20 @@
 							<!-- Proxy Finder -->
 							<div id="proxy-finder-interface" class="tool-interface">
 								<h3 class="tool-interface-title">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+										/>
 									</svg>
 									Proxy Finder
 								</h3>
-								<p class="tool-interface-description">Find and test public proxy servers</p>
+								<p class="tool-interface-description">
+									Find and test public proxy servers
+								</p>
 								<div class="tool-input-container">
 									<select id="proxy-country" class="tool-select">
 										<option value="all">All Countries</option>
@@ -1890,7 +2102,9 @@
 										<option value="socks4">SOCKS4</option>
 										<option value="socks5">SOCKS5</option>
 									</select>
-									<button id="proxy-finder-btn" class="tool-button">Find Proxies</button>
+									<button id="proxy-finder-btn" class="tool-button">
+										Find Proxies
+									</button>
 								</div>
 								<div id="proxy-finder-result" class="tool-result"></div>
 							</div>
@@ -1898,15 +2112,29 @@
 							<!-- Filter Bypass -->
 							<div id="filter-bypass-interface" class="tool-interface">
 								<h3 class="tool-interface-title">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+										/>
 									</svg>
 									Filter Bypass
 								</h3>
-								<p class="tool-interface-description">Generate alternative URLs to bypass content filters</p>
+								<p class="tool-interface-description">
+									Generate alternative URLs to bypass content filters
+								</p>
 								<div class="tool-input-container">
-									<input id="filter-bypass-input" type="text" placeholder="Enter URL to generate bypass alternatives" />
-									<button id="filter-bypass-btn" class="tool-button">Generate Bypass URLs</button>
+									<input
+										id="filter-bypass-input"
+										type="text"
+										placeholder="Enter URL to generate bypass alternatives"
+									/>
+									<button id="filter-bypass-btn" class="tool-button">
+										Generate Bypass URLs
+									</button>
 								</div>
 								<div id="filter-bypass-result" class="tool-result"></div>
 							</div>
@@ -1914,12 +2142,20 @@
 							<!-- Referrer Control -->
 							<div id="referrer-control-interface" class="tool-interface">
 								<h3 class="tool-interface-title">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M17 7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h10c2.76 0 5-2.24 5-5s-2.24-5-5-5zM7 15c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M17 7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h10c2.76 0 5-2.24 5-5s-2.24-5-5-5zM7 15c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"
+										/>
 									</svg>
 									Referrer Control
 								</h3>
-								<p class="tool-interface-description">Control and customize HTTP referrer headers</p>
+								<p class="tool-interface-description">
+									Control and customize HTTP referrer headers
+								</p>
 								<div class="tool-input-container">
 									<select id="referrer-policy" class="tool-select">
 										<option value="no-referrer">No Referrer</option>
@@ -1928,8 +2164,15 @@
 										<option value="strict-origin">Strict Origin</option>
 										<option value="custom">Custom Referrer</option>
 									</select>
-									<input id="custom-referrer" type="text" placeholder="Custom referrer URL" style="display: none;" />
-									<button id="referrer-control-btn" class="tool-button">Apply Referrer Policy</button>
+									<input
+										id="custom-referrer"
+										type="text"
+										placeholder="Custom referrer URL"
+										style="display: none"
+									/>
+									<button id="referrer-control-btn" class="tool-button">
+										Apply Referrer Policy
+									</button>
 								</div>
 								<div id="referrer-control-result" class="tool-result"></div>
 							</div>
@@ -1937,28 +2180,66 @@
 							<!-- Cloaker -->
 							<div id="cloaker-interface" class="tool-interface">
 								<h3 class="tool-interface-title">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"
+										/>
 									</svg>
 									Cloaker
 								</h3>
-								<p class="tool-interface-description">Change website title and favicon for privacy</p>
+								<p class="tool-interface-description">
+									Change website title and favicon for privacy
+								</p>
 								<div class="tool-input-container">
 									<div class="cloak-input-group">
-										<label for="website-title" class="cloak-label">Website Title:</label>
-										<input id="website-title" type="text" placeholder="e.g., Google Classroom, Khan Academy, etc." class="cloak-input" />
-										<small class="cloak-hint">This will change the title shown in your browser tab</small>
+										<label for="website-title" class="cloak-label"
+											>Website Title:</label
+										>
+										<input
+											id="website-title"
+											type="text"
+											placeholder="e.g., Google Classroom, Khan Academy, etc."
+											class="cloak-input"
+										/>
+										<small class="cloak-hint"
+											>This will change the title shown in your browser
+											tab</small
+										>
 									</div>
 
 									<div class="cloak-input-group">
-										<label for="favicon-url" class="cloak-label">Favicon URL:</label>
-										<input id="favicon-url" type="text" placeholder="https://example.com/favicon.ico" class="cloak-input" />
-										<small class="cloak-hint">This will change the icon shown in your browser tab</small>
+										<label for="favicon-url" class="cloak-label"
+											>Favicon URL:</label
+										>
+										<input
+											id="favicon-url"
+											type="text"
+											placeholder="https://example.com/favicon.ico"
+											class="cloak-input"
+										/>
+										<small class="cloak-hint"
+											>This will change the icon shown in your browser
+											tab</small
+										>
 									</div>
 
 									<div class="cloak-buttons">
-										<button id="apply-cloaker-btn" class="tool-button cloak-apply">Apply Cloaker</button>
-										<button id="restore-original-btn" class="tool-button cloak-restore">Restore Original</button>
+										<button
+											id="apply-cloaker-btn"
+											class="tool-button cloak-apply"
+										>
+											Apply Cloaker
+										</button>
+										<button
+											id="restore-original-btn"
+											class="tool-button cloak-restore"
+										>
+											Restore Original
+										</button>
 									</div>
 								</div>
 
@@ -1968,19 +2249,35 @@
 										Quick Presets:
 									</h4>
 									<div class="presets-grid">
-										<button class="preset-btn" data-title="Google Classroom" data-favicon="https://classroom.google.com/favicon.ico">
+										<button
+											class="preset-btn"
+											data-title="Google Classroom"
+											data-favicon="https://classroom.google.com/favicon.ico"
+										>
 											<span class="preset-icon">📚</span>
 											<span class="preset-label">Google Classroom</span>
 										</button>
-										<button class="preset-btn" data-title="Khan Academy" data-favicon="https://cdn.kastatic.org/images/favicon.ico">
+										<button
+											class="preset-btn"
+											data-title="Khan Academy"
+											data-favicon="https://cdn.kastatic.org/images/favicon.ico"
+										>
 											<span class="preset-icon">➕</span>
 											<span class="preset-label">Khan Academy</span>
 										</button>
-										<button class="preset-btn" data-title="Google Docs" data-favicon="https://docs.google.com/favicon.ico">
+										<button
+											class="preset-btn"
+											data-title="Google Docs"
+											data-favicon="https://docs.google.com/favicon.ico"
+										>
 											<span class="preset-icon">📄</span>
 											<span class="preset-label">Google Docs</span>
 										</button>
-										<button class="preset-btn" data-title="Wikipedia" data-favicon="https://wikipedia.org/favicon.ico">
+										<button
+											class="preset-btn"
+											data-title="Wikipedia"
+											data-favicon="https://wikipedia.org/favicon.ico"
+										>
 											<span class="preset-icon">📖</span>
 											<span class="preset-label">Wikipedia</span>
 										</button>
@@ -2004,14 +2301,26 @@
 							<!-- Search Engine -->
 							<div id="search-engine-interface" class="tool-interface">
 								<h3 class="tool-interface-title">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+										/>
 									</svg>
 									Search Engine
 								</h3>
-								<p class="tool-interface-description">Search across multiple search engines anonymously</p>
+								<p class="tool-interface-description">
+									Search across multiple search engines anonymously
+								</p>
 								<div class="tool-input-container">
-									<input id="search-engine-input" type="text" placeholder="Enter search query" />
+									<input
+										id="search-engine-input"
+										type="text"
+										placeholder="Enter search query"
+									/>
 									<select id="search-provider" class="tool-select">
 										<option value="google">Google</option>
 										<option value="bing">Bing</option>
@@ -2019,7 +2328,9 @@
 										<option value="startpage">Startpage</option>
 										<option value="searx">Searx</option>
 									</select>
-									<button id="search-engine-btn" class="tool-button">Anonymous Search</button>
+									<button id="search-engine-btn" class="tool-button">
+										Anonymous Search
+									</button>
 								</div>
 								<div id="search-engine-result" class="tool-result"></div>
 							</div>
@@ -2027,14 +2338,24 @@
 							<!-- Privacy Check -->
 							<div id="privacy-check-interface" class="tool-interface">
 								<h3 class="tool-interface-title">
-									<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+									<svg
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"
+										/>
 									</svg>
 									Privacy Check
 								</h3>
-								<p class="tool-interface-description">Analyze your current privacy and security status</p>
+								<p class="tool-interface-description">
+									Analyze your current privacy and security status
+								</p>
 								<div class="tool-input-container">
-									<button id="privacy-check-btn" class="tool-button">Run Privacy Check</button>
+									<button id="privacy-check-btn" class="tool-button">
+										Run Privacy Check
+									</button>
 								</div>
 								<div id="privacy-check-result" class="tool-result"></div>
 							</div>
