@@ -2811,6 +2811,37 @@ setInterval(() => {
 		}
 	};
 
+	// Debug function to test favicon URLs
+	window.testFavicon = function(url) {
+		console.log("Testing favicon URL:", url);
+
+		const img = new Image();
+		img.crossOrigin = "anonymous";
+
+		img.onload = () => {
+			console.log("✅ Favicon URL is accessible:", url);
+			console.log("Image dimensions:", img.width, "x", img.height);
+		};
+
+		img.onerror = (e) => {
+			console.error("❌ Favicon URL failed to load:", url, e);
+		};
+
+		img.src = url;
+
+		return "Check console for results...";
+	};
+
+	// Function to get current favicons
+	window.getCurrentFavicons = function() {
+		const favicons = document.querySelectorAll('link[rel*="icon"]');
+		console.log("Current favicons:");
+		favicons.forEach((favicon, index) => {
+			console.log(`${index + 1}. rel="${favicon.rel}" href="${favicon.href}"`);
+		});
+		return favicons.length;
+	};
+
 	window.testRestore = function () {
 		console.log("Testing restore original");
 		try {
