@@ -499,10 +499,14 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	// Apply cloaker
-	if (applyCloakerBtn) {
+	if (applyCloakerBtn && cloakerResult) {
 		applyCloakerBtn.addEventListener("click", () => {
-			const newTitle = websiteTitleInput.value.trim();
-			const newFavicon = faviconUrlInput.value.trim();
+			console.log("Apply cloaker button clicked");
+
+			const newTitle = websiteTitleInput ? websiteTitleInput.value.trim() : "";
+			const newFavicon = faviconUrlInput ? faviconUrlInput.value.trim() : "";
+
+			console.log("Cloaker inputs:", { newTitle, newFavicon });
 
 			if (!newTitle && !newFavicon) {
 				showResult(
@@ -517,11 +521,15 @@ document.addEventListener("DOMContentLoaded", () => {
 			try {
 				const result = applyCloaking(newTitle, newFavicon);
 				showResult(cloakerResult, result, "success");
+				console.log("Cloaking applied successfully");
 			} catch (error) {
+				console.error("Cloaking error:", error);
 				showResult(cloakerResult, `Error: ${error.message}`, "error");
 			}
 			setLoading(applyCloakerBtn, false);
 		});
+	} else {
+		console.error("Cloaker button or result element not found");
 	}
 
 	// Restore original
@@ -637,7 +645,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				return `❌ Site may be blocked or inaccessible\n\nURL: ${cleanUrl}\nStatus: ${data.status.http_code}\n\nSuggested alternatives:\n• Try proxy access\n• Check for typos in URL\n• Site might be temporarily down`;
 			}
 		} catch (error) {
-			return `❌ Unable to check site access\n\nPossible reasons:\n• Network connectivity issues\n�� Site is completely blocked\n• Invalid URL format\n\nTry using our proxy to access the site directly.`;
+			return `�� Unable to check site access\n\nPossible reasons:\n• Network connectivity issues\n�� Site is completely blocked\n• Invalid URL format\n\nTry using our proxy to access the site directly.`;
 		}
 	}
 
