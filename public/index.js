@@ -33,15 +33,16 @@ async function navigateToUrl(url, addToHistoryFlag = true) {
 	const frameContainer = document.getElementById("frame-container");
 	const frame = document.getElementById("uv-frame");
 
-	// Show loading state
+	// Show frame container first
+	frameContainer.style.display = "flex";
+	document.body.classList.add("frame-active");
+
+	// Show loading animation
+	showLoading(url);
 	setNavigationLoading(true);
 
 	try {
 		await registerSW();
-
-		// Show frame container
-		frameContainer.style.display = "flex";
-		document.body.classList.add("frame-active");
 
 		let wispUrl =
 			(location.protocol === "https:" ? "wss" : "ws") +
@@ -69,21 +70,32 @@ async function navigateToUrl(url, addToHistoryFlag = true) {
 		// Set up frame load event listeners
 		frame.onload = () => {
 			setNavigationLoading(false);
+			hideLoading();
 		};
 
 		frame.onerror = () => {
 			setNavigationLoading(false);
+			hideLoading();
 			console.error("Failed to load URL:", finalUrl);
+
+			// Show error in loading overlay briefly
+			const loadingSubtitle = document.getElementById("loading-subtitle");
+			if (loadingSubtitle) {
+				loadingSubtitle.textContent = "Failed to load page";
+				loadingSubtitle.style.color = "var(--error)";
+			}
 		};
 
 	} catch (err) {
 		console.error("Failed to navigate:", err);
 		setNavigationLoading(false);
+		hideLoading();
 
-		// Show error in address bar or status
-		const tabUrlDisplay = document.getElementById("tab-url-display");
-		if (tabUrlDisplay) {
-			tabUrlDisplay.textContent = "Failed to load: " + url;
+		// Show error in loading overlay
+		const loadingSubtitle = document.getElementById("loading-subtitle");
+		if (loadingSubtitle) {
+			loadingSubtitle.textContent = "Connection failed";
+			loadingSubtitle.style.color = "var(--error)";
 		}
 	}
 }
