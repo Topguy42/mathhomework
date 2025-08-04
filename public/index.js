@@ -1310,7 +1310,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	function applyCloaking(title, faviconUrl) {
+	async function applyCloaking(title, faviconUrl) {
 		const changes = [];
 
 		// Change page title
