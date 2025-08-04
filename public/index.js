@@ -1355,74 +1355,124 @@ document.addEventListener("DOMContentLoaded", () => {
 			console.log("Setting favicon:", faviconUrl);
 
 			try {
-				// Convert external favicon to data URL to bypass CORS issues
-				await convertFaviconToDataUrl(faviconUrl);
+				// Try multiple methods to get the favicon working
+				await applyFaviconWithFallbacks(faviconUrl);
 			} catch (error) {
-				console.error("Error converting favicon:", error);
-				// Fallback to direct method if conversion fails
+				console.error("All favicon methods failed:", error);
 				setFaviconDirectly(faviconUrl);
+			}
+
+			async function applyFaviconWithFallbacks(url) {
+				console.log("Applying favicon with fallbacks:", url);
+
+				// Method 1: Try to fetch through the existing Ultraviolet proxy
+				try {
+					console.log("Trying Method 1: Proxy fetch");
+					await fetchFaviconThroughProxy(url);
+					return;
+				} catch (error) {
+					console.warn("Method 1 failed:", error.message);
+				}
+
+				// Method 2: Try direct fetch with CORS
+				try {
+					console.log("Trying Method 2: Direct CORS fetch");
+					await convertFaviconToDataUrl(url);
+					return;
+				} catch (error) {
+					console.warn("Method 2 failed:", error.message);
+				}
+
+				// Method 3: Try using public CORS proxy services
+				try {
+					console.log("Trying Method 3: Public CORS proxy");
+					await fetchFaviconWithCorsProxy(url);
+					return;
+				} catch (error) {
+					console.warn("Method 3 failed:", error.message);
+				}
+
+				// Method 4: Direct setting (will show grey globe if CORS blocked)
+				console.log("Using Method 4: Direct setting (fallback)");
+				setFaviconDirectly(url);
+			}
+
+			async function fetchFaviconThroughProxy(url) {
+				// Use the same proxy mechanism as the main site
+				if (typeof __uv$config !== 'undefined') {
+					const proxyUrl = __uv$config.prefix + __uv$config.encodeUrl(url);
+					console.log("Trying to fetch favicon through UV proxy:", proxyUrl);
+
+					const response = await fetch(proxyUrl);
+					if (!response.ok) {
+						throw new Error(`Proxy fetch failed: ${response.status}`);
+					}
+
+					const blob = await response.blob();
+					const dataUrl = await blobToDataUrl(blob);
+					console.log("✅ Successfully fetched favicon through proxy");
+					setFaviconFromDataUrl(dataUrl);
+				} else {
+					throw new Error("UV proxy not available");
+				}
+			}
+
+			async function fetchFaviconWithCorsProxy(url) {
+				// Try a few different public CORS proxies
+				const corsProxies = [
+					'https://corsproxy.io/?',
+					'https://cors-anywhere.herokuapp.com/',
+					'https://api.allorigins.win/raw?url='
+				];
+
+				for (const proxy of corsProxies) {
+					try {
+						const proxyUrl = proxy + encodeURIComponent(url);
+						console.log("Trying CORS proxy:", proxy);
+
+						const response = await fetch(proxyUrl);
+						if (!response.ok) {
+							throw new Error(`HTTP ${response.status}`);
+						}
+
+						const blob = await response.blob();
+						const dataUrl = await blobToDataUrl(blob);
+						console.log("✅ Successfully fetched through CORS proxy");
+						setFaviconFromDataUrl(dataUrl);
+						return;
+					} catch (error) {
+						console.warn(`CORS proxy ${proxy} failed:`, error.message);
+					}
+				}
+
+				throw new Error("All CORS proxies failed");
 			}
 
 			async function convertFaviconToDataUrl(url) {
 				console.log("Converting favicon to data URL:", url);
 
-				try {
-					// Use a CORS proxy or try to fetch the image
-					const response = await fetch(url, {
-						mode: 'cors',
-						credentials: 'omit'
-					});
+				const response = await fetch(url, {
+					mode: 'cors',
+					credentials: 'omit'
+				});
 
-					if (!response.ok) {
-						throw new Error(`HTTP ${response.status}`);
-					}
-
-					const blob = await response.blob();
-					const reader = new FileReader();
-
-					reader.onload = function(e) {
-						const dataUrl = e.target.result;
-						console.log("✅ Successfully converted favicon to data URL");
-						setFaviconFromDataUrl(dataUrl);
-					};
-
-					reader.onerror = function() {
-						console.warn("Failed to convert to data URL, trying direct method");
-						setFaviconDirectly(url);
-					};
-
-					reader.readAsDataURL(blob);
-
-				} catch (error) {
-					console.warn("Fetch failed, trying alternative methods:", error.message);
-
-					// Try using a canvas approach as fallback
-					const img = new Image();
-					img.crossOrigin = 'anonymous';
-
-					img.onload = function() {
-						try {
-							const canvas = document.createElement('canvas');
-							const ctx = canvas.getContext('2d');
-							canvas.width = img.width || 16;
-							canvas.height = img.height || 16;
-							ctx.drawImage(img, 0, 0);
-							const dataUrl = canvas.toDataURL();
-							console.log("✅ Converted favicon using canvas method");
-							setFaviconFromDataUrl(dataUrl);
-						} catch (canvasError) {
-							console.warn("Canvas conversion failed, using direct method:", canvasError);
-							setFaviconDirectly(url);
-						}
-					};
-
-					img.onerror = function() {
-						console.warn("Image load failed, using direct method");
-						setFaviconDirectly(url);
-					};
-
-					img.src = url;
+				if (!response.ok) {
+					throw new Error(`HTTP ${response.status}`);
 				}
+
+				const blob = await response.blob();
+				const dataUrl = await blobToDataUrl(blob);
+				console.log("✅ Successfully converted favicon to data URL");
+				setFaviconFromDataUrl(dataUrl);
+			}
+
+			function blobToDataUrl(blob) {
+				return new Promise((resolve, reject) => {
+					const reader = new FileReader();
+					reader.onload = () => resolve(reader.result);
+					reader.onerror = reject;
+					reader.readAsDataURL(blob);
+				});
 			}
 
 			function setFaviconFromDataUrl(dataUrl) {
@@ -1489,7 +1539,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			return "❌ No changes applied. Please provide a title or favicon URL.";
 		}
 
-		return `����️ Cloaking Applied Successfully!\n\n${changes.join("\n")}\n\n😎 Your browser tab now appears as a different website for privacy.\n\n⚠️ Remember to restore the original settings when you're done to avoid confusion.`;
+		return `🕵️ Cloaking Applied Successfully!\n\n${changes.join("\n")}\n\n😎 Your browser tab now appears as a different website for privacy.\n\n⚠️ Remember to restore the original settings when you're done to avoid confusion.`;
 	}
 
 	function restoreOriginal() {
