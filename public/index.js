@@ -1096,6 +1096,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 				console.log("Preset data:", { title, favicon });
 
+				// Special handling for about:blank preset
+				if (btn.classList.contains("about-blank-preset") || favicon === "about:blank") {
+					console.log("About:blank preset detected");
+					if (websiteTitleInput) websiteTitleInput.value = "";
+					if (faviconUrlInput) faviconUrlInput.value = "about:blank";
+
+					// Auto-apply about:blank mode
+					setLoading(btn, true);
+					try {
+						const result = await enableAboutBlankCloaking();
+						showResult(cloakerResult, result, "success");
+					} catch (error) {
+						console.error("About:blank error:", error);
+						showResult(cloakerResult, `Error: ${error.message}`, "error");
+					}
+					setLoading(btn, false);
+					return;
+				}
+
 				if (websiteTitleInput) websiteTitleInput.value = title || "";
 				if (faviconUrlInput) faviconUrlInput.value = favicon || "";
 
