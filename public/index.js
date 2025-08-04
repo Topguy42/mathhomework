@@ -1612,8 +1612,12 @@ document.addEventListener("DOMContentLoaded", () => {
 				window.aboutBlankInterval = null;
 			}
 
-			// Remove about:blank styling
+			// Remove about:blank styling and toggle
 			document.body.classList.remove("about-blank-active");
+			const aboutBlankToggle = document.getElementById("about-blank-toggle");
+			if (aboutBlankToggle) {
+				aboutBlankToggle.remove();
+			}
 			window.isAboutBlankMode = false;
 			changes.push("✅ About:blank mode disabled");
 		}
