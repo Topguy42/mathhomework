@@ -1781,6 +1781,26 @@ document.addEventListener("DOMContentLoaded", () => {
 		document.body.appendChild(toggleBtn);
 	}
 
+	// Add keyboard shortcut for quick about:blank activation (Ctrl+Shift+B)
+	document.addEventListener('keydown', (e) => {
+		if (e.ctrlKey && e.shiftKey && e.key === 'B') {
+			e.preventDefault();
+
+			if (window.isAboutBlankMode) {
+				// If already in about:blank mode, restore
+				const restoreBtn = document.getElementById("restore-original-btn");
+				if (restoreBtn) {
+					restoreBtn.click();
+				}
+			} else {
+				// Apply about:blank mode
+				applyCloaking("", "about:blank").then(result => {
+					console.log("Quick about:blank activated:", result);
+				});
+			}
+		}
+	});
+
 	async function anonymousSearch(query, provider) {
 		const searchUrls = {
 			google: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
