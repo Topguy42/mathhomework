@@ -522,6 +522,32 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Address bar functionality
 	let isEditingAddress = false;
 
+	function startEditingAddress() {
+		const tabAddressInput = document.getElementById("tab-address-input");
+		const tabUrlDisplay = document.getElementById("tab-url-display");
+
+		if (tabAddressInput && tabUrlDisplay) {
+			isEditingAddress = true;
+			tabAddressInput.style.display = "block";
+			tabUrlDisplay.style.display = "none";
+			tabAddressInput.value = currentUrl || "";
+			tabAddressInput.focus();
+			tabAddressInput.select();
+		}
+	}
+
+	function stopEditingAddress() {
+		const tabAddressInput = document.getElementById("tab-address-input");
+		const tabUrlDisplay = document.getElementById("tab-url-display");
+
+		if (tabAddressInput && tabUrlDisplay) {
+			isEditingAddress = false;
+			tabAddressInput.style.display = "none";
+			tabUrlDisplay.style.display = "block";
+			tabAddressInput.value = "";
+		}
+	}
+
 	// Click on URL container to edit
 	if (tabUrlContainer) {
 		tabUrlContainer.addEventListener("click", () => {
@@ -551,26 +577,6 @@ document.addEventListener("DOMContentLoaded", () => {
 				stopEditingAddress();
 			}, 100);
 		});
-	}
-
-	function startEditingAddress() {
-		if (tabAddressInput && tabUrlDisplay) {
-			isEditingAddress = true;
-			tabAddressInput.style.display = "block";
-			tabUrlDisplay.style.display = "none";
-			tabAddressInput.value = currentUrl || "";
-			tabAddressInput.focus();
-			tabAddressInput.select();
-		}
-	}
-
-	function stopEditingAddress() {
-		if (tabAddressInput && tabUrlDisplay) {
-			isEditingAddress = false;
-			tabAddressInput.style.display = "none";
-			tabUrlDisplay.style.display = "block";
-			tabAddressInput.value = "";
-		}
 	}
 
 	// Keyboard shortcuts for browser navigation
