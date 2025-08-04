@@ -1808,6 +1808,15 @@ body {
 		font-size: 0.75rem;
 		padding: 0.375rem;
 	}
+
+	.step.completed {
+		padding-right: 1.5rem; /* Adjust for smaller screens */
+	}
+
+	.step.completed::after {
+		font-size: 0.75rem;
+		right: 0.375rem;
+	}
 }
 
 /* Prevent scrolling when frame is active */
