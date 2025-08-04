@@ -464,18 +464,74 @@ document.addEventListener("DOMContentLoaded", () => {
 		closeFrameButton.addEventListener("click", closeFrame);
 	}
 
-	// Also allow ESC key to close frame
+	// Keyboard shortcuts for browser navigation
 	document.addEventListener("keydown", (event) => {
-		if (
-			event.key === "Escape" &&
-			document.body.classList.contains("frame-active")
-		) {
-			const frameContainer = document.getElementById("frame-container");
-			const frame = document.getElementById("uv-frame");
+		if (document.body.classList.contains("frame-active")) {
+			// Check if focus is in the address bar
+			const addressBar = document.getElementById("tab-address-input");
+			const isAddressBarFocused = document.activeElement === addressBar;
 
-			frameContainer.style.display = "none";
-			frame.src = "";
-			document.body.classList.remove("frame-active");
+			// ESC key to close frame
+			if (event.key === "Escape") {
+				closeFrame();
+				return;
+			}
+
+			// Only handle navigation shortcuts if address bar is not focused
+			if (!isAddressBarFocused) {
+				// Ctrl+L or F6 to focus address bar
+				if ((event.ctrlKey && event.key === "l") || event.key === "F6") {
+					event.preventDefault();
+					if (addressBar) {
+						addressBar.focus();
+						addressBar.select();
+					}
+					return;
+				}
+
+				// Alt+Left Arrow for back
+				if (event.altKey && event.key === "ArrowLeft") {
+					event.preventDefault();
+					if (historyIndex > 0) {
+						historyIndex--;
+						const url = browserHistory[historyIndex];
+						navigateToUrl(url, false);
+						updateNavigationButtons();
+					}
+					return;
+				}
+
+				// Alt+Right Arrow for forward
+				if (event.altKey && event.key === "ArrowRight") {
+					event.preventDefault();
+					if (historyIndex < browserHistory.length - 1) {
+						historyIndex++;
+						const url = browserHistory[historyIndex];
+						navigateToUrl(url, false);
+						updateNavigationButtons();
+					}
+					return;
+				}
+
+				// F5 or Ctrl+R for refresh
+				if (event.key === "F5" || (event.ctrlKey && event.key === "r")) {
+					event.preventDefault();
+					const frame = document.getElementById("uv-frame");
+					if (frame && frame.src) {
+						const currentSrc = frame.src;
+						const separator = currentSrc.includes('?') ? '&' : '?';
+						frame.src = currentSrc + separator + '_refresh=' + Date.now();
+					}
+					return;
+				}
+
+				// Alt+Home for home
+				if (event.altKey && event.key === "Home") {
+					event.preventDefault();
+					closeFrame();
+					return;
+				}
+			}
 		}
 	});
 
