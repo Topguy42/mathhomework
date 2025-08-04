@@ -3498,6 +3498,23 @@ body.orange-theme {
 	--error: #e17055;
 }
 
+body.orange-theme .search-button,
+body.orange-theme .play-button,
+body.orange-theme .launch-button {
+	background: var(--primary-color);
+	border-color: var(--primary-dark);
+}
+
+body.orange-theme .search-button:hover,
+body.orange-theme .play-button:hover,
+body.orange-theme .launch-button:hover {
+	background: var(--primary-dark);
+}
+
+body.orange-theme .nav-logo {
+	background: var(--gradient-primary);
+}
+
 /* Pink Theme */
 body.pink-theme {
 	--primary-color: #e84393;
