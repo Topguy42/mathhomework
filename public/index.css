@@ -3762,6 +3762,65 @@ body.orange-theme .launch-button:hover {
 	background: var(--primary-dark);
 }
 
+body.orange-theme {
+	background:
+		radial-gradient(
+			circle at 20% 20%,
+			rgba(243, 156, 18, 0.15) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 80% 80%,
+			rgba(253, 203, 110, 0.15) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 40% 60%,
+			rgba(225, 112, 85, 0.1) 0%,
+			transparent 50%
+		),
+		linear-gradient(
+			135deg,
+			#3d2914 0%,
+			#5a3d20 50%,
+			#3d2914 100%
+		);
+}
+
+body.orange-theme .background-animation {
+	background:
+		radial-gradient(
+			circle at 30% 30%,
+			rgba(243, 156, 18, 0.08) 0%,
+			transparent 60%
+		),
+		radial-gradient(
+			circle at 70% 70%,
+			rgba(253, 203, 110, 0.08) 0%,
+			transparent 60%
+		);
+}
+
+body.orange-theme .gradient-overlay {
+	background:
+		radial-gradient(
+			ellipse at 25% 25%,
+			rgba(243, 156, 18, 0.12) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			ellipse at 75% 75%,
+			rgba(225, 112, 85, 0.08) 0%,
+			transparent 50%
+		),
+		linear-gradient(
+			180deg,
+			rgba(243, 156, 18, 0.03) 0%,
+			transparent 50%,
+			rgba(243, 156, 18, 0.03) 100%
+		);
+}
+
 body.orange-theme .nav-logo {
 	background: linear-gradient(135deg, #f39c12, #fdcb6e);
 	box-shadow:
