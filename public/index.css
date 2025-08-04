@@ -3456,6 +3456,65 @@ body.purple-theme .launch-button:hover {
 	background: var(--primary-dark);
 }
 
+body.purple-theme {
+	background:
+		radial-gradient(
+			circle at 20% 20%,
+			rgba(155, 89, 182, 0.15) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 80% 80%,
+			rgba(162, 155, 254, 0.15) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 40% 60%,
+			rgba(108, 92, 231, 0.1) 0%,
+			transparent 50%
+		),
+		linear-gradient(
+			135deg,
+			#2d1b69 0%,
+			#3c2a7a 50%,
+			#2d1b69 100%
+		);
+}
+
+body.purple-theme .background-animation {
+	background:
+		radial-gradient(
+			circle at 30% 30%,
+			rgba(155, 89, 182, 0.08) 0%,
+			transparent 60%
+		),
+		radial-gradient(
+			circle at 70% 70%,
+			rgba(162, 155, 254, 0.08) 0%,
+			transparent 60%
+		);
+}
+
+body.purple-theme .gradient-overlay {
+	background:
+		radial-gradient(
+			ellipse at 25% 25%,
+			rgba(155, 89, 182, 0.12) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			ellipse at 75% 75%,
+			rgba(108, 92, 231, 0.08) 0%,
+			transparent 50%
+		),
+		linear-gradient(
+			180deg,
+			rgba(155, 89, 182, 0.03) 0%,
+			transparent 50%,
+			rgba(155, 89, 182, 0.03) 100%
+		);
+}
+
 body.purple-theme .nav-logo {
 	background: linear-gradient(135deg, #9b59b6, #a29bfe);
 	box-shadow:
