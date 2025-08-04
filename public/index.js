@@ -1451,14 +1451,16 @@ document.addEventListener("DOMContentLoaded", () => {
 				}, 300);
 			}
 
-			changes.push(`✅ Favicon change attempted: ${faviconUrl}`);
+			// Wait a bit to let the favicon change take effect
+			await new Promise(resolve => setTimeout(resolve, 1000));
+			changes.push(`✅ Favicon changed to: ${faviconUrl}`);
 		}
 
 		if (changes.length === 0) {
 			return "❌ No changes applied. Please provide a title or favicon URL.";
 		}
 
-		return `🕵️ Cloaking Applied Successfully!\n\n${changes.join("\n")}\n\n😎 Your browser tab now appears as a different website for privacy.\n\n⚠️ Remember to restore the original settings when you're done to avoid confusion.`;
+		return `🕵️ Cloaking Applied Successfully!\n\n${changes.join("\n")}\n\n😎 Your browser tab now appears as a different website for privacy.\n\n⚠��� Remember to restore the original settings when you're done to avoid confusion.`;
 	}
 
 	function restoreOriginal() {
@@ -1862,7 +1864,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		const recommendations = [];
 
 		if (!info.security.httpsUsed) {
-			recommendations.push("• Use HTTPS whenever possible");
+			recommendations.push("�� Use HTTPS whenever possible");
 		}
 
 		if (!info.network.localIPs.includes("WebRTC blocked")) {
