@@ -3418,6 +3418,23 @@ body.green-theme {
 	--error: #e17055;
 }
 
+body.green-theme .search-button,
+body.green-theme .play-button,
+body.green-theme .launch-button {
+	background: var(--primary-color);
+	border-color: var(--primary-dark);
+}
+
+body.green-theme .search-button:hover,
+body.green-theme .play-button:hover,
+body.green-theme .launch-button:hover {
+	background: var(--primary-dark);
+}
+
+body.green-theme .nav-logo {
+	background: var(--gradient-primary);
+}
+
 /* Red Theme */
 body.red-theme {
 	--primary-color: #e74c3c;
