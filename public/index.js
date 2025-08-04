@@ -1301,16 +1301,33 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (faviconUrl) {
 			// Remove existing favicon
 			const existingFavicons = document.querySelectorAll(
-				'link[rel="icon"], link[rel="shortcut icon"]'
+				'link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]'
 			);
 			existingFavicons.forEach((favicon) => favicon.remove());
 
-			// Add new favicon
-			const newFavicon = document.createElement("link");
-			newFavicon.rel = "icon";
-			newFavicon.type = "image/x-icon";
-			newFavicon.href = faviconUrl;
-			document.head.appendChild(newFavicon);
+			// Add new favicon with multiple formats for better compatibility
+			const faviconTypes = [
+				{ rel: "icon", type: "image/x-icon" },
+				{ rel: "shortcut icon", type: "image/x-icon" },
+				{ rel: "icon", type: "image/png", sizes: "32x32" },
+				{ rel: "icon", type: "image/png", sizes: "16x16" }
+			];
+
+			faviconTypes.forEach(iconType => {
+				const newFavicon = document.createElement("link");
+				newFavicon.rel = iconType.rel;
+				newFavicon.type = iconType.type;
+				if (iconType.sizes) newFavicon.sizes = iconType.sizes;
+				newFavicon.href = faviconUrl;
+				document.head.appendChild(newFavicon);
+			});
+
+			// Force favicon refresh by adding timestamp
+			const timestampUrl = faviconUrl + (faviconUrl.includes('?') ? '&' : '?') + 't=' + Date.now();
+			const refreshFavicon = document.createElement("link");
+			refreshFavicon.rel = "icon";
+			refreshFavicon.href = timestampUrl;
+			document.head.appendChild(refreshFavicon);
 
 			changes.push(`✅ Favicon changed to: ${faviconUrl}`);
 		}
