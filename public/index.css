@@ -3297,6 +3297,24 @@ body.light-theme .brand-title {
 	text-shadow: none;
 }
 
+/* Light theme buttons and logo */
+body.light-theme .search-button,
+body.light-theme .play-button,
+body.light-theme .launch-button {
+	background: var(--primary-color);
+	border-color: var(--primary-dark);
+}
+
+body.light-theme .search-button:hover,
+body.light-theme .play-button:hover,
+body.light-theme .launch-button:hover {
+	background: var(--primary-dark);
+}
+
+body.light-theme .nav-logo {
+	background: var(--gradient-primary);
+}
+
 /* Blue Theme */
 body.blue-theme {
 	--primary-color: #3498db;
