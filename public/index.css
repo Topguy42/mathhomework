@@ -3085,3 +3085,24 @@ body.no-animations * {
 	animation: none !important;
 	transition: none !important;
 }
+
+/* About:blank Mode */
+body.aboutblank-mode {
+	background: #ffffff !important;
+	color: #000000 !important;
+	overflow: hidden;
+}
+
+body.aboutblank-mode * {
+	background: transparent !important;
+	color: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	text-shadow: none !important;
+}
+
+body.aboutblank-mode #aboutblank-toggle {
+	background: #f8f9fa !important;
+	color: #666 !important;
+	border: 1px solid #ddd !important;
+}
