@@ -1350,21 +1350,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		// Restore original favicon
 		const currentFavicons = document.querySelectorAll(
-			'link[rel="icon"], link[rel="shortcut icon"]'
+			'link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]'
 		);
 		currentFavicons.forEach((favicon) => favicon.remove());
 
 		if (originalFavicon) {
-			const restoredFavicon = document.createElement("link");
-			restoredFavicon.rel = "icon";
-			restoredFavicon.type = "image/x-icon";
-			restoredFavicon.href = originalFavicon;
-			document.head.appendChild(restoredFavicon);
+			// Restore with multiple formats
+			const faviconTypes = [
+				{ rel: "icon", type: "image/x-icon" },
+				{ rel: "shortcut icon", type: "image/x-icon" }
+			];
+
+			faviconTypes.forEach(iconType => {
+				const restoredFavicon = document.createElement("link");
+				restoredFavicon.rel = iconType.rel;
+				restoredFavicon.type = iconType.type;
+				restoredFavicon.href = originalFavicon;
+				document.head.appendChild(restoredFavicon);
+			});
 			changes.push(`✅ Favicon restored to original`);
 		} else {
 			// Add default favicon if none existed
 			const defaultFavicon = document.createElement("link");
-			defaultFavicon.rel = "icon";
+			defaultFavicon.rel = "shortcut icon";
 			defaultFavicon.type = "image/x-icon";
 			defaultFavicon.href = "/favicon.ico";
 			document.head.appendChild(defaultFavicon);
