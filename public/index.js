@@ -3292,11 +3292,36 @@ setInterval(() => {
 			}
 		} else {
 			console.log("Enabling about:blank mode...");
-			applyCloaking("", "about:blank").then(result => {
-				console.log("About:blank mode enabled");
+			enableAboutBlankCloaking().then(result => {
+				console.log("About:blank mode enabled:", result);
 			});
-			return "About:blank mode enabled";
+			return "About:blank mode enabled - check your browser tab!";
 		}
+	};
+
+	// Force about:blank mode immediately (for testing)
+	window.forceAboutBlank = function() {
+		console.log("🔨 Force enabling about:blank mode...");
+
+		// Clear everything immediately
+		document.title = "";
+		document.querySelectorAll('link[rel*="icon"]').forEach(f => f.remove());
+
+		// Add blank favicon
+		const blankFavicon = document.createElement("link");
+		blankFavicon.rel = "icon";
+		blankFavicon.href = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+		document.head.appendChild(blankFavicon);
+
+		// Override title setter
+		Object.defineProperty(document, 'title', {
+			get: () => '',
+			set: () => {},
+			configurable: true
+		});
+
+		console.log("✅ Force about:blank applied");
+		return "Force about:blank applied - your tab should be completely blank now!";
 	};
 
 	// Function to get current favicons
