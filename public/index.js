@@ -615,7 +615,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				return `❌ Site may be blocked or inaccessible\n\nURL: ${cleanUrl}\nStatus: ${data.status.http_code}\n\nSuggested alternatives:\n• Try proxy access\n• Check for typos in URL\n• Site might be temporarily down`;
 			}
 		} catch (error) {
-			return `❌ Unable to check site access\n\nPossible reasons:\n• Network connectivity issues\n• Site is completely blocked\n• Invalid URL format\n\nTry using our proxy to access the site directly.`;
+			return `❌ Unable to check site access\n\nPossible reasons:\n• Network connectivity issues\n�� Site is completely blocked\n• Invalid URL format\n\nTry using our proxy to access the site directly.`;
 		}
 	}
 
@@ -2043,6 +2043,114 @@ document.addEventListener("DOMContentLoaded", () => {
 			}, 300);
 		}, 3000);
 	}
+
+	// Check for about:blank mode on page load
+	function checkAboutBlankMode() {
+		const urlParams = new URLSearchParams(window.location.search);
+		if (urlParams.get('aboutblank') === 'true') {
+			enableAboutBlankStyling();
+		}
+	}
+
+	function enableAboutBlankStyling() {
+		// Set title and favicon to appear as about:blank
+		document.title = "";
+
+		// Remove any existing favicon
+		const existingFavicons = document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
+		existingFavicons.forEach(favicon => favicon.remove());
+
+		// Add completely transparent favicon
+		const blankFavicon = document.createElement('link');
+		blankFavicon.rel = 'icon';
+		blankFavicon.href = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"></svg>';
+		document.head.appendChild(blankFavicon);
+
+		// Add about:blank styling
+		document.body.classList.add('aboutblank-mode');
+
+		// Hide the interface initially
+		const mainContainer = document.querySelector('.main-container');
+		const topNav = document.querySelector('.top-nav');
+		const backgroundAnimation = document.querySelector('.background-animation');
+
+		if (mainContainer) mainContainer.style.display = 'none';
+		if (topNav) topNav.style.display = 'none';
+		if (backgroundAnimation) backgroundAnimation.style.display = 'none';
+
+		// Make body appear completely blank
+		document.body.style.background = '#ffffff';
+		document.body.style.color = '#000000';
+
+		// Add toggle button to show/hide proxy interface
+		const toggleBtn = document.createElement('button');
+		toggleBtn.id = 'aboutblank-toggle';
+		toggleBtn.innerHTML = '≡';
+		toggleBtn.style.cssText = `
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			background: #f8f9fa;
+			border: 1px solid #ddd;
+			padding: 8px 12px;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 12px;
+			color: #666;
+			z-index: 10001;
+			opacity: 0.3;
+			transition: opacity 0.3s ease;
+		`;
+
+		toggleBtn.addEventListener('mouseenter', () => {
+			toggleBtn.style.opacity = '1';
+		});
+
+		toggleBtn.addEventListener('mouseleave', () => {
+			toggleBtn.style.opacity = '0.3';
+		});
+
+		toggleBtn.addEventListener('click', () => {
+			const isHidden = mainContainer.style.display === 'none';
+
+			if (isHidden) {
+				// Show proxy interface
+				if (mainContainer) mainContainer.style.display = 'flex';
+				if (topNav) topNav.style.display = 'block';
+				if (backgroundAnimation) backgroundAnimation.style.display = 'block';
+				document.body.style.background = '';
+				document.body.style.color = '';
+				document.body.classList.remove('aboutblank-mode');
+				toggleBtn.innerHTML = '×';
+				toggleBtn.style.opacity = '1';
+			} else {
+				// Hide proxy interface (back to blank)
+				if (mainContainer) mainContainer.style.display = 'none';
+				if (topNav) topNav.style.display = 'none';
+				if (backgroundAnimation) backgroundAnimation.style.display = 'none';
+				document.body.style.background = '#ffffff';
+				document.body.style.color = '#000000';
+				document.body.classList.add('aboutblank-mode');
+				toggleBtn.innerHTML = '≡';
+				toggleBtn.style.opacity = '0.3';
+
+				// Clear title and maintain blank appearance
+				document.title = "";
+			}
+		});
+
+		document.body.appendChild(toggleBtn);
+
+		// Periodically clear title to maintain about:blank appearance
+		setInterval(() => {
+			if (document.body.classList.contains('aboutblank-mode')) {
+				document.title = "";
+			}
+		}, 1000);
+	}
+
+	// Check for about:blank mode on page load
+	checkAboutBlankMode();
 
 	// Initialize with proxy tab active
 	switchTab("proxy");
