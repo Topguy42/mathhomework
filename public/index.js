@@ -2132,7 +2132,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		sections.push("🛡️ SECURITY STATUS");
 		sections.push(`${info.security.httpsUsed ? "✅" : "❌"} HTTPS Encryption`);
 		sections.push(
-			`${info.network.localIPs.includes("WebRTC blocked") || info.network.localIPs.includes("WebRTC not supported") ? "✅" : "⚠����"} WebRTC Leak Protection`
+			`${info.network.localIPs.includes("WebRTC blocked") || info.network.localIPs.includes("WebRTC not supported") ? "✅" : "⚠���"} WebRTC Leak Protection`
 		);
 		sections.push(
 			`${info.system.webglVendor === "Blocked" ? "✅" : "⚠️"} WebGL Fingerprint Protection`
@@ -3927,6 +3927,203 @@ body {
 				document.title = "";
 			}
 		}, 1000);
+	}
+
+	// Anti-extension protection function
+	function initAntiExtensionProtection() {
+		console.log('🛡️ Initializing anti-extension protection...');
+
+		// 1. Block extension content script access
+		try {
+			// Override document.querySelector to hide sensitive elements
+			const originalQuerySelector = document.querySelector;
+			const originalQuerySelectorAll = document.querySelectorAll;
+
+			document.querySelector = function(selector) {
+				// Block extensions from finding sensitive elements
+				if (selector.includes('extension') || selector.includes('chrome') ||
+					selector.includes('[data-') || selector.includes('userscript')) {
+					return null;
+				}
+				return originalQuerySelector.call(this, selector);
+			};
+
+			document.querySelectorAll = function(selector) {
+				// Block extensions from finding sensitive elements
+				if (selector.includes('extension') || selector.includes('chrome') ||
+					selector.includes('[data-') || selector.includes('userscript')) {
+					return [];
+				}
+				return originalQuerySelectorAll.call(this, selector);
+			};
+		} catch(e) {}
+
+		// 2. Block extension API access
+		try {
+			// Hide chrome extension APIs
+			if (window.chrome) {
+				Object.defineProperty(window, 'chrome', {
+					get: () => undefined,
+					set: () => {},
+					configurable: false
+				});
+			}
+
+			// Hide browser extension APIs
+			['browser', 'moz', 'safari'].forEach(api => {
+				if (window[api]) {
+					Object.defineProperty(window, api, {
+						get: () => undefined,
+						set: () => {},
+						configurable: false
+					});
+				}
+			});
+		} catch(e) {}
+
+		// 3. Prevent extension message interception
+		const originalAddEventListener = window.addEventListener;
+		window.addEventListener = function(type, listener, options) {
+			if (type === 'message' && listener.toString().includes('extension')) {
+				console.warn('Blocked extension message listener');
+				return;
+			}
+			return originalAddEventListener.call(this, type, listener, options);
+		};
+
+		// 4. Block extension storage access
+		try {
+			['localStorage', 'sessionStorage'].forEach(storage => {
+				if (window[storage]) {
+					const originalStorage = window[storage];
+					Object.defineProperty(window, storage, {
+						get: () => ({
+							getItem: () => null,
+							setItem: () => {},
+							removeItem: () => {},
+							clear: () => {},
+							length: 0,
+							key: () => null
+						}),
+						configurable: false
+					});
+				}
+			});
+		} catch(e) {}
+
+		// 5. Block extension DOM mutations
+		const observer = new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {
+				if (mutation.type === 'childList') {
+					mutation.addedNodes.forEach(function(node) {
+						// Remove extension-injected elements
+						if (node.nodeType === 1) {
+							const tagName = node.tagName ? node.tagName.toLowerCase() : '';
+							const className = node.className || '';
+							const id = node.id || '';
+
+							if (tagName === 'script' && !node.src.startsWith(window.location.origin) ||
+								className.includes('extension') ||
+								className.includes('chrome') ||
+								id.includes('extension') ||
+								id.includes('chrome')) {
+								console.warn('Removed extension-injected element:', node);
+								node.remove();
+							}
+						}
+					});
+				}
+			});
+		});
+
+		observer.observe(document.body, {
+			childList: true,
+			subtree: true,
+			attributes: true,
+			attributeFilter: ['class', 'id', 'data-']
+		});
+
+		// 6. Clear extension cookies periodically
+		setInterval(() => {
+			try {
+				// Clear any extension-related cookies
+				document.cookie.split(";").forEach(function(c) {
+					const cookie = c.trim();
+					if (cookie.includes('extension') || cookie.includes('chrome') ||
+						cookie.includes('addon') || cookie.includes('plugin')) {
+						const eqPos = cookie.indexOf("=");
+						const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+						document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+					}
+				});
+			} catch(e) {}
+		}, 2000);
+
+		// 7. Block extension network requests
+		if (window.fetch) {
+			const originalFetch = window.fetch;
+			window.fetch = function(url, options) {
+				// Block requests to extension APIs
+				if (typeof url === 'string' &&
+					(url.includes('chrome-extension://') || url.includes('moz-extension://') ||
+					 url.includes('extension/') || url.includes('/addon/'))) {
+					console.warn('Blocked extension network request:', url);
+					return Promise.reject(new Error('Network request blocked'));
+				}
+				return originalFetch.call(this, url, options);
+			};
+		}
+
+		// 8. Prevent extension script injection
+		const originalCreateElement = document.createElement;
+		document.createElement = function(tagName) {
+			const element = originalCreateElement.call(this, tagName);
+
+			if (tagName.toLowerCase() === 'script') {
+				// Monitor script creation
+				const originalSetAttribute = element.setAttribute;
+				element.setAttribute = function(name, value) {
+					if (name === 'src' && (value.includes('extension://') || value.includes('addon/'))) {
+						console.warn('Blocked extension script src:', value);
+						return;
+					}
+					return originalSetAttribute.call(this, name, value);
+				};
+			}
+
+			return element;
+		};
+
+		// 9. Hide page content from extensions
+		Object.defineProperty(document, 'documentElement', {
+			get: function() {
+				// Return a sanitized version for extensions
+				const stack = new Error().stack;
+				if (stack && (stack.includes('extension') || stack.includes('content_script'))) {
+					return document.createElement('html');
+				}
+				return document.getElementsByTagName('html')[0];
+			},
+			configurable: false
+		});
+
+		// 10. Randomize timing to break extension detection
+		const originalSetTimeout = window.setTimeout;
+		const originalSetInterval = window.setInterval;
+
+		window.setTimeout = function(callback, delay) {
+			// Add random jitter to break extension timing attacks
+			const jitter = Math.random() * 50;
+			return originalSetTimeout.call(this, callback, delay + jitter);
+		};
+
+		window.setInterval = function(callback, delay) {
+			// Add random jitter to break extension timing attacks
+			const jitter = Math.random() * 100;
+			return originalSetInterval.call(this, callback, delay + jitter);
+		};
+
+		console.log('✅ Anti-extension protection measures active');
 	}
 
 	// Check for about:blank mode on page load
