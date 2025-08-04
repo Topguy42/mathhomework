@@ -1329,76 +1329,104 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (faviconUrl) {
 			console.log("Setting favicon:", faviconUrl);
 
-			// Remove ALL existing favicons first
-			const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
-			existingFavicons.forEach((favicon) => favicon.remove());
+			try {
+				// First, test if the favicon URL is accessible
+				const testImage = new Image();
+				testImage.crossOrigin = "anonymous";
 
-			// Determine the favicon type based on URL
-			let faviconType = "image/x-icon";
-			if (faviconUrl.includes(".svg")) {
-				faviconType = "image/svg+xml";
-			} else if (faviconUrl.includes(".png")) {
-				faviconType = "image/png";
-			} else if (faviconUrl.includes(".jpg") || faviconUrl.includes(".jpeg")) {
-				faviconType = "image/jpeg";
+				testImage.onload = () => {
+					console.log("Favicon URL is accessible:", faviconUrl);
+					setFaviconDirectly(faviconUrl);
+				};
+
+				testImage.onerror = () => {
+					console.warn("Favicon URL failed to load, trying direct method:", faviconUrl);
+					setFaviconDirectly(faviconUrl);
+				};
+
+				// Set a timeout to try direct method anyway
+				setTimeout(() => {
+					setFaviconDirectly(faviconUrl);
+				}, 2000);
+
+				testImage.src = faviconUrl;
+
+			} catch (error) {
+				console.error("Error testing favicon:", error);
+				setFaviconDirectly(faviconUrl);
 			}
 
-			// Create cache-busting URL
-			const timestamp = Date.now();
-			const random = Math.random().toString(36).substring(7);
-			const cacheBustUrl = faviconUrl + (faviconUrl.includes("?") ? "&" : "?") + `_t=${timestamp}&_r=${random}`;
+			function setFaviconDirectly(url) {
+				console.log("Setting favicon directly:", url);
 
-			// Method 1: Create temporary blank favicon to force refresh
-			const blankFavicon = document.createElement("link");
-			blankFavicon.rel = "icon";
-			blankFavicon.href = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"></svg>';
-			document.head.appendChild(blankFavicon);
+				// Remove ALL existing favicons first
+				const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
+				console.log("Removing existing favicons:", existingFavicons.length);
+				existingFavicons.forEach((favicon) => favicon.remove());
 
-			// Method 2: Remove blank and add real favicon with proper type
-			setTimeout(() => {
-				blankFavicon.remove();
+				// Create cache-busting URL
+				const timestamp = Date.now();
+				const random = Math.random().toString(36).substring(7);
+				const cacheBustUrl = url + (url.includes("?") ? "&" : "?") + `_cb=${timestamp}_${random}`;
+				console.log("Cache bust URL:", cacheBustUrl);
 
-				// Add multiple favicon formats for better compatibility
-				const faviconConfigs = [
-					{ rel: "icon", type: faviconType },
-					{ rel: "shortcut icon", type: faviconType },
-					{ rel: "apple-touch-icon", type: faviconType }
-				];
+				// Use a more aggressive approach
+				// Method 1: Set blank favicon first
+				const blankFavicon = document.createElement("link");
+				blankFavicon.rel = "icon";
+				blankFavicon.href = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><rect width="1" height="1" fill="transparent"/></svg>');
+				document.head.appendChild(blankFavicon);
+				console.log("Added blank favicon");
 
-				faviconConfigs.forEach(config => {
-					const favicon = document.createElement("link");
-					favicon.rel = config.rel;
-					favicon.type = config.type;
-					favicon.href = cacheBustUrl;
-					// Add loading and error handlers
-					favicon.onload = () => console.log(`Favicon loaded: ${config.rel}`);
-					favicon.onerror = () => console.warn(`Favicon failed to load: ${config.rel}`);
-					document.head.appendChild(favicon);
-				});
-			}, 50);
+				// Method 2: Replace with real favicon after short delay
+				setTimeout(() => {
+					try {
+						blankFavicon.remove();
+						console.log("Removed blank favicon");
 
-			// Method 3: Force another refresh after a longer delay
-			setTimeout(() => {
-				// Remove all favicons and re-add with fresh timestamp
-				document.querySelectorAll('link[rel*="icon"]').forEach((f) => f.remove());
+						// Add the new favicon
+						const newFavicon = document.createElement("link");
+						newFavicon.rel = "icon";
+						newFavicon.href = cacheBustUrl;
+						newFavicon.onload = () => {
+							console.log("✅ New favicon loaded successfully");
+						};
+						newFavicon.onerror = (e) => {
+							console.error("❌ Failed to load new favicon:", e);
+						};
+						document.head.appendChild(newFavicon);
 
-				const finalTimestamp = Date.now();
-				const finalCacheBustUrl = faviconUrl + (faviconUrl.includes("?") ? "&" : "?") + `_final=${finalTimestamp}`;
+						// Also add shortcut icon for better compatibility
+						const shortcutIcon = document.createElement("link");
+						shortcutIcon.rel = "shortcut icon";
+						shortcutIcon.href = cacheBustUrl;
+						document.head.appendChild(shortcutIcon);
 
-				const finalFavicon = document.createElement("link");
-				finalFavicon.rel = "icon";
-				finalFavicon.type = faviconType;
-				finalFavicon.href = finalCacheBustUrl;
-				document.head.appendChild(finalFavicon);
+						console.log("Added new favicon elements");
 
-				const shortcutFavicon = document.createElement("link");
-				shortcutFavicon.rel = "shortcut icon";
-				shortcutFavicon.type = faviconType;
-				shortcutFavicon.href = finalCacheBustUrl;
-				document.head.appendChild(shortcutFavicon);
-			}, 500);
+					} catch (error) {
+						console.error("Error in favicon replacement:", error);
+					}
+				}, 100);
 
-			changes.push(`✅ Favicon changed to: ${faviconUrl}`);
+				// Method 3: Force refresh the page favicon
+				setTimeout(() => {
+					try {
+						// Force browser to refresh favicon by touching the head
+						const head = document.head;
+						const link = document.createElement('link');
+						link.rel = 'icon';
+						link.href = url + (url.includes("?") ? "&" : "?") + `_force=${Date.now()}`;
+						head.appendChild(link);
+
+						console.log("Added force refresh favicon");
+					} catch (error) {
+						console.error("Error in force refresh:", error);
+					}
+				}, 300);
+			}
+
+			changes.push(`✅ Favicon change attempted: ${faviconUrl}`);
 		}
 
 		if (changes.length === 0) {
