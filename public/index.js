@@ -240,6 +240,7 @@ function addToHistory(url) {
 
 		browserHistory.push(url);
 		historyIndex = browserHistory.length - 1;
+		console.log("Added to history:", url, "Index:", historyIndex, "History:", browserHistory);
 		updateNavigationButtons();
 		updateUrlDisplay(url);
 	}
