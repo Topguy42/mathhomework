@@ -1501,6 +1501,7 @@ body {
 .step.completed {
 	color: var(--success);
 	background: rgba(16, 185, 129, 0.1);
+	padding-right: 1.75rem; /* Make room for check mark */
 }
 
 .step.completed::after {
@@ -1510,6 +1511,8 @@ body {
 	right: 0.5rem;
 	transform: translateY(-50%);
 	font-weight: bold;
+	font-size: 0.875rem;
+	color: var(--success);
 }
 
 /* Browser Tab System */
