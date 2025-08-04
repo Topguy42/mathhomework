@@ -1420,7 +1420,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		const newTab = window.open('about:blank', '_blank');
 
 		if (newTab) {
-			// Create a clean about:blank page with hidden proxy access
+			// Create about:blank page with proxy visible but no header
 			const htmlContent = `<!DOCTYPE html>
 <html>
 <head>
@@ -1435,72 +1435,23 @@ body {
 	color: #000;
 	overflow: hidden;
 	height: 100vh;
-	cursor: default;
 }
 .proxy-frame {
 	width: 100%;
 	height: 100vh;
 	border: none;
 	background: white;
-	display: none;
-}
-.toggle-btn {
-	position: fixed;
-	bottom: 20px;
-	right: 20px;
-	background: rgba(248, 249, 250, 0.1);
-	border: 1px solid rgba(221, 221, 221, 0.2);
-	padding: 6px 10px;
-	border-radius: 3px;
-	cursor: pointer;
-	font-size: 11px;
-	color: rgba(102, 102, 102, 0.3);
-	z-index: 10001;
-	opacity: 0.1;
-	transition: opacity 0.3s ease;
-	user-select: none;
-}
-.toggle-btn:hover {
-	opacity: 0.8;
-	background: rgba(248, 249, 250, 0.9);
-	color: #666;
 }
 </style>
 </head>
 <body>
 <iframe id="proxyFrame" class="proxy-frame" src="${window.location.origin}"></iframe>
-<button id="toggleBtn" class="toggle-btn">≡</button>
 
 <script>
-const frame = document.getElementById('proxyFrame');
-const btn = document.getElementById('toggleBtn');
-let isVisible = false;
-
 // Clear title every second to maintain about:blank appearance
 setInterval(() => {
 	if (document.title !== '') document.title = '';
 }, 1000);
-
-btn.addEventListener('click', () => {
-	if (isVisible) {
-		frame.style.display = 'none';
-		btn.innerHTML = '≡';
-		btn.style.opacity = '0.1';
-		document.title = '';
-	} else {
-		frame.style.display = 'block';
-		btn.innerHTML = '×';
-		btn.style.opacity = '0.8';
-	}
-	isVisible = !isVisible;
-});
-
-// Hide button completely after 10 seconds unless hovered
-setTimeout(() => {
-	if (!btn.matches(':hover')) {
-		btn.style.opacity = '0.05';
-	}
-}, 10000);
 </script>
 </body>
 </html>`;
