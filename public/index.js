@@ -881,25 +881,30 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	// Proxy Finder functionality
-	const proxyFinderBtn = document.getElementById("proxy-finder-btn");
-	const proxyCountry = document.getElementById("proxy-country");
-	const proxyType = document.getElementById("proxy-type");
-	const proxyFinderResult = document.getElementById("proxy-finder-result");
+	// Website Unblocker functionality
+	const websiteUnblockerBtn = document.getElementById("website-unblocker-btn");
+	const websiteUnblockerInput = document.getElementById("website-unblocker-input");
+	const unblockerMethod = document.getElementById("unblocker-method");
+	const websiteUnblockerResult = document.getElementById("website-unblocker-result");
 
-	if (proxyFinderBtn) {
-		proxyFinderBtn.addEventListener("click", async () => {
-			const country = proxyCountry.value;
-			const type = proxyType.value;
+	if (websiteUnblockerBtn) {
+		websiteUnblockerBtn.addEventListener("click", async () => {
+			const url = websiteUnblockerInput.value.trim();
+			const method = unblockerMethod.value;
 
-			setLoading(proxyFinderBtn, true);
-			try {
-				const result = await findProxies(country, type);
-				showResult(proxyFinderResult, result, "success");
-			} catch (error) {
-				showResult(proxyFinderResult, `Error: ${error.message}`, "error");
+			if (!url) {
+				showResult(websiteUnblockerResult, "Please enter a website URL to unblock", "error");
+				return;
 			}
-			setLoading(proxyFinderBtn, false);
+
+			setLoading(websiteUnblockerBtn, true);
+			try {
+				const result = await generateUnblockMethods(url, method);
+				showResult(websiteUnblockerResult, result, "success");
+			} catch (error) {
+				showResult(websiteUnblockerResult, `Error: ${error.message}`, "error");
+			}
+			setLoading(websiteUnblockerBtn, false);
 		});
 	}
 
