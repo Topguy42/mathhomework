@@ -55,7 +55,9 @@ async function navigateToUrl(url, addToHistoryFlag = true) {
 		}
 
 		// Use the same search logic as the main form
-		const searchEngine = document.getElementById("uv-search-engine")?.value || "https://www.google.com/search?q=%s";
+		const searchEngine =
+			document.getElementById("uv-search-engine")?.value ||
+			"https://www.google.com/search?q=%s";
 		const finalUrl = search(url, searchEngine);
 		const proxyUrl = __uv$config.prefix + __uv$config.encodeUrl(finalUrl);
 
@@ -87,7 +89,6 @@ async function navigateToUrl(url, addToHistoryFlag = true) {
 				loadingSubtitle.style.color = "var(--error)";
 			}
 		};
-
 	} catch (err) {
 		console.error("Failed to navigate:", err);
 		setNavigationLoading(false);
@@ -612,8 +613,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			if (frame && frame.src) {
 				// Add a timestamp to force refresh
 				const currentSrc = frame.src;
-				const separator = currentSrc.includes('?') ? '&' : '?';
-				frame.src = currentSrc + separator + '_refresh=' + Date.now();
+				const separator = currentSrc.includes("?") ? "&" : "?";
+				frame.src = currentSrc + separator + "_refresh=" + Date.now();
 			}
 		});
 	}
@@ -631,8 +632,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			closeFrame();
 		});
 	}
-
-
 
 	// Close frame functionality
 	function closeFrame() {
@@ -733,7 +732,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	document.addEventListener("keydown", (event) => {
 		if (document.body.classList.contains("frame-active")) {
 			// Don't handle shortcuts if user is typing in address bar
-			if (document.activeElement === document.getElementById("tab-address-input")) {
+			if (
+				document.activeElement === document.getElementById("tab-address-input")
+			) {
 				return;
 			}
 
@@ -780,8 +781,8 @@ document.addEventListener("DOMContentLoaded", () => {
 				const frame = document.getElementById("uv-frame");
 				if (frame && frame.src) {
 					const currentSrc = frame.src;
-					const separator = currentSrc.includes('?') ? '&' : '?';
-					frame.src = currentSrc + separator + '_refresh=' + Date.now();
+					const separator = currentSrc.includes("?") ? "&" : "?";
+					frame.src = currentSrc + separator + "_refresh=" + Date.now();
 				}
 				return;
 			}

@@ -1312,7 +1312,9 @@ body {
 	justify-content: center;
 	z-index: 1002;
 	backdrop-filter: blur(10px);
-	transition: opacity 0.5s ease, visibility 0.5s ease;
+	transition:
+		opacity 0.5s ease,
+		visibility 0.5s ease;
 }
 
 .loading-overlay.hidden {
@@ -1718,8 +1720,6 @@ body {
 	width: 18px;
 	height: 18px;
 }
-
-
 
 /* Browser Frame */
 .browser-frame {
