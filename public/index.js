@@ -4218,6 +4218,97 @@ body {
 		console.log('✅ Anti-extension protection measures active');
 	}
 
+	// Theme toggle functionality
+	function initThemeToggle() {
+		const themeToggle = document.querySelector('.theme-toggle');
+
+		if (!themeToggle) {
+			console.warn('Theme toggle button not found');
+			return;
+		}
+
+		// Get current theme
+		function getCurrentTheme() {
+			const savedSettings = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
+			return savedSettings.theme || 'dark';
+		}
+
+		// Apply theme
+		function applyTheme(theme) {
+			// Remove all theme classes
+			document.body.classList.remove(
+				'light-theme', 'dark-theme', 'blue-theme', 'purple-theme',
+				'green-theme', 'red-theme', 'orange-theme', 'pink-theme',
+				'cyber-theme', 'matrix-theme'
+			);
+
+			// Apply new theme
+			if (theme !== 'dark') {
+				document.body.classList.add(`${theme}-theme`);
+			}
+
+			// Update theme toggle icon
+			updateThemeToggleIcon(theme);
+
+			// Save to settings
+			const currentSettings = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
+			currentSettings.theme = theme;
+			localStorage.setItem(SETTINGS_KEY, JSON.stringify(currentSettings));
+
+			// Update theme select in settings if it exists
+			const themeSelect = document.getElementById('theme-select');
+			if (themeSelect) {
+				themeSelect.value = theme;
+			}
+
+			console.log('Theme applied:', theme);
+		}
+
+		// Update the theme toggle icon
+		function updateThemeToggleIcon(theme) {
+			const isLight = theme === 'light';
+			themeToggle.innerHTML = `
+				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					${isLight ?
+						// Sun icon for light mode
+						`<circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+						<path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2"/>` :
+						// Moon icon for dark mode
+						`<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`
+					}
+				</svg>
+			`;
+			themeToggle.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+		}
+
+		// Toggle between light and dark theme
+		function toggleTheme() {
+			const currentTheme = getCurrentTheme();
+			const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+			applyTheme(newTheme);
+		}
+
+		// Initialize theme on page load
+		const initialTheme = getCurrentTheme();
+		updateThemeToggleIcon(initialTheme);
+
+		// Add click event listener
+		themeToggle.addEventListener('click', toggleTheme);
+
+		// Add keyboard support
+		themeToggle.addEventListener('keydown', (e) => {
+			if (e.key === 'Enter' || e.key === ' ') {
+				e.preventDefault();
+				toggleTheme();
+			}
+		});
+
+		console.log('Theme toggle initialized');
+	}
+
+	// Initialize theme toggle
+	initThemeToggle();
+
 	// Check for about:blank mode on page load
 	checkAboutBlankMode();
 
