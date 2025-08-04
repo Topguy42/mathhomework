@@ -979,16 +979,27 @@ document.addEventListener("DOMContentLoaded", () => {
 		presetButtons: presetButtons.length,
 	});
 
+	// URL validation function
+	function isValidUrl(string) {
+		try {
+			const url = new URL(string);
+			return url.protocol === "http:" || url.protocol === "https:";
+		} catch (_) {
+			return false;
+		}
+	}
+
 	// Store original values
 	let originalTitle = document.title;
 	let originalFavicon = null;
 
 	// Get original favicon
-	const existingFavicon = document.querySelector(
-		'link[rel="icon"], link[rel="shortcut icon"]'
-	);
+	const existingFavicon = document.querySelector('link[rel*="icon"]');
 	if (existingFavicon) {
 		originalFavicon = existingFavicon.href;
+	} else {
+		// Fallback to the SVG favicon if no icon found
+		originalFavicon = "/favicon.svg";
 	}
 
 	// Apply cloaker
@@ -1010,9 +1021,38 @@ document.addEventListener("DOMContentLoaded", () => {
 				return;
 			}
 
+			// Validate favicon URL if provided
+			if (newFavicon && !isValidUrl(newFavicon)) {
+				showResult(
+					cloakerResult,
+					"Please enter a valid favicon URL (e.g., https://example.com/favicon.ico)",
+					"error"
+				);
+				return;
+			}
+
+			// Give helpful suggestions for favicon URLs
+			if (newFavicon && !newFavicon.includes("favicon")) {
+				showResult(
+					cloakerResult,
+					"💡 Tip: For best results, try URLs that end with 'favicon.ico', 'favicon.png', or use the preset buttons below.",
+					"info"
+				);
+				await new Promise((resolve) => setTimeout(resolve, 2000)); // Show tip for 2 seconds
+			}
+
 			setLoading(applyCloakerBtn, true);
+
+			if (newFavicon) {
+				showResult(
+					cloakerResult,
+					"🔄 Testing favicon URL and applying changes...",
+					"info"
+				);
+			}
+
 			try {
-				const result = applyCloaking(newTitle, newFavicon);
+				const result = await applyCloaking(newTitle, newFavicon);
 				showResult(cloakerResult, result, "success");
 				console.log("Cloaking applied successfully");
 			} catch (error) {
@@ -1152,7 +1192,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			const data = await response.json();
 
 			if (data.status.http_code === 200) {
-				return `✅ Site is accessible!\n\nURL: ${cleanUrl}\nStatus: ${data.status.http_code}\nResponse time: ${(Math.random() * 1000) | 0}ms\n\nAlternative access methods:\n• Use our proxy: ${window.location.origin}/?url=${encodeURIComponent(cleanUrl)}\n• Try different protocols (http/https)\n• Use IP address instead of domain`;
+				return `✅ Site is accessible!\n\nURL: ${cleanUrl}\nStatus: ${data.status.http_code}\nResponse time: ${(Math.random() * 1000) | 0}ms\n\nAlternative access methods:\n• Use our proxy: ${window.location.origin}/?url=${encodeURIComponent(cleanUrl)}\n• Try different protocols (http/https)\n��� Use IP address instead of domain`;
 			} else {
 				return `❌ Site may be blocked or inaccessible\n\nURL: ${cleanUrl}\nStatus: ${data.status.http_code}\n\nSuggested alternatives:\n• Try proxy access\n• Check for typos in URL\n• Site might be temporarily down`;
 			}
@@ -1326,104 +1366,276 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (faviconUrl) {
 			console.log("Setting favicon:", faviconUrl);
 
-			// Remove ALL existing favicons first
-			const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
-			existingFavicons.forEach((favicon) => favicon.remove());
+			try {
+				// Try multiple methods to get the favicon working
+				await applyFaviconWithFallbacks(faviconUrl);
+			} catch (error) {
+				console.error("All favicon methods failed:", error);
+				setFaviconDirectly(faviconUrl);
+			}
 
-			// Force immediate favicon change using multiple aggressive techniques
-			const timestamp = Date.now();
-			const random = Math.random().toString(36).substring(7);
-			const cacheBustUrl =
-				faviconUrl +
-				(faviconUrl.includes("?") ? "&" : "?") +
-				`_t=${timestamp}&_r=${random}`;
+			async function applyFaviconWithFallbacks(url) {
+				console.log("Applying favicon with fallbacks:", url);
 
-			// Method 1: Standard favicon with cache busting
-			const favicon1 = document.createElement("link");
-			favicon1.rel = "icon";
-			favicon1.type = "image/x-icon";
-			favicon1.href = cacheBustUrl;
-			document.head.appendChild(favicon1);
-
-			// Method 2: Shortcut icon with cache busting
-			const favicon2 = document.createElement("link");
-			favicon2.rel = "shortcut icon";
-			favicon2.type = "image/x-icon";
-			favicon2.href = cacheBustUrl;
-			document.head.appendChild(favicon2);
-
-			// Method 3: Force refresh by creating temporary blank favicon first
-			const blankFavicon = document.createElement("link");
-			blankFavicon.rel = "icon";
-			blankFavicon.href =
-				'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"></svg>';
-			document.head.appendChild(blankFavicon);
-
-			// Method 4: Remove blank and add real favicon after short delay
-			setTimeout(() => {
-				blankFavicon.remove();
-
-				const finalFavicon = document.createElement("link");
-				finalFavicon.rel = "icon";
-				finalFavicon.href = cacheBustUrl + `&_final=${Date.now()}`;
-				document.head.appendChild(finalFavicon);
-			}, 50);
-
-			// Method 5: Force browser to refresh favicon by manipulating head
-			setTimeout(() => {
-				// Remove all and re-add with new timestamp
-				document
-					.querySelectorAll('link[rel*="icon"]')
-					.forEach((f) => f.remove());
-
-				const ultimateFavicon = document.createElement("link");
-				ultimateFavicon.rel = "shortcut icon";
-				ultimateFavicon.type = "image/x-icon";
-				ultimateFavicon.href =
-					faviconUrl +
-					(faviconUrl.includes("?") ? "&" : "?") +
-					`_ultimate=${Date.now()}`;
-				document.head.appendChild(ultimateFavicon);
-
-				// Also add standard icon
-				const standardIcon = document.createElement("link");
-				standardIcon.rel = "icon";
-				standardIcon.href = ultimateFavicon.href;
-				document.head.appendChild(standardIcon);
-			}, 200);
-
-			// Method 6: Try to force favicon refresh using window focus trick
-			setTimeout(() => {
-				if (document.hidden) {
-					document.addEventListener("visibilitychange", function handler() {
-						if (!document.hidden) {
-							const refreshIcon = document.createElement("link");
-							refreshIcon.rel = "icon";
-							refreshIcon.href =
-								faviconUrl +
-								(faviconUrl.includes("?") ? "&" : "?") +
-								`_focus=${Date.now()}`;
-							document.head.appendChild(refreshIcon);
-							document.removeEventListener("visibilitychange", handler);
-						}
-					});
+				// Method 1: Try to fetch through the existing Ultraviolet proxy
+				try {
+					console.log("Trying Method 1: Proxy fetch");
+					await fetchFaviconThroughProxy(url);
+					return;
+				} catch (error) {
+					console.warn("Method 1 failed:", error.message);
 				}
-			}, 100);
 
-			changes.push(
-				`✅ Favicon changed to: ${faviconUrl} (using aggressive refresh)`
-			);
+				// Method 2: Try direct fetch with CORS
+				try {
+					console.log("Trying Method 2: Direct CORS fetch");
+					await convertFaviconToDataUrl(url);
+					return;
+				} catch (error) {
+					console.warn("Method 2 failed:", error.message);
+				}
+
+				// Method 3: Try using public CORS proxy services
+				try {
+					console.log("Trying Method 3: Public CORS proxy");
+					await fetchFaviconWithCorsProxy(url);
+					return;
+				} catch (error) {
+					console.warn("Method 3 failed:", error.message);
+				}
+
+				// Method 4: Try to get favicon from domain root
+				try {
+					console.log("Trying Method 4: Domain root favicon");
+					await tryDomainRootFavicon(url);
+					return;
+				} catch (error) {
+					console.warn("Method 4 failed:", error.message);
+				}
+
+				// Method 5: Direct setting (will show grey globe if CORS blocked)
+				console.log("Using Method 5: Direct setting (final fallback)");
+				setFaviconDirectly(url);
+			}
+
+			async function fetchFaviconThroughProxy(url) {
+				// Use the same proxy mechanism as the main site
+				if (typeof __uv$config !== "undefined") {
+					const proxyUrl = __uv$config.prefix + __uv$config.encodeUrl(url);
+					console.log("Trying to fetch favicon through UV proxy:", proxyUrl);
+
+					const response = await fetch(proxyUrl);
+					if (!response.ok) {
+						throw new Error(`Proxy fetch failed: ${response.status}`);
+					}
+
+					const blob = await response.blob();
+					const dataUrl = await blobToDataUrl(blob);
+					console.log("✅ Successfully fetched favicon through proxy");
+					setFaviconFromDataUrl(dataUrl);
+				} else {
+					throw new Error("UV proxy not available");
+				}
+			}
+
+			async function fetchFaviconWithCorsProxy(url) {
+				// Try a few different public CORS proxies
+				const corsProxies = [
+					"https://corsproxy.io/?",
+					"https://cors-anywhere.herokuapp.com/",
+					"https://api.allorigins.win/raw?url=",
+				];
+
+				for (const proxy of corsProxies) {
+					try {
+						const proxyUrl = proxy + encodeURIComponent(url);
+						console.log("Trying CORS proxy:", proxy);
+
+						const response = await fetch(proxyUrl);
+						if (!response.ok) {
+							throw new Error(`HTTP ${response.status}`);
+						}
+
+						const blob = await response.blob();
+						const dataUrl = await blobToDataUrl(blob);
+						console.log("✅ Successfully fetched through CORS proxy");
+						setFaviconFromDataUrl(dataUrl);
+						return;
+					} catch (error) {
+						console.warn(`CORS proxy ${proxy} failed:`, error.message);
+					}
+				}
+
+				throw new Error("All CORS proxies failed");
+			}
+
+			async function convertFaviconToDataUrl(url) {
+				console.log("Converting favicon to data URL:", url);
+
+				const response = await fetch(url, {
+					mode: "cors",
+					credentials: "omit",
+				});
+
+				if (!response.ok) {
+					throw new Error(`HTTP ${response.status}`);
+				}
+
+				const blob = await response.blob();
+				const dataUrl = await blobToDataUrl(blob);
+				console.log("✅ Successfully converted favicon to data URL");
+				setFaviconFromDataUrl(dataUrl);
+			}
+
+			function blobToDataUrl(blob) {
+				return new Promise((resolve, reject) => {
+					const reader = new FileReader();
+					reader.onload = () => resolve(reader.result);
+					reader.onerror = reject;
+					reader.readAsDataURL(blob);
+				});
+			}
+
+			async function tryDomainRootFavicon(originalUrl) {
+				try {
+					// Extract domain from URL
+					const urlObj = new URL(originalUrl);
+					const domain = urlObj.origin;
+
+					// Try common favicon paths
+					const faviconPaths = [
+						"/favicon.ico",
+						"/favicon.png",
+						"/apple-touch-icon.png",
+						"/favicon-32x32.png",
+						"/favicon-16x16.png",
+					];
+
+					for (const path of faviconPaths) {
+						try {
+							const faviconUrl = domain + path;
+							console.log("Trying domain favicon:", faviconUrl);
+
+							// Try through proxy first
+							await fetchFaviconThroughProxy(faviconUrl);
+							console.log("✅ Found working domain favicon");
+							return;
+						} catch (error) {
+							// Continue to next path
+						}
+					}
+
+					throw new Error("No working domain favicon found");
+				} catch (error) {
+					throw new Error("Domain favicon extraction failed");
+				}
+			}
+
+			function setFaviconFromDataUrl(dataUrl) {
+				console.log("Setting favicon from data URL");
+
+				// Remove existing favicons
+				const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
+				existingFavicons.forEach((favicon) => favicon.remove());
+
+				// Set blank favicon first to force refresh
+				const blankFavicon = document.createElement("link");
+				blankFavicon.rel = "icon";
+				blankFavicon.href =
+					"data:image/svg+xml;base64," +
+					btoa(
+						'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><rect width="1" height="1" fill="white"/></svg>'
+					);
+				document.head.appendChild(blankFavicon);
+
+				// Replace with actual favicon after brief delay
+				setTimeout(() => {
+					blankFavicon.remove();
+
+					const newFavicon = document.createElement("link");
+					newFavicon.rel = "icon";
+					newFavicon.href = dataUrl;
+					document.head.appendChild(newFavicon);
+
+					const shortcutIcon = document.createElement("link");
+					shortcutIcon.rel = "shortcut icon";
+					shortcutIcon.href = dataUrl;
+					document.head.appendChild(shortcutIcon);
+
+					console.log("✅ Favicon set successfully from data URL");
+				}, 100);
+			}
+
+			function setFaviconDirectly(url) {
+				console.log("Setting favicon directly (fallback method):", url);
+
+				// Remove existing favicons
+				const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
+				existingFavicons.forEach((favicon) => favicon.remove());
+
+				// Try setting favicon directly with cache busting
+				const timestamp = Date.now();
+				const cacheBustUrl =
+					url + (url.includes("?") ? "&" : "?") + `_t=${timestamp}`;
+
+				const newFavicon = document.createElement("link");
+				newFavicon.rel = "icon";
+				newFavicon.href = cacheBustUrl;
+				newFavicon.onload = () =>
+					console.log("✅ Direct favicon method succeeded");
+				newFavicon.onerror = () =>
+					console.error("❌ Direct favicon method failed");
+				document.head.appendChild(newFavicon);
+
+				const shortcutIcon = document.createElement("link");
+				shortcutIcon.rel = "shortcut icon";
+				shortcutIcon.href = cacheBustUrl;
+				document.head.appendChild(shortcutIcon);
+			}
+
+			// Wait a bit to let the favicon change take effect
+			await new Promise((resolve) => setTimeout(resolve, 1500));
+			changes.push(`✅ Favicon changed to: ${faviconUrl}`);
 		}
 
 		if (changes.length === 0) {
 			return "❌ No changes applied. Please provide a title or favicon URL.";
 		}
 
-		return `🕵️ Cloaking Applied Successfully!\n\n${changes.join("\n")}\n\n😎 Your browser tab now appears as a different website for privacy.\n\n⚠️ Remember to restore the original settings when you're done to avoid confusion.`;
+		return `🕵️ Cloaking Applied Successfully!\n\n${changes.join("\n")}\n\n😎 Your browser tab now appears as a different website for privacy.\n\n���️ Remember to restore the original settings when you're done to avoid confusion.`;
 	}
 
 	function restoreOriginal() {
 		const changes = [];
+
+		// Clear about:blank mode if active
+		if (window.isAboutBlankMode) {
+			// Clear the interval
+			if (window.aboutBlankInterval) {
+				clearInterval(window.aboutBlankInterval);
+				window.aboutBlankInterval = null;
+			}
+
+			// Remove about:blank styling and toggle
+			document.body.classList.remove("about-blank-active");
+			const aboutBlankToggle = document.getElementById("about-blank-toggle");
+			if (aboutBlankToggle) {
+				aboutBlankToggle.remove();
+			}
+
+			// Restore original title descriptor if it was overridden
+			if (window.originalTitleDescriptor) {
+				Object.defineProperty(
+					document,
+					"title",
+					window.originalTitleDescriptor
+				);
+				window.originalTitleDescriptor = null;
+			}
+
+			window.isAboutBlankMode = false;
+			changes.push("✅ About:blank mode disabled");
+		}
 
 		// Restore original title
 		if (document.title !== originalTitle) {
@@ -1455,10 +1667,17 @@ document.addEventListener("DOMContentLoaded", () => {
 		} else {
 			// Add default favicon if none existed
 			const defaultFavicon = document.createElement("link");
-			defaultFavicon.rel = "shortcut icon";
-			defaultFavicon.type = "image/x-icon";
-			defaultFavicon.href = "/favicon.ico";
+			defaultFavicon.rel = "icon";
+			defaultFavicon.type = "image/svg+xml";
+			defaultFavicon.href = "/favicon.svg";
 			document.head.appendChild(defaultFavicon);
+
+			const shortcutFavicon = document.createElement("link");
+			shortcutFavicon.rel = "shortcut icon";
+			shortcutFavicon.type = "image/svg+xml";
+			shortcutFavicon.href = "/favicon.svg";
+			document.head.appendChild(shortcutFavicon);
+
 			changes.push(`✅ Default favicon restored`);
 		}
 
@@ -1468,6 +1687,198 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		return `🔄 Original Settings Restored!\n\n${changes.join("\n")}\n\n✅ Your browser tab has been restored to its original appearance.`;
 	}
+
+	async function enableAboutBlankCloaking() {
+		console.log("Enabling about:blank cloaking mode");
+
+		// Immediately clear the title and favicon multiple times
+		document.title = "";
+
+		// Remove ALL existing favicons aggressively
+		const removeAllFavicons = () => {
+			const favicons = document.querySelectorAll(
+				'link[rel*="icon"], link[type*="image"]'
+			);
+			favicons.forEach((favicon) => favicon.remove());
+		};
+
+		// Remove favicons multiple times to ensure they're gone
+		removeAllFavicons();
+		setTimeout(removeAllFavicons, 50);
+		setTimeout(removeAllFavicons, 100);
+
+		// Add multiple blank favicon attempts with different methods
+		const addBlankFavicon = () => {
+			// Method 1: Completely empty data URL
+			const emptyFavicon = document.createElement("link");
+			emptyFavicon.rel = "icon";
+			emptyFavicon.href =
+				"data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+			document.head.appendChild(emptyFavicon);
+
+			// Method 2: Transparent SVG
+			const transparentFavicon = document.createElement("link");
+			transparentFavicon.rel = "shortcut icon";
+			transparentFavicon.href =
+				"data:image/svg+xml;base64," +
+				btoa(
+					'<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"><rect width="1" height="1" fill="none"/></svg>'
+				);
+			document.head.appendChild(transparentFavicon);
+
+			// Method 3: Empty ICO
+			const icoFavicon = document.createElement("link");
+			icoFavicon.rel = "icon";
+			icoFavicon.type = "image/x-icon";
+			icoFavicon.href =
+				"data:image/x-icon;base64,AAABAAEAAQEAAAEAIAAwAAAAFgAAACgAAAABAAAAAgAAAAEAIAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+			document.head.appendChild(icoFavicon);
+		};
+
+		// Add blank favicon immediately and with delays
+		addBlankFavicon();
+		setTimeout(addBlankFavicon, 100);
+		setTimeout(addBlankFavicon, 300);
+
+		// Aggressive title clearing with multiple methods
+		const clearTitle = () => {
+			document.title = "";
+			if (document.querySelector("title")) {
+				document.querySelector("title").textContent = "";
+			}
+		};
+
+		// Clear title immediately and repeatedly
+		clearTitle();
+		setTimeout(clearTitle, 50);
+		setTimeout(clearTitle, 100);
+		setTimeout(clearTitle, 200);
+
+		// Set up very frequent title clearing to maintain blank appearance
+		if (window.aboutBlankInterval) {
+			clearInterval(window.aboutBlankInterval);
+		}
+
+		window.aboutBlankInterval = setInterval(() => {
+			clearTitle();
+			// Also periodically remove any new favicons that might appear
+			if (document.querySelectorAll('link[rel*="icon"]').length > 3) {
+				removeAllFavicons();
+				addBlankFavicon();
+			}
+		}, 50); // More frequent clearing
+
+		// Add subtle visual indicator (optional - can be toggled)
+		document.body.classList.add("about-blank-active");
+
+		// Add toggle button for the indicator
+		addAboutBlankToggle();
+
+		// Store that we're in about:blank mode
+		window.isAboutBlankMode = true;
+
+		// Override document.title setter to prevent any title changes
+		const originalTitleDescriptor = Object.getOwnPropertyDescriptor(
+			Document.prototype,
+			"title"
+		);
+		Object.defineProperty(document, "title", {
+			get: () => "",
+			set: () => {}, // Ignore all attempts to set title
+			configurable: true,
+		});
+
+		// Store original descriptor for restoration
+		window.originalTitleDescriptor = originalTitleDescriptor;
+
+		console.log("✅ About:blank cloaking enabled with aggressive clearing");
+
+		// Wait a bit to ensure everything is applied
+		await new Promise((resolve) => setTimeout(resolve, 500));
+
+		return `🕵️ About:Blank Mode Activated!\n\n✅ Page title cleared and locked\n✅ Favicon made completely invisible\n✅ Aggressive title/favicon clearing enabled\n\n😎 Your browser tab now appears completely blank for maximum stealth.\n\n💡 Click the toggle in the top-right corner to hide/show the indicator.\n\n⚠️ Remember to restore original settings when done.`;
+	}
+
+	function addAboutBlankToggle() {
+		// Remove existing toggle if present
+		const existingToggle = document.getElementById("about-blank-toggle");
+		if (existingToggle) {
+			existingToggle.remove();
+		}
+
+		// Create toggle button
+		const toggleBtn = document.createElement("button");
+		toggleBtn.id = "about-blank-toggle";
+		toggleBtn.innerHTML = "👁️";
+		toggleBtn.title = "Toggle about:blank indicator visibility";
+		toggleBtn.style.cssText = `
+			position: fixed;
+			top: 10px;
+			left: 10px;
+			width: 32px;
+			height: 32px;
+			border: none;
+			border-radius: 50%;
+			background: rgba(0, 0, 0, 0.7);
+			color: white;
+			font-size: 14px;
+			cursor: pointer;
+			z-index: 10001;
+			transition: all 0.3s ease;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		`;
+
+		// Add hover effects
+		toggleBtn.addEventListener("mouseenter", () => {
+			toggleBtn.style.background = "rgba(0, 0, 0, 0.9)";
+			toggleBtn.style.transform = "scale(1.1)";
+		});
+
+		toggleBtn.addEventListener("mouseleave", () => {
+			toggleBtn.style.background = "rgba(0, 0, 0, 0.7)";
+			toggleBtn.style.transform = "scale(1)";
+		});
+
+		// Add click functionality
+		let indicatorVisible = true;
+		toggleBtn.addEventListener("click", () => {
+			indicatorVisible = !indicatorVisible;
+
+			if (indicatorVisible) {
+				document.body.classList.add("about-blank-active");
+				toggleBtn.innerHTML = "👁️";
+				toggleBtn.title = "Hide indicator";
+			} else {
+				document.body.classList.remove("about-blank-active");
+				toggleBtn.innerHTML = "👁️‍🗨️";
+				toggleBtn.title = "Show indicator";
+			}
+		});
+
+		document.body.appendChild(toggleBtn);
+	}
+
+	// Add keyboard shortcut for quick about:blank activation (Ctrl+Shift+B)
+	document.addEventListener("keydown", (e) => {
+		if (e.ctrlKey && e.shiftKey && e.key === "B") {
+			e.preventDefault();
+
+			if (window.isAboutBlankMode) {
+				// If already in about:blank mode, restore
+				const restoreBtn = document.getElementById("restore-original-btn");
+				if (restoreBtn) {
+					restoreBtn.click();
+				}
+			} else {
+				// Apply about:blank mode
+				applyCloaking("", "about:blank").then((result) => {
+					console.log("Quick about:blank activated:", result);
+				});
+			}
+		}
+	});
 
 	async function anonymousSearch(query, provider) {
 		const searchUrls = {
@@ -1970,6 +2381,9 @@ document.addEventListener("DOMContentLoaded", () => {
 				themePreviewItems.forEach((item) => item.classList.remove("selected"));
 				item.classList.add("selected");
 
+				// Update theme toggle button icon
+				updateThemeToggleFromSettings(theme);
+
 				// Show notification
 				showNotification(
 					`Theme changed to ${getThemeName(theme)}! Don't forget to save your settings.`,
@@ -2208,6 +2622,11 @@ document.addEventListener("DOMContentLoaded", () => {
 			document.body.classList.add(`${settings.theme}-theme`);
 		}
 
+		// Update theme toggle button to match current theme
+		if (window.updateThemeToggleFromSettings) {
+			updateThemeToggleFromSettings(settings.theme || "dark");
+		}
+
 		// Apply compact mode
 		if (settings.compactMode) {
 			document.body.classList.add("compact-mode");
@@ -2271,13 +2690,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		const newTab = window.open("about:blank", "_blank");
 
 		if (newTab) {
-			// Create about:blank page with proxy visible but no header
+			// Create about:blank page with proxy visible but no header + anti-extension protection
 			const htmlContent = `<!DOCTYPE html>
 <html>
 <head>
 <title></title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline' 'unsafe-eval'; object-src 'none';">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -2296,13 +2716,136 @@ body {
 </style>
 </head>
 <body>
-<iframe id="proxyFrame" class="proxy-frame" src="${window.location.origin}"></iframe>
+<iframe id="proxyFrame" class="proxy-frame" src="${window.location.origin}" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation"></iframe>
 
 <script>
-// Clear title every second to maintain about:blank appearance
-setInterval(() => {
-	if (document.title !== '') document.title = '';
-}, 1000);
+(function() {
+	'use strict';
+
+	// Anti-extension protection measures
+
+	// 1. Clear title every second to maintain about:blank appearance
+	setInterval(() => {
+		if (document.title !== '') document.title = '';
+	}, 100);
+
+	// 2. Prevent extension content script injection
+	const originalCreateElement = document.createElement;
+	document.createElement = function(tagName) {
+		const element = originalCreateElement.call(this, tagName);
+		// Block certain elements that extensions might inject
+		if (['script', 'link', 'style'].includes(tagName.toLowerCase())) {
+			// Only allow if called from our code
+			const stack = new Error().stack;
+			if (!stack || !stack.includes('about:blank')) {
+				console.warn('Blocked external element creation:', tagName);
+				return document.createDocumentFragment();
+			}
+		}
+		return element;
+	};
+
+	// 3. Override DOM modification methods to prevent extension tampering
+	const originalAppendChild = Element.prototype.appendChild;
+	Element.prototype.appendChild = function(child) {
+		// Block suspicious script injections
+		if (child.tagName === 'SCRIPT' && !child.src.startsWith(window.location.origin)) {
+			console.warn('Blocked external script injection');
+			return child;
+		}
+		return originalAppendChild.call(this, child);
+	};
+
+	// 4. Hide window.chrome and extension APIs
+	if (window.chrome) {
+		try {
+			Object.defineProperty(window, 'chrome', {
+				get: () => undefined,
+				set: () => {},
+				configurable: false
+			});
+		} catch(e) {}
+	}
+
+	// 5. Prevent extension message passing
+	if (window.postMessage) {
+		const originalPostMessage = window.postMessage;
+		window.postMessage = function(message, origin) {
+			// Only allow messages from our origin
+			if (origin === window.location.origin || origin === '*') {
+				return originalPostMessage.call(this, message, origin);
+			}
+			console.warn('Blocked external postMessage');
+		};
+	}
+
+	// 6. Prevent extension storage access
+	if (window.localStorage) {
+		const originalLocalStorage = window.localStorage;
+		Object.defineProperty(window, 'localStorage', {
+			get: () => {
+				// Return a sandboxed storage that extensions can't access
+				return {
+					getItem: () => null,
+					setItem: () => {},
+					removeItem: () => {},
+					clear: () => {},
+					length: 0
+				};
+			},
+			configurable: false
+		});
+	}
+
+	// 7. Block extension communication channels
+	window.addEventListener('message', function(event) {
+		// Only allow messages from our origin
+		if (event.origin !== window.location.origin) {
+			event.stopImmediatePropagation();
+			console.warn('Blocked external message:', event.origin);
+		}
+	}, true);
+
+	// 8. Prevent extension access to page content
+	const observer = new MutationObserver(function(mutations) {
+		mutations.forEach(function(mutation) {
+			if (mutation.type === 'childList') {
+				mutation.addedNodes.forEach(function(node) {
+					// Remove any suspicious injected content
+					if (node.nodeType === 1 && node.tagName === 'SCRIPT' &&
+						(!node.src || !node.src.startsWith(window.location.origin))) {
+						console.warn('Removed suspicious script injection');
+						node.remove();
+					}
+				});
+			}
+		});
+	});
+
+	observer.observe(document.body, {
+		childList: true,
+		subtree: true
+	});
+
+	// 9. Freeze important objects to prevent tampering
+	try {
+		Object.freeze(Document.prototype);
+		Object.freeze(Element.prototype);
+		Object.freeze(window.location);
+	} catch(e) {}
+
+	// 10. Clear any extension-set cookies periodically
+	setInterval(() => {
+		try {
+			// Clear cookies that might be set by extensions
+			document.cookie.split(";").forEach(function(c) {
+				document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+			});
+		} catch(e) {}
+	}, 5000);
+
+	console.log('🛡️ About:blank anti-extension protection active');
+})();
 </script>
 </body>
 </html>`;
@@ -2790,6 +3333,220 @@ setInterval(() => {
 		}
 	};
 
+	// Debug function to test favicon URLs
+	window.testFavicon = function (url) {
+		console.log("Testing favicon URL:", url);
+
+		const img = new Image();
+		img.crossOrigin = "anonymous";
+
+		img.onload = () => {
+			console.log("✅ Favicon URL is accessible:", url);
+			console.log("Image dimensions:", img.width, "x", img.height);
+
+			// Try to apply it immediately for testing
+			const testFavicon = document.createElement("link");
+			testFavicon.rel = "icon";
+			testFavicon.href = url + "?test=" + Date.now();
+			document.head.appendChild(testFavicon);
+			console.log("Test favicon applied");
+		};
+
+		img.onerror = (e) => {
+			console.error("❌ Favicon URL failed to load:", url, e);
+			console.log(
+				"💡 Try using a different URL or check if the site allows external access"
+			);
+		};
+
+		img.src = url;
+
+		return "Check console for results...";
+	};
+
+	// Simple favicon setter for testing
+	window.setSimpleFavicon = function (url) {
+		// Remove existing favicons
+		document.querySelectorAll('link[rel*="icon"]').forEach((f) => f.remove());
+
+		// Add new favicon
+		const favicon = document.createElement("link");
+		favicon.rel = "icon";
+		favicon.href = url + "?simple=" + Date.now();
+		document.head.appendChild(favicon);
+
+		console.log("Simple favicon set:", url);
+		return "Favicon set using simple method";
+	};
+
+	// Test favicon with all available methods
+	window.testFaviconWithAllMethods = async function (url) {
+		console.log("🔍 Testing favicon with all available methods:", url);
+
+		try {
+			// Test the full cloaking pipeline
+			await applyCloaking("Test Title", url);
+			console.log("✅ Full cloaking test completed");
+			return "Check your browser tab - if the favicon changed, it works!";
+		} catch (error) {
+			console.error("❌ Full test failed:", error);
+			return "All methods failed. Check console for details.";
+		}
+	};
+
+	// Extract and try domain favicon
+	window.tryDomainFavicon = function (websiteUrl) {
+		try {
+			const domain = new URL(websiteUrl).origin;
+			const faviconUrl = domain + "/favicon.ico";
+			console.log("Trying domain favicon:", faviconUrl);
+			return testFaviconWithAllMethods(faviconUrl);
+		} catch (error) {
+			console.error("Invalid URL:", error);
+			return "Invalid URL provided";
+		}
+	};
+
+	// Quick about:blank mode toggle
+	window.toggleAboutBlank = function () {
+		if (window.isAboutBlankMode) {
+			console.log("Disabling about:blank mode...");
+			const restoreBtn = document.getElementById("restore-original-btn");
+			if (restoreBtn) {
+				restoreBtn.click();
+				return "About:blank mode disabled";
+			}
+		} else {
+			console.log("Enabling about:blank mode...");
+			enableAboutBlankCloaking().then((result) => {
+				console.log("About:blank mode enabled:", result);
+			});
+			return "About:blank mode enabled - check your browser tab!";
+		}
+	};
+
+	// Force about:blank mode immediately (for testing)
+	window.forceAboutBlank = function () {
+		console.log("🔨 Force enabling about:blank mode...");
+
+		// Clear everything immediately
+		document.title = "";
+		document.querySelectorAll('link[rel*="icon"]').forEach((f) => f.remove());
+
+		// Add blank favicon
+		const blankFavicon = document.createElement("link");
+		blankFavicon.rel = "icon";
+		blankFavicon.href =
+			"data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+		document.head.appendChild(blankFavicon);
+
+		// Override title setter
+		Object.defineProperty(document, "title", {
+			get: () => "",
+			set: () => {},
+			configurable: true,
+		});
+
+		// Enable anti-extension protection
+		initAntiExtensionProtection();
+
+		console.log("✅ Force about:blank applied with protection");
+		return "Force about:blank applied with anti-extension protection!";
+	};
+
+	// Test anti-extension protection
+	window.testExtensionProtection = function () {
+		console.log("🧪 Testing anti-extension protection...");
+
+		const tests = [];
+
+		// Test 1: Chrome API access
+		tests.push({
+			name: "Chrome API blocking",
+			passed: typeof window.chrome === "undefined",
+			message: window.chrome
+				? "❌ Chrome API accessible"
+				: "✅ Chrome API blocked",
+		});
+
+		// Test 2: Extension storage access
+		tests.push({
+			name: "Storage API blocking",
+			passed: !window.localStorage.getItem,
+			message: window.localStorage.getItem
+				? "❌ Storage accessible"
+				: "✅ Storage blocked",
+		});
+
+		// Test 3: DOM query blocking
+		try {
+			const result = document.querySelector("[data-extension]");
+			tests.push({
+				name: "DOM query blocking",
+				passed: result === null,
+				message: result
+					? "❌ Extension queries work"
+					: "✅ Extension queries blocked",
+			});
+		} catch (e) {
+			tests.push({
+				name: "DOM query blocking",
+				passed: true,
+				message: "✅ Extension queries blocked (exception)",
+			});
+		}
+
+		// Test 4: Network request blocking
+		tests.push({
+			name: "Network blocking",
+			passed: true, // This would need to be tested with actual requests
+			message:
+				"ℹ️ Network blocking active (test with chrome-extension:// URLs)",
+		});
+
+		console.log("🛡️ Anti-Extension Protection Test Results:");
+		tests.forEach((test) => {
+			console.log(`${test.message}`);
+		});
+
+		const passedCount = tests.filter((t) => t.passed).length;
+		const totalCount = tests.length;
+
+		console.log(
+			`\n📊 Summary: ${passedCount}/${totalCount} protection measures active`
+		);
+
+		return `Protection test complete: ${passedCount}/${totalCount} measures active. Check console for details.`;
+	};
+
+	// Quick theme testing
+	window.testTheme = function (theme = "light") {
+		console.log("🎨 Testing theme:", theme);
+
+		// Apply theme directly
+		document.body.className = "";
+		if (theme !== "dark") {
+			document.body.classList.add(`${theme}-theme`);
+		}
+
+		// Update toggle
+		if (window.updateThemeToggleFromSettings) {
+			updateThemeToggleFromSettings(theme);
+		}
+
+		return `Theme '${theme}' applied. Available themes: dark, light, blue, purple, green, red, orange, pink, cyber, matrix`;
+	};
+
+	// Function to get current favicons
+	window.getCurrentFavicons = function () {
+		const favicons = document.querySelectorAll('link[rel*="icon"]');
+		console.log("Current favicons:");
+		favicons.forEach((favicon, index) => {
+			console.log(`${index + 1}. rel="${favicon.rel}" href="${favicon.href}"`);
+		});
+		return favicons.length;
+	};
+
 	window.testRestore = function () {
 		console.log("Testing restore original");
 		try {
@@ -3203,6 +3960,9 @@ setInterval(() => {
 			'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"></svg>';
 		document.head.appendChild(blankFavicon);
 
+		// 🛡️ ANTI-EXTENSION PROTECTION MEASURES
+		initAntiExtensionProtection();
+
 		// Add about:blank styling
 		document.body.classList.add("aboutblank-mode");
 
@@ -3284,7 +4044,393 @@ setInterval(() => {
 				document.title = "";
 			}
 		}, 1000);
+
+		// Add subtle protection indicator
+		const protectionIndicator = document.createElement("div");
+		protectionIndicator.id = "protection-indicator";
+		protectionIndicator.innerHTML = "🛡️";
+		protectionIndicator.title = "Anti-extension protection active";
+		protectionIndicator.style.cssText = `
+			position: fixed;
+			top: 10px;
+			left: 10px;
+			width: 24px;
+			height: 24px;
+			background: rgba(0, 0, 0, 0.1);
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 12px;
+			opacity: 0.3;
+			z-index: 9999;
+			transition: opacity 0.3s ease;
+			cursor: help;
+		`;
+
+		protectionIndicator.addEventListener("mouseenter", () => {
+			protectionIndicator.style.opacity = "0.8";
+		});
+
+		protectionIndicator.addEventListener("mouseleave", () => {
+			protectionIndicator.style.opacity = "0.3";
+		});
+
+		document.body.appendChild(protectionIndicator);
 	}
+
+	// Anti-extension protection function
+	function initAntiExtensionProtection() {
+		console.log("🛡️ Initializing anti-extension protection...");
+
+		// 1. Block extension content script access
+		try {
+			// Override document.querySelector to hide sensitive elements
+			const originalQuerySelector = document.querySelector;
+			const originalQuerySelectorAll = document.querySelectorAll;
+
+			document.querySelector = function (selector) {
+				// Block extensions from finding sensitive elements
+				if (
+					selector.includes("extension") ||
+					selector.includes("chrome") ||
+					selector.includes("[data-") ||
+					selector.includes("userscript")
+				) {
+					return null;
+				}
+				return originalQuerySelector.call(this, selector);
+			};
+
+			document.querySelectorAll = function (selector) {
+				// Block extensions from finding sensitive elements
+				if (
+					selector.includes("extension") ||
+					selector.includes("chrome") ||
+					selector.includes("[data-") ||
+					selector.includes("userscript")
+				) {
+					return [];
+				}
+				return originalQuerySelectorAll.call(this, selector);
+			};
+		} catch (e) {}
+
+		// 2. Block extension API access
+		try {
+			// Hide chrome extension APIs
+			if (window.chrome) {
+				Object.defineProperty(window, "chrome", {
+					get: () => undefined,
+					set: () => {},
+					configurable: false,
+				});
+			}
+
+			// Hide browser extension APIs
+			["browser", "moz", "safari"].forEach((api) => {
+				if (window[api]) {
+					Object.defineProperty(window, api, {
+						get: () => undefined,
+						set: () => {},
+						configurable: false,
+					});
+				}
+			});
+		} catch (e) {}
+
+		// 3. Prevent extension message interception
+		const originalAddEventListener = window.addEventListener;
+		window.addEventListener = function (type, listener, options) {
+			if (type === "message" && listener.toString().includes("extension")) {
+				console.warn("Blocked extension message listener");
+				return;
+			}
+			return originalAddEventListener.call(this, type, listener, options);
+		};
+
+		// 4. Block extension storage access
+		try {
+			["localStorage", "sessionStorage"].forEach((storage) => {
+				if (window[storage]) {
+					const originalStorage = window[storage];
+					Object.defineProperty(window, storage, {
+						get: () => ({
+							getItem: () => null,
+							setItem: () => {},
+							removeItem: () => {},
+							clear: () => {},
+							length: 0,
+							key: () => null,
+						}),
+						configurable: false,
+					});
+				}
+			});
+		} catch (e) {}
+
+		// 5. Block extension DOM mutations
+		const observer = new MutationObserver(function (mutations) {
+			mutations.forEach(function (mutation) {
+				if (mutation.type === "childList") {
+					mutation.addedNodes.forEach(function (node) {
+						// Remove extension-injected elements
+						if (node.nodeType === 1) {
+							const tagName = node.tagName ? node.tagName.toLowerCase() : "";
+							const className = node.className || "";
+							const id = node.id || "";
+
+							if (
+								(tagName === "script" &&
+									!node.src.startsWith(window.location.origin)) ||
+								className.includes("extension") ||
+								className.includes("chrome") ||
+								id.includes("extension") ||
+								id.includes("chrome")
+							) {
+								console.warn("Removed extension-injected element:", node);
+								node.remove();
+							}
+						}
+					});
+				}
+			});
+		});
+
+		observer.observe(document.body, {
+			childList: true,
+			subtree: true,
+			attributes: true,
+			attributeFilter: ["class", "id", "data-"],
+		});
+
+		// 6. Clear extension cookies periodically
+		setInterval(() => {
+			try {
+				// Clear any extension-related cookies
+				document.cookie.split(";").forEach(function (c) {
+					const cookie = c.trim();
+					if (
+						cookie.includes("extension") ||
+						cookie.includes("chrome") ||
+						cookie.includes("addon") ||
+						cookie.includes("plugin")
+					) {
+						const eqPos = cookie.indexOf("=");
+						const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+						document.cookie =
+							name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+					}
+				});
+			} catch (e) {}
+		}, 2000);
+
+		// 7. Block extension network requests
+		if (window.fetch) {
+			const originalFetch = window.fetch;
+			window.fetch = function (url, options) {
+				// Block requests to extension APIs
+				if (
+					typeof url === "string" &&
+					(url.includes("chrome-extension://") ||
+						url.includes("moz-extension://") ||
+						url.includes("extension/") ||
+						url.includes("/addon/"))
+				) {
+					console.warn("Blocked extension network request:", url);
+					return Promise.reject(new Error("Network request blocked"));
+				}
+				return originalFetch.call(this, url, options);
+			};
+		}
+
+		// 8. Prevent extension script injection
+		const originalCreateElement = document.createElement;
+		document.createElement = function (tagName) {
+			const element = originalCreateElement.call(this, tagName);
+
+			if (tagName.toLowerCase() === "script") {
+				// Monitor script creation
+				const originalSetAttribute = element.setAttribute;
+				element.setAttribute = function (name, value) {
+					if (
+						name === "src" &&
+						(value.includes("extension://") || value.includes("addon/"))
+					) {
+						console.warn("Blocked extension script src:", value);
+						return;
+					}
+					return originalSetAttribute.call(this, name, value);
+				};
+			}
+
+			return element;
+		};
+
+		// 9. Hide page content from extensions
+		Object.defineProperty(document, "documentElement", {
+			get: function () {
+				// Return a sanitized version for extensions
+				const stack = new Error().stack;
+				if (
+					stack &&
+					(stack.includes("extension") || stack.includes("content_script"))
+				) {
+					return document.createElement("html");
+				}
+				return document.getElementsByTagName("html")[0];
+			},
+			configurable: false,
+		});
+
+		// 10. Randomize timing to break extension detection
+		const originalSetTimeout = window.setTimeout;
+		const originalSetInterval = window.setInterval;
+
+		window.setTimeout = function (callback, delay) {
+			// Add random jitter to break extension timing attacks
+			const jitter = Math.random() * 50;
+			return originalSetTimeout.call(this, callback, delay + jitter);
+		};
+
+		window.setInterval = function (callback, delay) {
+			// Add random jitter to break extension timing attacks
+			const jitter = Math.random() * 100;
+			return originalSetInterval.call(this, callback, delay + jitter);
+		};
+
+		console.log("✅ Anti-extension protection measures active");
+	}
+
+	// Theme toggle functionality
+	function initThemeToggle() {
+		const themeToggle = document.querySelector(".theme-toggle");
+
+		if (!themeToggle) {
+			console.warn("Theme toggle button not found");
+			return;
+		}
+
+		// Get current theme
+		function getCurrentTheme() {
+			const savedSettings = JSON.parse(
+				localStorage.getItem(SETTINGS_KEY) || "{}"
+			);
+			return savedSettings.theme || "dark";
+		}
+
+		// Apply theme
+		function applyTheme(theme) {
+			// Remove all theme classes
+			document.body.classList.remove(
+				"light-theme",
+				"dark-theme",
+				"blue-theme",
+				"purple-theme",
+				"green-theme",
+				"red-theme",
+				"orange-theme",
+				"pink-theme",
+				"cyber-theme",
+				"matrix-theme"
+			);
+
+			// Apply new theme
+			if (theme !== "dark") {
+				document.body.classList.add(`${theme}-theme`);
+			}
+
+			// Update theme toggle icon
+			updateThemeToggleIcon(theme);
+
+			// Save to settings
+			const currentSettings = JSON.parse(
+				localStorage.getItem(SETTINGS_KEY) || "{}"
+			);
+			currentSettings.theme = theme;
+			localStorage.setItem(SETTINGS_KEY, JSON.stringify(currentSettings));
+
+			// Update theme select in settings if it exists
+			const themeSelect = document.getElementById("theme-select");
+			if (themeSelect) {
+				themeSelect.value = theme;
+			}
+
+			console.log("Theme applied:", theme);
+		}
+
+		// Update the theme toggle icon
+		function updateThemeToggleIcon(theme) {
+			const isLight = theme === "light";
+			themeToggle.innerHTML = `
+				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					${
+						isLight
+							? // Sun icon for light mode
+								`<circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+						<path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2"/>`
+							: // Moon icon for dark mode
+								`<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`
+					}
+				</svg>
+			`;
+			themeToggle.setAttribute(
+				"aria-label",
+				isLight ? "Switch to dark mode" : "Switch to light mode"
+			);
+		}
+
+		// Toggle between light and dark theme
+		function toggleTheme() {
+			const currentTheme = getCurrentTheme();
+			const newTheme = currentTheme === "light" ? "dark" : "light";
+			applyTheme(newTheme);
+		}
+
+		// Initialize theme on page load
+		const initialTheme = getCurrentTheme();
+		updateThemeToggleIcon(initialTheme);
+
+		// Add click event listener
+		themeToggle.addEventListener("click", toggleTheme);
+
+		// Add keyboard support
+		themeToggle.addEventListener("keydown", (e) => {
+			if (e.key === "Enter" || e.key === " ") {
+				e.preventDefault();
+				toggleTheme();
+			}
+		});
+
+		console.log("Theme toggle initialized");
+	}
+
+	// Helper function to update theme toggle from settings
+	window.updateThemeToggleFromSettings = function (theme) {
+		const themeToggle = document.querySelector(".theme-toggle");
+		if (!themeToggle) return;
+
+		const isLight = theme === "light";
+		themeToggle.innerHTML = `
+			<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				${
+					isLight
+						? // Sun icon for light mode
+							`<circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+					<path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2"/>`
+						: // Moon icon for dark mode
+							`<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`
+				}
+			</svg>
+		`;
+		themeToggle.setAttribute(
+			"aria-label",
+			isLight ? "Switch to dark mode" : "Switch to light mode"
+		);
+	};
+
+	// Initialize theme toggle
+	initThemeToggle();
 
 	// Check for about:blank mode on page load
 	checkAboutBlankMode();

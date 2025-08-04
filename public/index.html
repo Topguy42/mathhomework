@@ -17,7 +17,8 @@
 		/>
 		<meta name="theme-color" content="#6366f1" />
 		<meta name="googlebot" content="index, follow, snippet" />
-		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+		<link rel="shortcut icon" href="favicon.svg" />
 		<link rel="stylesheet" href="index.css" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -649,7 +650,7 @@
 									<span class="rating-label">rating</span>
 								</div>
 								<button class="play-button">
-									<span class="play-icon">▶</span>
+									<span class="play-icon">��</span>
 									Play Now
 								</button>
 							</div>
@@ -1174,7 +1175,7 @@
 									<span class="rating-label">rating</span>
 								</div>
 								<button class="launch-button">
-									<span class="launch-icon">🚀</span>
+									<span class="launch-icon">����</span>
 									Launch App
 								</button>
 							</div>
@@ -1406,6 +1407,7 @@
 										<label class="setting-label">About:Blank Mode</label>
 										<p class="setting-description">
 											Makes the tab appear as a blank page for stealth browsing
+											with anti-extension protection
 										</p>
 									</div>
 									<label class="setting-toggle">
@@ -1548,7 +1550,7 @@
 									<div class="theme-controls">
 										<select id="theme-select" class="setting-select">
 											<option value="dark">🌙 Dark Theme</option>
-											<option value="light">☀️ Light Theme</option>
+											<option value="light">��️ Light Theme</option>
 											<option value="blue">💙 Ocean Blue</option>
 											<option value="purple">💜 Purple Galaxy</option>
 											<option value="green">💚 Forest Green</option>
@@ -2248,8 +2250,9 @@
 											class="cloak-input"
 										/>
 										<small class="cloak-hint"
-											>This will change the icon shown in your browser
-											tab</small
+											>This will change the icon shown in your browser tab. Use
+											direct image URLs (PNG/ICO work best). Try the presets
+											below if you're having issues.</small
 										>
 									</div>
 
@@ -2271,14 +2274,14 @@
 
 								<div class="quick-presets">
 									<h4 class="presets-title">
-										<span class="presets-icon">����</span>
+										<span class="presets-icon">�����</span>
 										Quick Presets:
 									</h4>
 									<div class="presets-grid">
 										<button
 											class="preset-btn"
 											data-title="Google Classroom"
-											data-favicon="https://classroom.google.com/favicon.ico"
+											data-favicon="https://ssl.gstatic.com/classroom/favicon.png"
 										>
 											<span class="preset-icon">📚</span>
 											<span class="preset-label">Google Classroom</span>
@@ -2286,7 +2289,7 @@
 										<button
 											class="preset-btn"
 											data-title="Khan Academy"
-											data-favicon="https://cdn.kastatic.org/images/favicon.ico"
+											data-favicon="https://cdn.kastatic.org/images/apple-touch-icon-57x57-precomposed.new.png"
 										>
 											<span class="preset-icon">➕</span>
 											<span class="preset-label">Khan Academy</span>
@@ -2294,7 +2297,7 @@
 										<button
 											class="preset-btn"
 											data-title="Google Docs"
-											data-favicon="https://docs.google.com/favicon.ico"
+											data-favicon="https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico"
 										>
 											<span class="preset-icon">📄</span>
 											<span class="preset-label">Google Docs</span>
@@ -2302,7 +2305,7 @@
 										<button
 											class="preset-btn"
 											data-title="Wikipedia"
-											data-favicon="https://wikipedia.org/favicon.ico"
+											data-favicon="https://en.wikipedia.org/static/favicon/wikipedia.ico"
 										>
 											<span class="preset-icon">📖</span>
 											<span class="preset-label">Wikipedia</span>
@@ -2318,6 +2321,11 @@
 									<p class="cloak-warning">
 										<span class="warning-icon">⚠️</span>
 										Remember to restore when done to avoid confusion
+									</p>
+									<p class="cloak-warning">
+										<span class="warning-icon">🚫</span>
+										Note: Cloaker does not work for about:blank tabs. Use the
+										About:Blank Mode in Settings instead.
 									</p>
 								</div>
 
