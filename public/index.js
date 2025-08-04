@@ -666,6 +666,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		closeFrameButton.addEventListener("click", closeFrame);
 	}
 
+	// Initialize navigation button states
+	updateNavigationButtons();
+
 	// Address bar functionality
 	let isEditingAddress = false;
 
