@@ -1944,23 +1944,70 @@ setInterval(() => {
 		if (antiGoGuardianActive) return;
 		antiGoGuardianActive = true;
 
-		// Prevent tab closure
+		// Enhanced tab closure prevention with save dialog
 		beforeUnloadHandler = function (e) {
 			e.preventDefault();
-			e.returnValue = "";
-			return "";
+			// Custom message that appears as "Do you want to save your changes?"
+			const message = "You have unsaved changes. Are you sure you want to leave this page?";
+			e.returnValue = message;
+			return message;
 		};
 
 		window.addEventListener("beforeunload", beforeUnloadHandler);
 
-		// Override close functions
+		// Enhanced close functions override
 		const originalClose = window.close;
 		window.close = function () {
 			console.log("Tab close attempt blocked by Anti-GoGuardian");
-			return false;
+			// Show confirmation dialog
+			const userConfirm = confirm("You have unsaved work. Are you sure you want to close this tab?");
+			if (!userConfirm) {
+				return false;
+			}
+			// If user confirms, temporarily disable protection and close
+			disableAntiGoGuardian();
+			originalClose.call(window);
 		};
 
-		// Prevent GoGuardian scripts from running
+		// Override page navigation attempts
+		const originalAssign = window.location.assign;
+		const originalReplace = window.location.replace;
+		const originalReload = window.location.reload;
+
+		window.location.assign = function(url) {
+			const userConfirm = confirm("You have unsaved work. Are you sure you want to navigate away from this page?");
+			if (userConfirm) {
+				originalAssign.call(window.location, url);
+			}
+		};
+
+		window.location.replace = function(url) {
+			const userConfirm = confirm("You have unsaved work. Are you sure you want to navigate away from this page?");
+			if (userConfirm) {
+				originalReplace.call(window.location, url);
+			}
+		};
+
+		window.location.reload = function(forceReload) {
+			const userConfirm = confirm("You have unsaved work. Are you sure you want to reload this page?");
+			if (userConfirm) {
+				originalReload.call(window.location, forceReload);
+			}
+		};
+
+		// Prevent back/forward navigation
+		window.addEventListener('popstate', function(e) {
+			const userConfirm = confirm("You have unsaved work. Are you sure you want to navigate away from this page?");
+			if (!userConfirm) {
+				// Push current state back to prevent navigation
+				history.pushState(null, null, window.location.href);
+			}
+		});
+
+		// Push initial state to enable popstate blocking
+		history.pushState(null, null, window.location.href);
+
+		// Prevent GoGuardian and other monitoring scripts from running
 		const observer = new MutationObserver(function (mutations) {
 			mutations.forEach(function (mutation) {
 				mutation.addedNodes.forEach(function (node) {
@@ -1970,11 +2017,18 @@ setInterval(() => {
 						if (
 							src.includes("goguardian") ||
 							src.includes("securly") ||
+							src.includes("lightspeed") ||
+							src.includes("linewize") ||
+							src.includes("contentkeeper") ||
+							src.includes("iboss") ||
 							content.includes("goguardian") ||
-							content.includes("securly")
+							content.includes("securly") ||
+							content.includes("lightspeed") ||
+							content.includes("monitoring") ||
+							content.includes("contentkeeper")
 						) {
 							node.remove();
-							console.log("Blocked monitoring script");
+							console.log("Blocked monitoring script:", src || "inline script");
 						}
 					}
 				});
@@ -1986,7 +2040,48 @@ setInterval(() => {
 			subtree: true,
 		});
 
+		// Store references for cleanup
 		window.antiGoGuardianObserver = observer;
+		window.antiGoGuardianOriginals = {
+			close: originalClose,
+			assign: originalAssign,
+			replace: originalReplace,
+			reload: originalReload
+		};
+
+		// Add visual indicator that protection is active
+		const indicator = document.createElement('div');
+		indicator.id = 'anti-goguardian-indicator';
+		indicator.innerHTML = '🛡️ Protection Active';
+		indicator.style.cssText = `
+			position: fixed;
+			top: 10px;
+			right: 10px;
+			background: rgba(0, 212, 170, 0.9);
+			color: white;
+			padding: 5px 10px;
+			border-radius: 15px;
+			font-size: 12px;
+			font-weight: bold;
+			z-index: 9999;
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+			animation: fadeIn 0.5s ease;
+		`;
+
+		// Add CSS animation
+		const style = document.createElement('style');
+		style.textContent = `
+			@keyframes fadeIn {
+				from { opacity: 0; transform: translateY(-10px); }
+				to { opacity: 1; transform: translateY(0); }
+			}
+		`;
+		document.head.appendChild(style);
+		document.body.appendChild(indicator);
+
+		console.log("Enhanced Anti-GoGuardian protection activated");
 	}
 
 	function disableAntiGoGuardian() {
