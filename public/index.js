@@ -30,22 +30,8 @@ async function loadUrl(url) {
 		throw err;
 	}
 
-	let frameContainer = document.getElementById("frame-container");
-	let frame = document.getElementById("uv-frame");
-
-	// Show frame container and hide background content
-	frameContainer.style.display = "block";
-	document.body.classList.add("frame-active");
-
-	let wispUrl =
-		(location.protocol === "https:" ? "wss" : "ws") +
-		"://" +
-		location.host +
-		"/wisp/";
-	if ((await connection.getTransport()) !== "/epoxy/index.mjs") {
-		await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
-	}
-	frame.src = __uv$config.prefix + __uv$config.encodeUrl(url);
+	// Use the new tab system navigation
+	await navigateToUrl(url);
 }
 
 form.addEventListener("submit", async (event) => {
@@ -2079,7 +2065,7 @@ setInterval(() => {
 					} catch (error) {
 						console.error('Error loading proxy:', error);
 						const loadingText = document.getElementById('loadingText');
-						loadingText.textContent = 'Proxy failed to load. Click �� to hide this message.';
+						loadingText.textContent = 'Proxy failed to load. Click ≡ to hide this message.';
 						loadingText.className = 'error';
 
 						// Show a simple manual access option
