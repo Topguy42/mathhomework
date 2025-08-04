@@ -139,7 +139,22 @@ function updateNavigationButtons() {
 // Update URL display and security indicator
 function updateUrlDisplay(url) {
 	currentUrl = url;
-	const displayUrl = url || "vortex://home";
+	let displayUrl = url || "vortex://home";
+
+	// Format URL for display (remove protocol for cleaner look)
+	if (url) {
+		try {
+			const urlObj = new URL(url);
+			displayUrl = urlObj.hostname + urlObj.pathname + urlObj.search;
+			// Truncate very long URLs
+			if (displayUrl.length > 50) {
+				displayUrl = displayUrl.substring(0, 47) + "...";
+			}
+		} catch (e) {
+			// Keep original URL if parsing fails
+			displayUrl = url;
+		}
+	}
 
 	const tabUrlDisplay = document.getElementById("tab-url-display");
 	const tabAddressInput = document.getElementById("tab-address-input");
@@ -147,6 +162,7 @@ function updateUrlDisplay(url) {
 
 	if (tabUrlDisplay) {
 		tabUrlDisplay.textContent = displayUrl;
+		tabUrlDisplay.title = url || "Vortex proxy home"; // Show full URL on hover
 	}
 
 	if (tabAddressInput) {
@@ -157,13 +173,13 @@ function updateUrlDisplay(url) {
 	if (tabSecurity) {
 		if (url && url.startsWith("https://")) {
 			tabSecurity.classList.remove("insecure");
-			tabSecurity.title = "Secure connection";
+			tabSecurity.title = "Secure HTTPS connection";
 		} else if (url && url.startsWith("http://")) {
 			tabSecurity.classList.add("insecure");
-			tabSecurity.title = "Insecure connection";
+			tabSecurity.title = "Insecure HTTP connection";
 		} else {
 			tabSecurity.classList.remove("insecure");
-			tabSecurity.title = "Vortex proxy connection";
+			tabSecurity.title = "Vortex secure proxy connection";
 		}
 	}
 }
