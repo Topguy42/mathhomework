@@ -2132,7 +2132,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		sections.push("🛡️ SECURITY STATUS");
 		sections.push(`${info.security.httpsUsed ? "✅" : "❌"} HTTPS Encryption`);
 		sections.push(
-			`${info.network.localIPs.includes("WebRTC blocked") || info.network.localIPs.includes("WebRTC not supported") ? "✅" : "⚠���"} WebRTC Leak Protection`
+			`${info.network.localIPs.includes("WebRTC blocked") || info.network.localIPs.includes("WebRTC not supported") ? "✅" : "⚠����"} WebRTC Leak Protection`
 		);
 		sections.push(
 			`${info.system.webglVendor === "Blocked" ? "✅" : "⚠️"} WebGL Fingerprint Protection`
@@ -3842,6 +3842,9 @@ body {
 		blankFavicon.href =
 			'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"></svg>';
 		document.head.appendChild(blankFavicon);
+
+		// 🛡️ ANTI-EXTENSION PROTECTION MEASURES
+		initAntiExtensionProtection();
 
 		// Add about:blank styling
 		document.body.classList.add("aboutblank-mode");
