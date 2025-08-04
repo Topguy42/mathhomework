@@ -277,9 +277,11 @@ body {
 		inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-.nav-logo svg {
+.nav-logo img {
 	width: 18px;
 	height: 18px;
+	object-fit: contain;
+	border-radius: 4px;
 }
 
 .nav-brand-text {
