@@ -574,9 +574,21 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Keyboard shortcuts for browser navigation
 	document.addEventListener("keydown", (event) => {
 		if (document.body.classList.contains("frame-active")) {
+			// Don't handle shortcuts if user is typing in address bar
+			if (document.activeElement === document.getElementById("tab-address-input")) {
+				return;
+			}
+
 			// ESC key to close frame
 			if (event.key === "Escape") {
 				closeFrame();
+				return;
+			}
+
+			// Ctrl+L or F6 to focus address bar
+			if ((event.ctrlKey && event.key === "l") || event.key === "F6") {
+				event.preventDefault();
+				startEditingAddress();
 				return;
 			}
 
