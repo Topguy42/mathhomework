@@ -1705,6 +1705,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Add subtle visual indicator (optional - can be toggled)
 		document.body.classList.add("about-blank-active");
 
+		// Add toggle button for the indicator
+		addAboutBlankToggle();
+
 		// Store that we're in about:blank mode
 		window.isAboutBlankMode = true;
 
