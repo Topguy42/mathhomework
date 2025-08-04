@@ -1298,7 +1298,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			};
 			img.onerror = () => {
 				// Fallback to just setting the favicon anyway
-				console.warn('Favicon may not be accessible, but applying anyway:', url);
+				console.warn(
+					"Favicon may not be accessible, but applying anyway:",
+					url
+				);
 				resolve(false);
 			};
 			img.src = url;
@@ -1321,18 +1324,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		// Change favicon
 		if (faviconUrl) {
-			console.log('Setting favicon:', faviconUrl);
+			console.log("Setting favicon:", faviconUrl);
 
 			// Remove ALL existing favicons first
-			const existingFavicons = document.querySelectorAll(
-				'link[rel*="icon"]'
-			);
+			const existingFavicons = document.querySelectorAll('link[rel*="icon"]');
 			existingFavicons.forEach((favicon) => favicon.remove());
 
 			// Force immediate favicon change using multiple aggressive techniques
 			const timestamp = Date.now();
 			const random = Math.random().toString(36).substring(7);
-			const cacheBustUrl = faviconUrl + (faviconUrl.includes('?') ? '&' : '?') + `_t=${timestamp}&_r=${random}`;
+			const cacheBustUrl =
+				faviconUrl +
+				(faviconUrl.includes("?") ? "&" : "?") +
+				`_t=${timestamp}&_r=${random}`;
 
 			// Method 1: Standard favicon with cache busting
 			const favicon1 = document.createElement("link");
@@ -1351,7 +1355,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			// Method 3: Force refresh by creating temporary blank favicon first
 			const blankFavicon = document.createElement("link");
 			blankFavicon.rel = "icon";
-			blankFavicon.href = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"></svg>';
+			blankFavicon.href =
+				'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"></svg>';
 			document.head.appendChild(blankFavicon);
 
 			// Method 4: Remove blank and add real favicon after short delay
@@ -1367,12 +1372,17 @@ document.addEventListener("DOMContentLoaded", () => {
 			// Method 5: Force browser to refresh favicon by manipulating head
 			setTimeout(() => {
 				// Remove all and re-add with new timestamp
-				document.querySelectorAll('link[rel*="icon"]').forEach(f => f.remove());
+				document
+					.querySelectorAll('link[rel*="icon"]')
+					.forEach((f) => f.remove());
 
 				const ultimateFavicon = document.createElement("link");
 				ultimateFavicon.rel = "shortcut icon";
 				ultimateFavicon.type = "image/x-icon";
-				ultimateFavicon.href = faviconUrl + (faviconUrl.includes('?') ? '&' : '?') + `_ultimate=${Date.now()}`;
+				ultimateFavicon.href =
+					faviconUrl +
+					(faviconUrl.includes("?") ? "&" : "?") +
+					`_ultimate=${Date.now()}`;
 				document.head.appendChild(ultimateFavicon);
 
 				// Also add standard icon
@@ -1385,19 +1395,24 @@ document.addEventListener("DOMContentLoaded", () => {
 			// Method 6: Try to force favicon refresh using window focus trick
 			setTimeout(() => {
 				if (document.hidden) {
-					document.addEventListener('visibilitychange', function handler() {
+					document.addEventListener("visibilitychange", function handler() {
 						if (!document.hidden) {
 							const refreshIcon = document.createElement("link");
 							refreshIcon.rel = "icon";
-							refreshIcon.href = faviconUrl + (faviconUrl.includes('?') ? '&' : '?') + `_focus=${Date.now()}`;
+							refreshIcon.href =
+								faviconUrl +
+								(faviconUrl.includes("?") ? "&" : "?") +
+								`_focus=${Date.now()}`;
 							document.head.appendChild(refreshIcon);
-							document.removeEventListener('visibilitychange', handler);
+							document.removeEventListener("visibilitychange", handler);
 						}
 					});
 				}
 			}, 100);
 
-			changes.push(`✅ Favicon changed to: ${faviconUrl} (using aggressive refresh)`);
+			changes.push(
+				`✅ Favicon changed to: ${faviconUrl} (using aggressive refresh)`
+			);
 		}
 
 		if (changes.length === 0) {
@@ -1426,10 +1441,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			// Restore with multiple formats
 			const faviconTypes = [
 				{ rel: "icon", type: "image/x-icon" },
-				{ rel: "shortcut icon", type: "image/x-icon" }
+				{ rel: "shortcut icon", type: "image/x-icon" },
 			];
 
-			faviconTypes.forEach(iconType => {
+			faviconTypes.forEach((iconType) => {
 				const restoredFavicon = document.createElement("link");
 				restoredFavicon.rel = iconType.rel;
 				restoredFavicon.type = iconType.type;
