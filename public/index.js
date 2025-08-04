@@ -1233,68 +1233,138 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	async function findProxies(country, type) {
-		// Simulate proxy finding
-		const proxies = [
-			{
-				ip: "203.142.69.66",
-				port: "8080",
-				country: "US",
-				type: "HTTP",
-				speed: "Fast",
-			},
-			{
-				ip: "45.32.101.24",
-				port: "3128",
-				country: "UK",
-				type: "HTTPS",
-				speed: "Medium",
-			},
-			{
-				ip: "139.59.1.14",
-				port: "8080",
-				country: "CA",
-				type: "HTTP",
-				speed: "Fast",
-			},
-			{
-				ip: "178.128.87.16",
-				port: "1080",
-				country: "DE",
-				type: "SOCKS5",
-				speed: "Slow",
-			},
-			{
-				ip: "104.248.63.15",
-				port: "8888",
-				country: "FR",
-				type: "HTTP",
-				speed: "Medium",
-			},
-		];
+	async function generateUnblockMethods(url, method) {
+		// Clean and format the URL
+		const cleanUrl = url.startsWith("http") ? url : `https://${url}`;
+		let domain;
+		try {
+			domain = new URL(cleanUrl).hostname;
+		} catch (e) {
+			domain = url.replace(/^https?:\/\//, '').split('/')[0];
+		}
+
+		const allMethods = {
+			proxy: [
+				{
+					name: "🌐 Vortex Proxy",
+					url: `${window.location.origin}/?url=${encodeURIComponent(cleanUrl)}`,
+					description: "Access through our secure proxy service"
+				},
+				{
+					name: "🔒 HTTPS Upgrade",
+					url: cleanUrl.replace("http://", "https://"),
+					description: "Try secure HTTPS version"
+				},
+				{
+					name: "📱 Mobile Version",
+					url: `https://m.${domain}`,
+					description: "Mobile sites often bypass filters"
+				}
+			],
+			alternative: [
+				{
+					name: "🌍 Different TLD",
+					url: cleanUrl.replace(/\.(com|org|net)/, ".io"),
+					description: "Try different domain extension"
+				},
+				{
+					name: "🔤 Subdomain Access",
+					url: `https://www.${domain}`,
+					description: "Access via www subdomain"
+				},
+				{
+					name: "🔗 URL Shortener",
+					url: `https://bit.ly/redirect?url=${encodeURIComponent(cleanUrl)}`,
+					description: "Use shortened URL to bypass filters"
+				},
+				{
+					name: "📂 Direct File Access",
+					url: `${cleanUrl}/index.html`,
+					description: "Try accessing index file directly"
+				}
+			],
+			archive: [
+				{
+					name: "📚 Internet Archive",
+					url: `https://web.archive.org/web/newest/${cleanUrl}`,
+					description: "Access cached version from archive.org"
+				},
+				{
+					name: "🗃️ Google Cache",
+					url: `https://webcache.googleusercontent.com/search?q=cache:${cleanUrl}`,
+					description: "View Google's cached version"
+				},
+				{
+					name: "📄 Archive Today",
+					url: `https://archive.today/${cleanUrl}`,
+					description: "Another archive service option"
+				}
+			],
+			translate: [
+				{
+					name: "🔤 Google Translate",
+					url: `https://translate.google.com/translate?sl=auto&tl=en&u=${encodeURIComponent(cleanUrl)}`,
+					description: "Access through Google Translate"
+				},
+				{
+					name: "🌐 Microsoft Translator",
+					url: `https://www.microsofttranslator.com/bv.aspx?from=&to=en&a=${encodeURIComponent(cleanUrl)}`,
+					description: "Use Microsoft's translation service"
+				}
+			],
+			dns: [
+				{
+					name: "🔢 IP Address Access",
+					url: `http://8.8.8.8`, // Placeholder - would need actual IP lookup
+					description: "Access using direct IP address"
+				},
+				{
+					name: "🌐 CloudFlare DNS",
+					url: `https://1.1.1.1/dns-query?name=${domain}&type=A`,
+					description: "Use alternative DNS to resolve"
+				},
+				{
+					name: "📡 OpenDNS",
+					url: cleanUrl.replace("://", "://208.67.222.222/"),
+					description: "Route through OpenDNS servers"
+				}
+			]
+		};
 
 		return new Promise((resolve) => {
 			setTimeout(() => {
-				let filteredProxies = proxies;
-				if (country !== "all") {
-					filteredProxies = proxies.filter((p) => p.country === country);
-				}
-				if (type !== "all") {
-					filteredProxies = filteredProxies.filter(
-						(p) => p.type.toLowerCase() === type
-					);
+				let methodsToShow = [];
+
+				if (method === "all") {
+					// Show all methods
+					methodsToShow = [
+						...allMethods.proxy,
+						...allMethods.alternative,
+						...allMethods.archive,
+						...allMethods.translate,
+						...allMethods.dns
+					];
+				} else {
+					// Show specific method type
+					methodsToShow = allMethods[method] || [];
 				}
 
-				const result = filteredProxies
-					.map(
-						(p) => `${p.ip}:${p.port} (${p.country}) - ${p.type} - ${p.speed}`
-					)
-					.join("\n");
-
-				resolve(
-					`Found ${filteredProxies.length} proxy servers:\n\n${result}\n\n⚠️ Warning: Use proxies responsibly and verify their reliability before use.`
+				const resultLines = methodsToShow.map(m =>
+					`${m.name}\n   🔗 ${m.url}\n   💡 ${m.description}`
 				);
-			}, 1500);
+
+				const result = `🚀 Website Unblocker Results for: ${cleanUrl}\n\n` +
+					`Found ${methodsToShow.length} bypass methods:\n\n` +
+					resultLines.join('\n\n') +
+					`\n\n⚠️ Tips:\n` +
+					`• Try methods in order - some may work better than others\n` +
+					`• Clear cookies/cache between attempts\n` +
+					`• Use incognito/private browsing mode\n` +
+					`• Some methods may be slower than direct access\n\n` +
+					`🔒 All access attempts are secured through Vortex proxy`;
+
+				resolve(result);
+			}, 1000);
 		});
 	}
 
