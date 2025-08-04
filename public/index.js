@@ -71,6 +71,8 @@ async function navigateToUrl(url, addToHistoryFlag = true) {
 		frame.onload = () => {
 			setNavigationLoading(false);
 			hideLoading();
+			// Ensure navigation buttons are updated after load
+			updateNavigationButtons();
 		};
 
 		frame.onerror = () => {
