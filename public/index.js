@@ -1420,7 +1420,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		const newTab = window.open('about:blank', '_blank');
 
 		if (newTab) {
-			// Create a working proxy interface that loads immediately
+			// Create a clean about:blank page with hidden proxy access
 			const htmlContent = `<!DOCTYPE html>
 <html>
 <head>
@@ -1432,139 +1432,75 @@ document.addEventListener("DOMContentLoaded", () => {
 body {
 	font-family: Arial, sans-serif;
 	background: white;
-	color: #333;
+	color: #000;
 	overflow: hidden;
 	height: 100vh;
-}
-.proxy-container {
-	width: 100%;
-	height: 100vh;
-	display: flex;
-	flex-direction: column;
-	background: white;
-}
-.proxy-header {
-	background: #2c3e50;
-	color: white;
-	padding: 15px 20px;
-	display: flex;
-	align-items: center;
-	gap: 15px;
-	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-.proxy-url-bar {
-	flex: 1;
-	padding: 8px 12px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	font-size: 14px;
-}
-.proxy-go-btn {
-	background: #00d4aa;
-	color: white;
-	border: none;
-	padding: 8px 16px;
-	border-radius: 4px;
-	cursor: pointer;
-	font-size: 14px;
-}
-.proxy-go-btn:hover { background: #00b895; }
-.proxy-frame-container {
-	flex: 1;
-	width: 100%;
-	height: calc(100vh - 60px);
-	border: none;
-	background: white;
+	cursor: default;
 }
 .proxy-frame {
 	width: 100%;
-	height: 100%;
+	height: 100vh;
 	border: none;
 	background: white;
+	display: none;
 }
-.quick-links {
-	display: flex;
-	gap: 10px;
-	align-items: center;
-}
-.quick-link {
-	background: #34495e;
-	color: white;
-	border: none;
-	padding: 6px 12px;
+.toggle-btn {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	background: rgba(248, 249, 250, 0.1);
+	border: 1px solid rgba(221, 221, 221, 0.2);
+	padding: 6px 10px;
 	border-radius: 3px;
 	cursor: pointer;
-	font-size: 12px;
-	text-decoration: none;
+	font-size: 11px;
+	color: rgba(102, 102, 102, 0.3);
+	z-index: 10001;
+	opacity: 0.1;
+	transition: opacity 0.3s ease;
+	user-select: none;
 }
-.quick-link:hover { background: #4a5f7a; }
-.loading {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100%;
-	font-size: 18px;
+.toggle-btn:hover {
+	opacity: 0.8;
+	background: rgba(248, 249, 250, 0.9);
 	color: #666;
 }
 </style>
 </head>
 <body>
-<div class="proxy-container">
-	<div class="proxy-header">
-		<input type="text" class="proxy-url-bar" id="proxyUrl" placeholder="Enter URL or search term..." />
-		<button class="proxy-go-btn" id="proxyGo">Go</button>
-		<div class="quick-links">
-			<button class="quick-link" onclick="loadSite('https://google.com')">Google</button>
-			<button class="quick-link" onclick="loadSite('https://youtube.com')">YouTube</button>
-			<button class="quick-link" onclick="loadSite('https://discord.com')">Discord</button>
-		</div>
-	</div>
-	<div class="proxy-frame-container">
-		<iframe id="proxyFrame" class="proxy-frame" src="${window.location.origin}"></iframe>
-	</div>
-</div>
+<iframe id="proxyFrame" class="proxy-frame" src="${window.location.origin}"></iframe>
+<button id="toggleBtn" class="toggle-btn">≡</button>
 
 <script>
-const urlInput = document.getElementById('proxyUrl');
-const goBtn = document.getElementById('proxyGo');
 const frame = document.getElementById('proxyFrame');
+const btn = document.getElementById('toggleBtn');
+let isVisible = false;
 
 // Clear title every second to maintain about:blank appearance
 setInterval(() => {
 	if (document.title !== '') document.title = '';
 }, 1000);
 
-function loadSite(url) {
-	urlInput.value = url;
-	goToSite();
-}
-
-function goToSite() {
-	const url = urlInput.value.trim();
-	if (!url) return;
-
-	let finalUrl;
-	if (url.startsWith('http://') || url.startsWith('https://')) {
-		finalUrl = url;
-	} else if (url.includes('.') && !url.includes(' ')) {
-		finalUrl = 'https://' + url;
+btn.addEventListener('click', () => {
+	if (isVisible) {
+		frame.style.display = 'none';
+		btn.innerHTML = '≡';
+		btn.style.opacity = '0.1';
+		document.title = '';
 	} else {
-		finalUrl = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+		frame.style.display = 'block';
+		btn.innerHTML = '×';
+		btn.style.opacity = '0.8';
 	}
-
-	// Navigate to the proxy URL
-	const proxyUrl = '${window.location.origin}/?url=' + encodeURIComponent(finalUrl);
-	frame.src = proxyUrl;
-}
-
-// Event listeners
-goBtn.addEventListener('click', goToSite);
-urlInput.addEventListener('keypress', (e) => {
-	if (e.key === 'Enter') goToSite();
+	isVisible = !isVisible;
 });
 
-// Focus on URL input
-urlInput.focus();
+// Hide button completely after 10 seconds unless hovered
+setTimeout(() => {
+	if (!btn.matches(':hover')) {
+		btn.style.opacity = '0.05';
+	}
+}, 10000);
 </script>
 </body>
 </html>`;
