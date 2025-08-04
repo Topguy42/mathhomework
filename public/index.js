@@ -3927,6 +3927,39 @@ body {
 				document.title = "";
 			}
 		}, 1000);
+
+		// Add subtle protection indicator
+		const protectionIndicator = document.createElement("div");
+		protectionIndicator.id = "protection-indicator";
+		protectionIndicator.innerHTML = "🛡️";
+		protectionIndicator.title = "Anti-extension protection active";
+		protectionIndicator.style.cssText = `
+			position: fixed;
+			top: 10px;
+			left: 10px;
+			width: 24px;
+			height: 24px;
+			background: rgba(0, 0, 0, 0.1);
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 12px;
+			opacity: 0.3;
+			z-index: 9999;
+			transition: opacity 0.3s ease;
+			cursor: help;
+		`;
+
+		protectionIndicator.addEventListener("mouseenter", () => {
+			protectionIndicator.style.opacity = "0.8";
+		});
+
+		protectionIndicator.addEventListener("mouseleave", () => {
+			protectionIndicator.style.opacity = "0.3";
+		});
+
+		document.body.appendChild(protectionIndicator);
 	}
 
 	// Anti-extension protection function
