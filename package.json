@@ -14,7 +14,8 @@
 		"lint:fix": "eslint ./src/ --fix"
 	},
 	"keywords": [
-		"proxy"
+		"web",
+		"app"
 	],
 	"author": "",
 	"license": "GPL-3.0-or-later",
