@@ -1473,6 +1473,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	function createAboutBlankProxy() {
+		// Get the current origin for absolute URLs
+		const origin = window.location.origin;
+
 		// Create a minimal, hidden version of the proxy interface
 		return `
 		<!DOCTYPE html>
@@ -1506,8 +1509,8 @@ document.addEventListener("DOMContentLoaded", () => {
 					flex-direction: column;
 					justify-content: center;
 					align-items: center;
-					opacity: 0;
-					pointer-events: none;
+					opacity: 1;
+					pointer-events: all;
 					transition: opacity 0.3s ease;
 				}
 				.proxy-interface {
@@ -1553,14 +1556,21 @@ document.addEventListener("DOMContentLoaded", () => {
 					color: #666;
 					z-index: 1001;
 				}
-				.hidden-proxy.active {
-					opacity: 1;
-					pointer-events: all;
+				.hidden-proxy.hidden {
+					opacity: 0;
+					pointer-events: none;
 				}
 				iframe {
 					width: 100%;
 					height: 100%;
 					border: none;
+				}
+				.loading {
+					color: #007bff;
+					font-style: italic;
+				}
+				.error {
+					color: red;
 				}
 			</style>
 		</head>
@@ -1568,7 +1578,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			<div class="hidden-proxy" id="proxyInterface">
 				<div class="proxy-interface">
 					<h2 style="margin-bottom: 20px;">Web Proxy</h2>
-					<form id="proxyForm">
+					<p class="loading" id="loadingText">Loading proxy...</p>
+					<form id="proxyForm" style="display: none;">
 						<input type="text" class="proxy-input" id="urlInput" placeholder="Enter URL or search term..." />
 						<br>
 						<button type="submit" class="proxy-button">Go</button>
@@ -1585,16 +1596,85 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			<button class="toggle-btn" onclick="toggleProxy()">≡</button>
 
-			<script src="${window.location.origin}/baremux/index.js"></script>
-			<script src="${window.location.origin}/epoxy/index.js"></script>
-			<script src="${window.location.origin}/uv/uv.bundle.js"></script>
-			<script src="${window.location.origin}/uv/uv.config.js"></script>
-			<script src="${window.location.origin}/register-sw.js"></script>
-			<script src="${window.location.origin}/search.js"></script>
 			<script>
+				// Store origin and config
+				window.PROXY_ORIGIN = "${origin}";
+				window.proxyReady = false;
+
+				// Load scripts dynamically with better error handling
+				function loadScript(src) {
+					return new Promise((resolve, reject) => {
+						console.log('Loading script:', src);
+						const script = document.createElement('script');
+						script.src = src;
+						script.onload = () => {
+							console.log('Script loaded:', src);
+							resolve();
+						};
+						script.onerror = (error) => {
+							console.error('Script failed to load:', src, error);
+							reject(new Error('Failed to load: ' + src));
+						};
+						document.head.appendChild(script);
+					});
+				}
+
+				// Initialize proxy
+				async function initializeProxy() {
+					try {
+						console.log('Starting proxy initialization...');
+
+						// Load scripts in sequence with delays
+						await loadScript(window.PROXY_ORIGIN + '/baremux/index.js');
+						await new Promise(resolve => setTimeout(resolve, 500));
+
+						await loadScript(window.PROXY_ORIGIN + '/epoxy/index.js');
+						await new Promise(resolve => setTimeout(resolve, 500));
+
+						await loadScript(window.PROXY_ORIGIN + '/uv/uv.bundle.js');
+						await new Promise(resolve => setTimeout(resolve, 500));
+
+						await loadScript(window.PROXY_ORIGIN + '/uv/uv.config.js');
+						await new Promise(resolve => setTimeout(resolve, 500));
+
+						await loadScript(window.PROXY_ORIGIN + '/register-sw.js');
+						await new Promise(resolve => setTimeout(resolve, 500));
+
+						console.log('All scripts loaded, checking config...');
+
+						// Wait for config to be available with longer timeout
+						let attempts = 0;
+						while (!window.__uv$config && attempts < 20) {
+							await new Promise(resolve => setTimeout(resolve, 500));
+							attempts++;
+							console.log('Waiting for config... attempt', attempts);
+						}
+
+						if (window.__uv$config) {
+							window.proxyReady = true;
+							document.getElementById('loadingText').style.display = 'none';
+							document.getElementById('proxyForm').style.display = 'block';
+							console.log('Proxy ready!');
+						} else {
+							throw new Error('Proxy configuration failed to load after 10 seconds');
+						}
+
+					} catch (error) {
+						console.error('Error loading proxy:', error);
+						const loadingText = document.getElementById('loadingText');
+						loadingText.textContent = 'Proxy failed to load. Click ≡ to hide this message.';
+						loadingText.className = 'error';
+
+						// Show a simple manual access option
+						const manualDiv = document.createElement('div');
+						manualDiv.innerHTML = '<p style="margin-top: 15px;"><a href="' + window.PROXY_ORIGIN + '" target="_blank" style="color: #007bff;">Click here to open proxy in current tab</a></p>';
+						document.querySelector('.proxy-interface').appendChild(manualDiv);
+					}
+				}
+
 				function toggleProxy() {
 					const proxyInterface = document.getElementById('proxyInterface');
-					proxyInterface.classList.toggle('active');
+					proxyInterface.classList.toggle('hidden');
 				}
 
 				function loadQuickSite(url) {
@@ -1604,7 +1684,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 				function closeFrame() {
 					document.getElementById('frameContainer').style.display = 'none';
-					document.getElementById('proxyInterface').classList.remove('active');
+					document.getElementById('proxyInterface').classList.remove('hidden');
 				}
 
 				document.getElementById('proxyForm').addEventListener('submit', async (e) => {
@@ -1612,11 +1692,16 @@ document.addEventListener("DOMContentLoaded", () => {
 					const url = document.getElementById('urlInput').value;
 					if (!url) return;
 
+					if (!window.proxyReady) {
+						alert('Proxy is still loading. Please wait a moment and try again.');
+						return;
+					}
+
 					try {
 						// Initialize proxy connection
-						const connection = new BareMux.BareMuxConnection("${window.location.origin}/baremux/worker.js");
+						const connection = new BareMux.BareMuxConnection(window.PROXY_ORIGIN + "/baremux/worker.js");
 
-						let wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
+						let wispUrl = (window.PROXY_ORIGIN.startsWith('https') ? "wss" : "ws") + "://" + window.PROXY_ORIGIN.replace(/^https?:\\/\\//, '') + "/wisp/";
 						if ((await connection.getTransport()) !== "/epoxy/index.mjs") {
 							await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
 						}
@@ -1631,11 +1716,12 @@ document.addEventListener("DOMContentLoaded", () => {
 						} else {
 							finalUrl = searchEngine.replace('%s', encodeURIComponent(url));
 						}
-						const proxyUrl = __uv$config.prefix + __uv$config.encodeUrl(finalUrl);
+
+						const proxyUrl = window.__uv$config.prefix + window.__uv$config.encodeUrl(finalUrl);
 
 						document.getElementById('proxyFrame').src = proxyUrl;
 						document.getElementById('frameContainer').style.display = 'block';
-						document.getElementById('proxyInterface').classList.remove('active');
+						document.getElementById('proxyInterface').classList.add('hidden');
 
 					} catch (error) {
 						console.error('Proxy error:', error);
@@ -1643,10 +1729,8 @@ document.addEventListener("DOMContentLoaded", () => {
 					}
 				});
 
-				// Hide interface by default
-				setTimeout(() => {
-					document.getElementById('proxyInterface').classList.remove('active');
-				}, 100);
+				// Initialize proxy when page loads
+				initializeProxy();
 			</script>
 		</body>
 		</html>
