@@ -1013,6 +1013,16 @@ document.addEventListener("DOMContentLoaded", () => {
 				return;
 			}
 
+			// Validate favicon URL if provided
+			if (newFavicon && !isValidUrl(newFavicon)) {
+				showResult(
+					cloakerResult,
+					"Please enter a valid favicon URL (e.g., https://example.com/favicon.ico)",
+					"error"
+				);
+				return;
+			}
+
 			setLoading(applyCloakerBtn, true);
 			try {
 				const result = applyCloaking(newTitle, newFavicon);
