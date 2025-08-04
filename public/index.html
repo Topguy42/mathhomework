@@ -75,17 +75,28 @@
 				if (aboutBlankToggle) {
 					aboutBlankToggle.addEventListener('change', function() {
 						if (this.checked) {
-							// Store original URL for restoration
+							// Store original state
 							sessionStorage.setItem('vortex-original-url', window.location.href);
+							sessionStorage.setItem('vortex-original-title', document.title);
+							sessionStorage.setItem('vortex-aboutblank-active', 'true');
 
-							// Navigate to Google to hide proxy from history
-							window.history.replaceState({}, '', 'https://www.google.com/');
+							// Replace current history entry with Google
+							window.history.replaceState({}, 'Google', 'https://www.google.com/search?q=');
+
+							// Set blank title and apply styling
 							document.title = '';
-
-							// Apply blank styling
 							document.body.classList.add('aboutblank-mode');
 
-							// Add toggle button
+							// Clear browser cache entries for this session
+							if ('serviceWorker' in navigator) {
+								navigator.serviceWorker.getRegistrations().then(function(registrations) {
+									registrations.forEach(function(registration) {
+										registration.unregister();
+									});
+								});
+							}
+
+							// Add discrete toggle button
 							let toggleBtn = document.getElementById('aboutblank-toggle');
 							if (!toggleBtn) {
 								toggleBtn = document.createElement('button');
@@ -104,38 +115,68 @@
 									cursor: pointer;
 									z-index: 10001;
 									border: 1px solid #ddd;
+									opacity: 0.3;
+									transition: opacity 0.3s;
 								`;
-								toggleBtn.title = 'Click to exit about:blank mode';
+								toggleBtn.title = 'Click to restore Vortex';
 								document.body.appendChild(toggleBtn);
 
+								// Make button more visible on hover
+								toggleBtn.addEventListener('mouseenter', function() {
+									this.style.opacity = '1';
+								});
+
+								toggleBtn.addEventListener('mouseleave', function() {
+									this.style.opacity = '0.3';
+								});
+
 								toggleBtn.addEventListener('click', function() {
-									// Restore original URL
+									// Restore original state
 									const originalUrl = sessionStorage.getItem('vortex-original-url');
+									const originalTitle = sessionStorage.getItem('vortex-original-title');
+
 									if (originalUrl) {
-										window.history.replaceState({}, '', originalUrl);
-										sessionStorage.removeItem('vortex-original-url');
+										window.history.replaceState({}, originalTitle || 'Vortex | Fast Web Access', originalUrl);
 									}
 
+									// Clear session storage
+									sessionStorage.removeItem('vortex-original-url');
+									sessionStorage.removeItem('vortex-original-title');
+									sessionStorage.removeItem('vortex-aboutblank-active');
+
+									// Restore normal appearance
 									document.body.classList.remove('aboutblank-mode');
-									document.title = 'Vortex | Fast Web Access';
+									document.title = originalTitle || 'Vortex | Fast Web Access';
 									aboutBlankToggle.checked = false;
 									toggleBtn.remove();
 								});
 							}
 						} else {
-							// Restore original URL
+							// Manual toggle off
 							const originalUrl = sessionStorage.getItem('vortex-original-url');
+							const originalTitle = sessionStorage.getItem('vortex-original-title');
+
 							if (originalUrl) {
-								window.history.replaceState({}, '', originalUrl);
-								sessionStorage.removeItem('vortex-original-url');
+								window.history.replaceState({}, originalTitle || 'Vortex | Fast Web Access', originalUrl);
 							}
 
+							sessionStorage.removeItem('vortex-original-url');
+							sessionStorage.removeItem('vortex-original-title');
+							sessionStorage.removeItem('vortex-aboutblank-active');
+
 							document.body.classList.remove('aboutblank-mode');
-							document.title = 'Vortex | Fast Web Access';
+							document.title = originalTitle || 'Vortex | Fast Web Access';
 							const toggleBtn = document.getElementById('aboutblank-toggle');
 							if (toggleBtn) toggleBtn.remove();
 						}
 					});
+				}
+
+				// Restore about blank mode on page reload if it was active
+				if (sessionStorage.getItem('vortex-aboutblank-active') === 'true') {
+					document.body.classList.add('aboutblank-mode');
+					document.title = '';
+					if (aboutBlankToggle) aboutBlankToggle.checked = true;
 				}
 			});
 		</script>
@@ -825,7 +866,7 @@
 									<span class="rating-label">rating</span>
 								</div>
 								<button class="play-button">
-									<span class="play-icon">▶</span>
+									<span class="play-icon">��</span>
 									Play Now
 								</button>
 							</div>
@@ -1153,7 +1194,7 @@
 									<span class="rating-label">rating</span>
 								</div>
 								<button class="launch-button">
-									<span class="launch-icon">��</span>
+									<span class="launch-icon">🚀</span>
 									Launch App
 								</button>
 							</div>
