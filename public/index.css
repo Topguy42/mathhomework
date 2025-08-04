@@ -644,13 +644,10 @@ body.light-theme .theme-toggle:hover {
 	border-color: var(--primary-color);
 	background: var(--glass-bg-strong);
 	box-shadow:
-		0 20px 60px var(--glass-shadow-strong),
-		0 12px 30px rgba(0, 0, 0, 0.15),
-		0 8px 16px rgba(0, 0, 0, 0.1),
-		0 0 0 3px rgba(var(--primary-color), 0.15),
-		inset 0 3px 0 rgba(255, 255, 255, 0.2),
-		inset 0 -2px 0 rgba(0, 0, 0, 0.05);
-	transform: translateY(-4px) scale(1.01);
+		0 8px 24px var(--glass-shadow-strong),
+		0 0 0 2px rgba(var(--primary-color), 0.15),
+		inset 0 2px 0 rgba(255, 255, 255, 0.2);
+	transform: translateY(-2px);
 }
 
 .input-container:focus-within::before {
