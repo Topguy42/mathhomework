@@ -628,11 +628,19 @@ document.addEventListener("DOMContentLoaded", () => {
 	function closeFrame() {
 		const frameContainer = document.getElementById("frame-container");
 		const frame = document.getElementById("uv-frame");
+		const loadingOverlay = document.getElementById("loading-overlay");
 
 		// Hide frame and restore background
 		frameContainer.style.display = "none";
 		frame.src = "";
 		document.body.classList.remove("frame-active");
+
+		// Hide loading overlay and clear timers
+		if (loadingOverlay) {
+			loadingOverlay.classList.add("hidden");
+		}
+		clearTimeout(loadingTimeout);
+		clearInterval(progressInterval);
 
 		// Reset browser state
 		browserHistory = [];
