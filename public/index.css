@@ -1,4 +1,4 @@
-
+/* Reset and Base Styles */
 * {
 	margin: 0;
 	padding: 0;
@@ -84,7 +84,7 @@ body {
 	position: relative;
 }
 
-
+/* Animated Background */
 .background-animation {
 	position: fixed;
 	top: 0;
@@ -224,7 +224,7 @@ body {
 	}
 }
 
-
+/* Top Navigation */
 .top-nav {
 	position: fixed;
 	top: 0;
@@ -420,7 +420,7 @@ body {
 	will-change: transform;
 }
 
-
+/* Improve theme toggle for light theme */
 body.light-theme .theme-toggle {
 	background: rgba(255, 255, 255, 0.9);
 	border-color: rgba(0, 0, 0, 0.1);
@@ -439,7 +439,7 @@ body.light-theme .theme-toggle:hover {
 		inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-
+/* Main Container */
 .main-container {
 	min-height: 100vh;
 	display: flex;
@@ -452,7 +452,7 @@ body.light-theme .theme-toggle:hover {
 	width: 100%;
 }
 
-
+/* Header Section */
 .header-section {
 	text-align: center;
 	padding: 3rem 2rem 1rem;
@@ -568,7 +568,7 @@ body.light-theme .theme-toggle:hover {
 	margin-top: 0.5rem;
 }
 
-
+/* Search Section */
 .search-section {
 	flex: 1;
 	display: flex;
@@ -759,7 +759,7 @@ body.light-theme .theme-toggle:hover {
 	height: 18px;
 }
 
-
+/* Error Container */
 .error-container {
 	margin-top: 1rem;
 	min-height: 1.5rem;
@@ -778,7 +778,7 @@ body.light-theme .theme-toggle:hover {
 	margin-top: 0.5rem;
 }
 
-
+/* Quick Access Section */
 .quick-access-section {
 	padding: 1rem 2rem 3rem;
 }
@@ -903,12 +903,12 @@ body.light-theme .theme-toggle:hover {
 	color: #ffffff;
 }
 
-
+/* Tab Sections */
 .tab-section {
 	width: 100%;
 }
 
-
+/* Games Section */
 .games-section {
 	padding: 1rem 2rem 3rem;
 }
@@ -935,7 +935,7 @@ body.light-theme .theme-toggle:hover {
 	opacity: 0.9;
 }
 
-
+/* Games Search */
 .games-search-container {
 	margin-bottom: 2rem;
 	max-width: 500px;
@@ -1144,7 +1144,7 @@ body.light-theme .theme-toggle:hover {
 	font-size: 0.8rem;
 }
 
-
+/* Apps Section */
 .apps-section {
 	padding: 1rem 2rem 3rem;
 }
@@ -1171,7 +1171,7 @@ body.light-theme .theme-toggle:hover {
 	opacity: 0.9;
 }
 
-
+/* Apps Search */
 .apps-search-container {
 	margin-bottom: 2rem;
 	max-width: 500px;
@@ -1364,7 +1364,7 @@ body.light-theme .theme-toggle:hover {
 	font-size: 0.8rem;
 }
 
-
+/* Hidden Frame */
 #frame-container {
 	position: fixed;
 	top: 0;
@@ -1377,7 +1377,7 @@ body.light-theme .theme-toggle:hover {
 	flex-direction: column;
 }
 
-
+/* Loading Overlay */
 .loading-overlay {
 	position: absolute;
 	top: 0;
@@ -1430,7 +1430,7 @@ body.light-theme .theme-toggle:hover {
 	}
 }
 
-
+/* Loading Spinner */
 .loading-spinner {
 	position: relative;
 	width: 80px;
@@ -1476,7 +1476,7 @@ body.light-theme .theme-toggle:hover {
 	}
 }
 
-
+/* Loading Text */
 .loading-title {
 	font-size: 1.5rem;
 	font-weight: 600;
@@ -1505,7 +1505,7 @@ body.light-theme .theme-toggle:hover {
 	opacity: 0.9;
 }
 
-
+/* Loading Progress */
 .loading-progress {
 	margin-top: 1.5rem;
 }
@@ -1555,7 +1555,7 @@ body.light-theme .theme-toggle:hover {
 	}
 }
 
-
+/* Loading Steps */
 .loading-steps {
 	display: flex;
 	justify-content: space-between;
@@ -1583,7 +1583,7 @@ body.light-theme .theme-toggle:hover {
 .step.completed {
 	color: var(--success);
 	background: rgba(16, 185, 129, 0.1);
-	padding-right: 1.75rem; 
+	padding-right: 1.75rem; /* Make room for check mark */
 }
 
 .step.completed::after {
@@ -1597,7 +1597,7 @@ body.light-theme .theme-toggle:hover {
 	color: var(--success);
 }
 
-
+/* Browser Tab System */
 .browser-tab-container {
 	background: var(--glass-bg);
 	border-bottom: 1px solid var(--glass-border);
@@ -1607,7 +1607,7 @@ body.light-theme .theme-toggle:hover {
 	flex-shrink: 0;
 }
 
-
+/* Tab Bar */
 .tab-bar {
 	display: flex;
 	align-items: center;
@@ -1670,7 +1670,7 @@ body.light-theme .theme-toggle:hover {
 	height: 18px;
 }
 
-
+/* Tab Info */
 .tab-info {
 	flex: 1;
 	display: flex;
@@ -1753,7 +1753,7 @@ body.light-theme .theme-toggle:hover {
 	color: var(--error);
 }
 
-
+/* Tab Actions */
 .tab-actions {
 	display: flex;
 	align-items: center;
@@ -1804,7 +1804,7 @@ body.light-theme .theme-toggle:hover {
 	height: 18px;
 }
 
-
+/* Browser Frame */
 .browser-frame {
 	border: none;
 	width: 100%;
@@ -1813,7 +1813,7 @@ body.light-theme .theme-toggle:hover {
 	min-height: 0;
 }
 
-
+/* Responsive Design */
 @media (max-width: 768px) {
 	.tab-bar {
 		padding: 0.5rem;
@@ -1862,7 +1862,7 @@ body.light-theme .theme-toggle:hover {
 		font-size: 0.75rem;
 	}
 
-	
+	/* Loading responsive */
 	.loading-content {
 		margin: 1rem;
 		padding: 1.5rem;
@@ -1893,7 +1893,7 @@ body.light-theme .theme-toggle:hover {
 	}
 
 	.step.completed {
-		padding-right: 1.5rem; 
+		padding-right: 1.5rem; /* Adjust for smaller screens */
 	}
 
 	.step.completed::after {
@@ -1902,7 +1902,7 @@ body.light-theme .theme-toggle:hover {
 	}
 }
 
-
+/* Prevent scrolling when frame is active */
 body.frame-active {
 	overflow: hidden;
 	height: 100vh;
@@ -1916,7 +1916,7 @@ body.frame-active .top-nav {
 	display: none;
 }
 
-
+/* Service Worker Button */
 #uv-register-sw {
 	background: var(--gradient-primary);
 	color: white;
@@ -1949,7 +1949,7 @@ body.frame-active .top-nav {
 	display: inline-block;
 }
 
-
+/* Tools Section */
 .tools-section {
 	padding: 1rem 2rem 3rem;
 }
@@ -1976,7 +1976,7 @@ body.frame-active .top-nav {
 	opacity: 0.9;
 }
 
-
+/* Tools Grid */
 .tools-grid {
 	display: grid;
 	grid-template-columns: repeat(8, 1fr);
@@ -2063,7 +2063,7 @@ body.frame-active .top-nav {
 	color: white;
 }
 
-
+/* Tool Interfaces */
 .tool-interfaces {
 	max-width: 600px;
 	margin: 0 auto;
@@ -2198,7 +2198,7 @@ body.frame-active .top-nav {
 	font-style: italic;
 }
 
-
+/* Tool Options */
 .tool-options {
 	display: flex;
 	flex-direction: column;
@@ -2221,7 +2221,7 @@ body.frame-active .top-nav {
 	accent-color: var(--accent-color);
 }
 
-
+/* Loading state */
 .tool-button.loading {
 	opacity: 0.7;
 	cursor: not-allowed;
@@ -2249,7 +2249,7 @@ body.frame-active .top-nav {
 	}
 }
 
-
+/* Success/Error states */
 .tool-result.success {
 	border-color: var(--success);
 	background: rgba(16, 185, 129, 0.1);
@@ -2260,7 +2260,7 @@ body.frame-active .top-nav {
 	background: rgba(239, 68, 68, 0.1);
 }
 
-
+/* Cloaker Specific Styles */
 .cloak-input-group {
 	margin-bottom: 1.5rem;
 }
@@ -2414,7 +2414,7 @@ body.frame-active .top-nav {
 	flex-shrink: 0;
 }
 
-
+/* Settings Section */
 .settings-section {
 	padding: 1rem 2rem 3rem;
 }
@@ -2537,7 +2537,7 @@ body.frame-active .top-nav {
 	color: var(--text-muted);
 }
 
-
+/* Toggle Switch */
 .setting-toggle {
 	position: relative;
 	display: inline-block;
@@ -2592,7 +2592,7 @@ body.frame-active .top-nav {
 	box-shadow: 0 0 10px rgba(0, 212, 170, 0.3);
 }
 
-
+/* Settings Actions */
 .settings-actions {
 	display: flex;
 	justify-content: center;
@@ -2657,7 +2657,7 @@ body.frame-active .top-nav {
 	box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
 }
 
-
+/* Settings Info */
 .settings-info {
 	background: rgba(0, 26, 26, 0.6);
 	border: 1px solid rgba(0, 212, 170, 0.2);
@@ -2681,7 +2681,7 @@ body.frame-active .top-nav {
 	margin-bottom: 0.25rem;
 }
 
-
+/* Responsive Design */
 @media (max-width: 768px) {
 	.nav-container {
 		padding: 0.5rem 1rem;
@@ -3090,7 +3090,7 @@ body.frame-active .top-nav {
 	}
 }
 
-
+/* Loading Animation */
 @keyframes pulse {
 	0%,
 	100% {
@@ -3105,12 +3105,12 @@ body.frame-active .top-nav {
 	animation: pulse 2s ease-in-out infinite;
 }
 
-
+/* Smooth Scrolling */
 html {
 	scroll-behavior: smooth;
 }
 
-
+/* Selection Styles */
 ::selection {
 	background: var(--primary-color);
 	color: white;
@@ -3121,8 +3121,8 @@ html {
 	color: white;
 }
 
-
-
+/* Theme Variations */
+/* Light Theme */
 body.light-theme {
 	--primary-color: #0984e3;
 	--primary-dark: #0770c2;
@@ -3184,7 +3184,7 @@ body.light-theme .gradient-overlay {
 		);
 }
 
-
+/* Improved light theme background */
 body.light-theme {
 	background:
 		radial-gradient(
@@ -3205,7 +3205,7 @@ body.light-theme {
 		linear-gradient(135deg, #f8faff 0%, #ffffff 50%, #f8faff 100%);
 }
 
-
+/* Light theme navigation improvements */
 body.light-theme .top-nav {
 	background: rgba(255, 255, 255, 0.9);
 	border-bottom: 1px solid rgba(9, 132, 227, 0.15);
@@ -3215,7 +3215,7 @@ body.light-theme .top-nav {
 		inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
-
+/* Light theme glass effects */
 body.light-theme .input-container {
 	background: rgba(255, 255, 255, 0.9);
 	border: 1px solid rgba(9, 132, 227, 0.2);
@@ -3235,7 +3235,7 @@ body.light-theme .input-container:focus-within {
 	transform: translateY(-2px);
 }
 
-
+/* Light theme cards */
 body.light-theme .quick-access-item {
 	background: rgba(255, 255, 255, 0.8);
 	border: 1px solid rgba(9, 132, 227, 0.2);
@@ -3255,7 +3255,7 @@ body.light-theme .quick-access-item:hover {
 	transform: translateY(-6px) scale(1.05);
 }
 
-
+/* Light theme game and app cards */
 body.light-theme .game-card,
 body.light-theme .app-card {
 	background: rgba(255, 255, 255, 0.9);
@@ -3274,7 +3274,7 @@ body.light-theme .app-card:hover {
 	transform: translateY(-4px);
 }
 
-
+/* Light theme search bars */
 body.light-theme .games-search-bar,
 body.light-theme .apps-search-bar {
 	background: rgba(255, 255, 255, 0.9);
@@ -3292,7 +3292,7 @@ body.light-theme .apps-search-bar:focus-within {
 		inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
-
+/* Light theme settings */
 body.light-theme .settings-category {
 	background: rgba(255, 255, 255, 0.9);
 	border: 1px solid rgba(9, 132, 227, 0.15);
@@ -3301,7 +3301,7 @@ body.light-theme .settings-category {
 		inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
-
+/* Light theme tools */
 body.light-theme .tool-card {
 	background: rgba(255, 255, 255, 0.8);
 	border: 1px solid rgba(9, 132, 227, 0.2);
@@ -3318,7 +3318,7 @@ body.light-theme .tool-card:hover {
 		inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
-
+/* Light theme tool interface */
 body.light-theme .tool-interface {
 	background: rgba(255, 255, 255, 0.9);
 	border: 1px solid rgba(9, 132, 227, 0.2);
@@ -3327,7 +3327,7 @@ body.light-theme .tool-interface {
 		inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
-
+/* Light theme inputs */
 body.light-theme .tool-input-container input,
 body.light-theme .tool-select,
 body.light-theme .setting-select,
@@ -3346,7 +3346,7 @@ body.light-theme .setting-input:focus {
 	box-shadow: 0 0 0 3px rgba(9, 132, 227, 0.1);
 }
 
-
+/* Light theme brand title */
 body.light-theme .brand-title {
 	background: linear-gradient(
 		135deg,
@@ -3359,7 +3359,7 @@ body.light-theme .brand-title {
 	text-shadow: none;
 }
 
-
+/* Light theme buttons and logo */
 body.light-theme .search-button,
 body.light-theme .play-button,
 body.light-theme .launch-button {
@@ -3380,7 +3380,7 @@ body.light-theme .nav-logo {
 		inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-
+/* Blue Theme */
 body.blue-theme {
 	--primary-color: #3498db;
 	--primary-dark: #2980b9;
@@ -3477,7 +3477,7 @@ body.blue-theme .nav-logo {
 		inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-
+/* Purple Theme */
 body.purple-theme {
 	--primary-color: #9b59b6;
 	--primary-dark: #8e44ad;
@@ -3574,7 +3574,7 @@ body.purple-theme .nav-logo {
 		inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-
+/* Green Theme */
 body.green-theme {
 	--primary-color: #27ae60;
 	--primary-dark: #229954;
@@ -3671,7 +3671,7 @@ body.green-theme .nav-logo {
 		inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-
+/* Red Theme */
 body.red-theme {
 	--primary-color: #e74c3c;
 	--primary-dark: #c0392b;
@@ -3768,7 +3768,7 @@ body.red-theme .nav-logo {
 		inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-
+/* Orange Theme */
 body.orange-theme {
 	--primary-color: #f39c12;
 	--primary-dark: #e67e22;
@@ -3865,7 +3865,7 @@ body.orange-theme .nav-logo {
 		inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-
+/* Pink Theme */
 body.pink-theme {
 	--primary-color: #e84393;
 	--primary-dark: #d63384;
@@ -3962,7 +3962,7 @@ body.pink-theme .nav-logo {
 		inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-
+/* Cyberpunk Theme */
 body.cyber-theme {
 	--primary-color: #00ffff;
 	--primary-dark: #00e6e6;
@@ -4000,7 +4000,7 @@ body.cyber-theme {
 		linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
 }
 
-
+/* Matrix Theme */
 body.matrix-theme {
 	--primary-color: #00ff41;
 	--primary-dark: #00cc33;
@@ -4039,7 +4039,7 @@ body.matrix-theme {
 	font-family: "Courier New", monospace;
 }
 
-
+/* Theme-specific animations */
 body.cyber-theme .floating-orb,
 body.matrix-theme .floating-orb {
 	animation: cyberFloat 20s infinite ease-in-out;
@@ -4065,7 +4065,7 @@ body.matrix-theme .floating-orb {
 	}
 }
 
-
+/* Cyberpunk special effects */
 body.cyber-theme .brand-title {
 	text-shadow:
 		0 0 5px var(--primary-color),
@@ -4112,7 +4112,7 @@ body.cyber-theme .app-card:hover {
 		inset 0 0 20px rgba(0, 255, 255, 0.1);
 }
 
-
+/* Matrix special effects */
 body.matrix-theme .brand-title {
 	text-shadow:
 		0 0 5px var(--primary-color),
@@ -4162,7 +4162,7 @@ body.matrix-theme::before {
 	}
 }
 
-
+/* Theme-specific button styles */
 body.cyber-theme .tool-button,
 body.cyber-theme .settings-btn {
 	border: 2px solid var(--primary-color);
@@ -4247,7 +4247,7 @@ body.matrix-theme .nav-logo {
 	box-shadow: 0 0 15px var(--primary-color);
 }
 
-
+/* Theme Preview Styles */
 .theme-setting {
 	flex-direction: column !important;
 	align-items: flex-start !important;
@@ -4349,7 +4349,7 @@ body.matrix-theme .nav-logo {
 	opacity: 0.7;
 }
 
-
+/* Individual theme previews */
 .dark-preview {
 	background: rgba(10, 26, 26, 0.8);
 	color: #ffffff;
@@ -4467,7 +4467,7 @@ body.matrix-theme .nav-logo {
 	background: #39ff14;
 }
 
-
+/* Compact Mode */
 body.compact-mode .nav-container {
 	padding: 0.5rem 1rem;
 }
@@ -4487,13 +4487,13 @@ body.compact-mode .settings-category {
 	padding: 1.5rem;
 }
 
-
+/* No Animations */
 body.no-animations * {
 	animation: none !important;
 	transition: none !important;
 }
 
-
+/* About:blank Mode */
 body.aboutblank-mode {
 	background: #ffffff !important;
 	color: #000000 !important;
@@ -4506,6 +4506,7 @@ body.aboutblank-mode * {
 	border: none !important;
 	box-shadow: none !important;
 	text-shadow: none !important;
+	pointer-events: auto !important;
 }
 
 body.aboutblank-mode #aboutblank-toggle {
@@ -4514,7 +4515,7 @@ body.aboutblank-mode #aboutblank-toggle {
 	border: 1px solid #ddd !important;
 }
 
-
+/* Password Generator specific styles */
 .password-options {
 	background: var(--glass-bg);
 	border: 1px solid var(--glass-border);
@@ -4745,7 +4746,7 @@ body.aboutblank-mode #aboutblank-toggle {
 	font-weight: bold;
 }
 
-
+/* Responsive adjustments */
 @media (max-width: 768px) {
 	.checkbox-grid {
 		grid-template-columns: 1fr;
