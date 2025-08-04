@@ -509,8 +509,10 @@ document.addEventListener("DOMContentLoaded", () => {
 		browserHistory = [];
 		historyIndex = -1;
 		currentUrl = "";
+		isEditingAddress = false;
 		updateNavigationButtons();
 		updateUrlDisplay("");
+		stopEditingAddress();
 	}
 
 	if (closeFrameButton) {
