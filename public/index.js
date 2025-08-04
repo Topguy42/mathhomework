@@ -1321,11 +1321,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		// Change favicon
 		if (faviconUrl) {
+			// Validate favicon URL first
+			console.log('Setting favicon:', faviconUrl);
+			await setFavicon(faviconUrl);
+
 			// Remove existing favicon
 			const existingFavicons = document.querySelectorAll(
 				'link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]'
 			);
 			existingFavicons.forEach((favicon) => favicon.remove());
+
+			// Force browser to reload favicon by adding cache-busting parameter
+			const cacheBustUrl = faviconUrl + (faviconUrl.includes('?') ? '&' : '?') + '_cb=' + Date.now();
 
 			// Add new favicon with multiple formats for better compatibility
 			const faviconTypes = [
@@ -1340,16 +1347,17 @@ document.addEventListener("DOMContentLoaded", () => {
 				newFavicon.rel = iconType.rel;
 				newFavicon.type = iconType.type;
 				if (iconType.sizes) newFavicon.sizes = iconType.sizes;
-				newFavicon.href = faviconUrl;
+				newFavicon.href = cacheBustUrl;
 				document.head.appendChild(newFavicon);
 			});
 
-			// Force favicon refresh by adding timestamp
-			const timestampUrl = faviconUrl + (faviconUrl.includes('?') ? '&' : '?') + 't=' + Date.now();
-			const refreshFavicon = document.createElement("link");
-			refreshFavicon.rel = "icon";
-			refreshFavicon.href = timestampUrl;
-			document.head.appendChild(refreshFavicon);
+			// Additional force refresh by manipulating link in head
+			setTimeout(() => {
+				const forceRefresh = document.createElement("link");
+				forceRefresh.rel = "icon";
+				forceRefresh.href = cacheBustUrl + "&_force=" + Math.random();
+				document.head.appendChild(forceRefresh);
+			}, 100);
 
 			changes.push(`✅ Favicon changed to: ${faviconUrl}`);
 		}
