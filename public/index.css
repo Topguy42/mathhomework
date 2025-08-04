@@ -3061,29 +3061,206 @@ html {
 /* Theme Variations */
 /* Light Theme */
 body.light-theme {
-	--primary-color: #00b894;
-	--primary-dark: #00a085;
-	--secondary-color: #00cec9;
-	--accent-color: #00b894;
-	--background: #f8f9fa;
+	--primary-color: #0984e3;
+	--primary-dark: #0770c2;
+	--secondary-color: #74b9ff;
+	--accent-color: #0984e3;
+	--background: #f8faff;
 	--background-light: #ffffff;
-	--glass-bg: rgba(255, 255, 255, 0.8);
-	--glass-bg-light: rgba(255, 255, 255, 0.9);
-	--glass-bg-strong: rgba(255, 255, 255, 0.95);
-	--glass-border: rgba(0, 0, 0, 0.1);
-	--glass-border-light: rgba(0, 0, 0, 0.15);
-	--glass-shadow: rgba(0, 0, 0, 0.1);
-	--glass-shadow-strong: rgba(0, 0, 0, 0.2);
-	--text-primary: #2d3436;
-	--text-secondary: #636e72;
-	--text-muted: #b2bec3;
-	--text-glass: rgba(45, 52, 54, 0.9);
-	--success: #00b894;
-	--error: #e17055;
+	--glass-bg: rgba(255, 255, 255, 0.9);
+	--glass-bg-light: rgba(255, 255, 255, 0.95);
+	--glass-bg-strong: rgba(255, 255, 255, 1);
+	--glass-border: rgba(9, 132, 227, 0.15);
+	--glass-border-light: rgba(9, 132, 227, 0.25);
+	--glass-shadow: rgba(9, 132, 227, 0.1);
+	--glass-shadow-strong: rgba(9, 132, 227, 0.2);
+	--text-primary: #1a1a1a;
+	--text-secondary: #4a5568;
+	--text-muted: #718096;
+	--text-glass: rgba(26, 26, 26, 0.95);
+	--success: #38a169;
+	--error: #e53e3e;
 }
 
 body.light-theme .floating-orb {
-	opacity: 0.03;
+	opacity: 0.04;
+	filter: blur(3px);
+}
+
+/* Improved light theme background */
+body.light-theme {
+	background:
+		radial-gradient(
+			circle at 20% 20%,
+			rgba(9, 132, 227, 0.08) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 80% 80%,
+			rgba(116, 185, 255, 0.08) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 40% 60%,
+			rgba(9, 132, 227, 0.05) 0%,
+			transparent 50%
+		),
+		linear-gradient(
+			135deg,
+			#f8faff 0%,
+			#ffffff 50%,
+			#f8faff 100%
+		);
+}
+
+/* Light theme navigation improvements */
+body.light-theme .top-nav {
+	background: rgba(255, 255, 255, 0.9);
+	border-bottom: 1px solid rgba(9, 132, 227, 0.15);
+	backdrop-filter: blur(20px);
+	box-shadow:
+		0 4px 20px rgba(9, 132, 227, 0.05),
+		inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+/* Light theme glass effects */
+body.light-theme .input-container {
+	background: rgba(255, 255, 255, 0.9);
+	border: 1px solid rgba(9, 132, 227, 0.2);
+	box-shadow:
+		0 8px 32px rgba(9, 132, 227, 0.08),
+		inset 0 1px 0 rgba(255, 255, 255, 1),
+		0 1px 0 rgba(9, 132, 227, 0.05);
+}
+
+body.light-theme .input-container:focus-within {
+	border-color: var(--primary-color);
+	box-shadow:
+		0 12px 40px rgba(9, 132, 227, 0.15),
+		inset 0 1px 0 rgba(255, 255, 255, 1),
+		0 2px 0 rgba(9, 132, 227, 0.08),
+		0 0 0 2px rgba(9, 132, 227, 0.1);
+	transform: translateY(-2px);
+}
+
+/* Light theme cards */
+body.light-theme .quick-access-item {
+	background: rgba(255, 255, 255, 0.8);
+	border: 1px solid rgba(9, 132, 227, 0.2);
+	box-shadow:
+		0 4px 20px rgba(9, 132, 227, 0.08),
+		inset 0 1px 0 rgba(255, 255, 255, 1),
+		0 1px 0 rgba(9, 132, 227, 0.05);
+}
+
+body.light-theme .quick-access-item:hover {
+	background: rgba(255, 255, 255, 0.95);
+	border-color: var(--primary-color);
+	box-shadow:
+		0 8px 30px rgba(9, 132, 227, 0.15),
+		inset 0 1px 0 rgba(255, 255, 255, 1),
+		0 2px 0 rgba(9, 132, 227, 0.1);
+	transform: translateY(-6px) scale(1.05);
+}
+
+/* Light theme game and app cards */
+body.light-theme .game-card,
+body.light-theme .app-card {
+	background: rgba(255, 255, 255, 0.9);
+	border: 1px solid rgba(9, 132, 227, 0.15);
+	box-shadow:
+		0 4px 20px rgba(9, 132, 227, 0.06),
+		inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+body.light-theme .game-card:hover,
+body.light-theme .app-card:hover {
+	border-color: var(--primary-color);
+	box-shadow:
+		0 8px 30px rgba(9, 132, 227, 0.12),
+		inset 0 1px 0 rgba(255, 255, 255, 1);
+	transform: translateY(-4px);
+}
+
+/* Light theme search bars */
+body.light-theme .games-search-bar,
+body.light-theme .apps-search-bar {
+	background: rgba(255, 255, 255, 0.9);
+	border: 1px solid rgba(9, 132, 227, 0.2);
+	box-shadow:
+		0 4px 20px rgba(9, 132, 227, 0.06),
+		inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+body.light-theme .games-search-bar:focus-within,
+body.light-theme .apps-search-bar:focus-within {
+	border-color: var(--primary-color);
+	box-shadow:
+		0 4px 20px rgba(9, 132, 227, 0.15),
+		inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+/* Light theme settings */
+body.light-theme .settings-category {
+	background: rgba(255, 255, 255, 0.9);
+	border: 1px solid rgba(9, 132, 227, 0.15);
+	box-shadow:
+		0 8px 32px rgba(9, 132, 227, 0.06),
+		inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+/* Light theme tools */
+body.light-theme .tool-card {
+	background: rgba(255, 255, 255, 0.8);
+	border: 1px solid rgba(9, 132, 227, 0.2);
+	box-shadow:
+		0 4px 20px rgba(9, 132, 227, 0.06),
+		inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+body.light-theme .tool-card:hover {
+	border-color: var(--primary-color);
+	background: rgba(255, 255, 255, 0.95);
+	box-shadow:
+		0 8px 30px rgba(9, 132, 227, 0.12),
+		inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+/* Light theme tool interface */
+body.light-theme .tool-interface {
+	background: rgba(255, 255, 255, 0.9);
+	border: 1px solid rgba(9, 132, 227, 0.2);
+	box-shadow:
+		0 8px 32px rgba(9, 132, 227, 0.08),
+		inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+/* Light theme inputs */
+body.light-theme .tool-input-container input,
+body.light-theme .tool-select,
+body.light-theme .setting-select,
+body.light-theme .setting-input {
+	background: rgba(255, 255, 255, 0.9);
+	border: 1px solid rgba(9, 132, 227, 0.2);
+	color: var(--text-primary);
+	box-shadow: 0 2px 10px rgba(9, 132, 227, 0.05);
+}
+
+body.light-theme .tool-input-container input:focus,
+body.light-theme .tool-select:focus,
+body.light-theme .setting-select:focus,
+body.light-theme .setting-input:focus {
+	border-color: var(--primary-color);
+	box-shadow: 0 0 0 3px rgba(9, 132, 227, 0.1);
+}
+
+/* Light theme brand title */
+body.light-theme .brand-title {
+	background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	text-shadow: none;
 }
 
 /* Blue Theme */
