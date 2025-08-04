@@ -1420,40 +1420,151 @@ document.addEventListener("DOMContentLoaded", () => {
 		const newTab = window.open('about:blank', '_blank');
 
 		if (newTab) {
-			// Create simple HTML that loads proxy in hidden iframe
+			// Create a working proxy interface that loads immediately
 			const htmlContent = `<!DOCTYPE html>
 <html>
-<head><title></title>
+<head>
+<title></title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { margin: 0; padding: 0; background: white; overflow: hidden; }
-.proxy-frame { width: 100vw; height: 100vh; border: none; display: none; }
-.toggle-btn { position: fixed; bottom: 20px; right: 20px; background: #f8f9fa; border: 1px solid #ddd; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; color: #666; z-index: 10001; opacity: 0.2; transition: opacity 0.3s ease; }
-.toggle-btn:hover { opacity: 1; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+	font-family: Arial, sans-serif;
+	background: white;
+	color: #333;
+	overflow: hidden;
+	height: 100vh;
+}
+.proxy-container {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background: white;
+}
+.proxy-header {
+	background: #2c3e50;
+	color: white;
+	padding: 15px 20px;
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.proxy-url-bar {
+	flex: 1;
+	padding: 8px 12px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 14px;
+}
+.proxy-go-btn {
+	background: #00d4aa;
+	color: white;
+	border: none;
+	padding: 8px 16px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+}
+.proxy-go-btn:hover { background: #00b895; }
+.proxy-frame-container {
+	flex: 1;
+	width: 100%;
+	height: calc(100vh - 60px);
+	border: none;
+	background: white;
+}
+.proxy-frame {
+	width: 100%;
+	height: 100%;
+	border: none;
+	background: white;
+}
+.quick-links {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+.quick-link {
+	background: #34495e;
+	color: white;
+	border: none;
+	padding: 6px 12px;
+	border-radius: 3px;
+	cursor: pointer;
+	font-size: 12px;
+	text-decoration: none;
+}
+.quick-link:hover { background: #4a5f7a; }
+.loading {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	font-size: 18px;
+	color: #666;
+}
 </style>
 </head>
 <body>
-<iframe id="proxyFrame" class="proxy-frame" src="${window.location.origin}"></iframe>
-<button id="toggleBtn" class="toggle-btn">≡</button>
+<div class="proxy-container">
+	<div class="proxy-header">
+		<input type="text" class="proxy-url-bar" id="proxyUrl" placeholder="Enter URL or search term..." />
+		<button class="proxy-go-btn" id="proxyGo">Go</button>
+		<div class="quick-links">
+			<button class="quick-link" onclick="loadSite('https://google.com')">Google</button>
+			<button class="quick-link" onclick="loadSite('https://youtube.com')">YouTube</button>
+			<button class="quick-link" onclick="loadSite('https://discord.com')">Discord</button>
+		</div>
+	</div>
+	<div class="proxy-frame-container">
+		<iframe id="proxyFrame" class="proxy-frame" src="${window.location.origin}"></iframe>
+	</div>
+</div>
+
 <script>
+const urlInput = document.getElementById('proxyUrl');
+const goBtn = document.getElementById('proxyGo');
 const frame = document.getElementById('proxyFrame');
-const btn = document.getElementById('toggleBtn');
-let isVisible = false;
-btn.addEventListener('click', () => {
-if (isVisible) {
-frame.style.display = 'none';
-btn.innerHTML = '≡';
-btn.style.opacity = '0.2';
-document.title = '';
-} else {
-frame.style.display = 'block';
-btn.innerHTML = '×';
-btn.style.opacity = '1';
-}
-isVisible = !isVisible;
-});
+
+// Clear title every second to maintain about:blank appearance
 setInterval(() => {
-if (!isVisible) document.title = '';
+	if (document.title !== '') document.title = '';
 }, 1000);
+
+function loadSite(url) {
+	urlInput.value = url;
+	goToSite();
+}
+
+function goToSite() {
+	const url = urlInput.value.trim();
+	if (!url) return;
+
+	let finalUrl;
+	if (url.startsWith('http://') || url.startsWith('https://')) {
+		finalUrl = url;
+	} else if (url.includes('.') && !url.includes(' ')) {
+		finalUrl = 'https://' + url;
+	} else {
+		finalUrl = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+	}
+
+	// Navigate to the proxy URL
+	const proxyUrl = '${window.location.origin}/?url=' + encodeURIComponent(finalUrl);
+	frame.src = proxyUrl;
+}
+
+// Event listeners
+goBtn.addEventListener('click', goToSite);
+urlInput.addEventListener('keypress', (e) => {
+	if (e.key === 'Enter') goToSite();
+});
+
+// Focus on URL input
+urlInput.focus();
 </script>
 </body>
 </html>`;
@@ -1464,7 +1575,7 @@ if (!isVisible) document.title = '';
 			newTab.document.close();
 
 			// Show success notification
-			showNotification("About:blank proxy opened! URL shows about:blank. Click ≡ to access proxy.", "success");
+			showNotification("About:blank proxy opened! URL shows about:blank with full proxy functionality.", "success");
 		} else {
 			showNotification("Please allow pop-ups to use about:blank mode", "error");
 		}
