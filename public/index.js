@@ -170,16 +170,11 @@ function updateUrlDisplay(url) {
 	}
 
 	const tabUrlDisplay = document.getElementById("tab-url-display");
-	const tabAddressInput = document.getElementById("tab-address-input");
 	const tabSecurity = document.getElementById("tab-security");
 
 	if (tabUrlDisplay) {
 		tabUrlDisplay.textContent = displayUrl;
 		tabUrlDisplay.title = url || "Vortex proxy home"; // Show full URL on hover
-	}
-
-	if (tabAddressInput) {
-		tabAddressInput.value = url || "";
 	}
 
 	// Update security indicator
@@ -1410,7 +1405,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		sections.push("🛡️ SECURITY STATUS");
 		sections.push(`${info.security.httpsUsed ? "✅" : "❌"} HTTPS Encryption`);
 		sections.push(
-			`${info.network.localIPs.includes("WebRTC blocked") || info.network.localIPs.includes("WebRTC not supported") ? "✅" : "⚠️"} WebRTC Leak Protection`
+			`${info.network.localIPs.includes("WebRTC blocked") || info.network.localIPs.includes("WebRTC not supported") ? "✅" : "⚠���"} WebRTC Leak Protection`
 		);
 		sections.push(
 			`${info.system.webglVendor === "Blocked" ? "✅" : "⚠️"} WebGL Fingerprint Protection`
