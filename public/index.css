@@ -246,6 +246,7 @@ body {
 	align-items: center;
 	justify-content: space-between;
 	gap: 2rem;
+	position: relative;
 }
 
 .nav-brand {
