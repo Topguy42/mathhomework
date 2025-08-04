@@ -2428,14 +2428,17 @@ body.frame-active .top-nav {
 }
 
 .settings-category {
-	background: rgba(0, 26, 26, 0.8);
-	border: 2px solid rgba(0, 212, 170, 0.2);
-	border-radius: 20px;
+	background: var(--glass-bg);
+	border: 2px solid var(--glass-border);
+	border-radius: 24px;
 	padding: 2rem;
-	backdrop-filter: blur(25px);
+	backdrop-filter: blur(35px) saturate(160%);
 	box-shadow:
-		0 8px 32px rgba(0, 0, 0, 0.3),
-		inset 0 1px 0 rgba(255, 255, 255, 0.05);
+		0 12px 40px var(--glass-shadow),
+		0 6px 20px rgba(0, 0, 0, 0.1),
+		0 3px 10px rgba(0, 0, 0, 0.05),
+		inset 0 2px 0 rgba(255, 255, 255, 0.08),
+		inset 0 -1px 0 rgba(0, 0, 0, 0.03);
 }
 
 .category-title {
