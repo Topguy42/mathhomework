@@ -468,13 +468,23 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	// Cloaker functionality
+	// Cloaker functionality with debugging
 	const applyCloakerBtn = document.getElementById("apply-cloaker-btn");
 	const restoreOriginalBtn = document.getElementById("restore-original-btn");
 	const websiteTitleInput = document.getElementById("website-title");
 	const faviconUrlInput = document.getElementById("favicon-url");
 	const cloakerResult = document.getElementById("cloaker-result");
 	const presetButtons = document.querySelectorAll(".preset-btn");
+
+	// Debug logging
+	console.log("Cloaker elements found:", {
+		applyCloakerBtn: !!applyCloakerBtn,
+		restoreOriginalBtn: !!restoreOriginalBtn,
+		websiteTitleInput: !!websiteTitleInput,
+		faviconUrlInput: !!faviconUrlInput,
+		cloakerResult: !!cloakerResult,
+		presetButtons: presetButtons.length
+	});
 
 	// Store original values
 	let originalTitle = document.title;
