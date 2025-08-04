@@ -555,25 +555,39 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	// Preset buttons
-	presetButtons.forEach((btn) => {
-		btn.addEventListener("click", () => {
-			const title = btn.getAttribute("data-title");
-			const favicon = btn.getAttribute("data-favicon");
+	if (presetButtons.length > 0) {
+		console.log(`Found ${presetButtons.length} preset buttons`);
+		presetButtons.forEach((btn, index) => {
+			btn.addEventListener("click", () => {
+				console.log(`Preset button ${index} clicked`);
+				const title = btn.getAttribute("data-title");
+				const favicon = btn.getAttribute("data-favicon");
 
-			websiteTitleInput.value = title;
-			faviconUrlInput.value = favicon;
+				console.log("Preset data:", { title, favicon });
 
-			// Auto-apply the preset
-			setLoading(btn, true);
-			try {
-				const result = applyCloaking(title, favicon);
-				showResult(cloakerResult, result, "success");
-			} catch (error) {
-				showResult(cloakerResult, `Error: ${error.message}`, "error");
-			}
-			setLoading(btn, false);
+				if (websiteTitleInput) websiteTitleInput.value = title || "";
+				if (faviconUrlInput) faviconUrlInput.value = favicon || "";
+
+				// Auto-apply the preset
+				setLoading(btn, true);
+				try {
+					const result = applyCloaking(title, favicon);
+					if (cloakerResult) {
+						showResult(cloakerResult, result, "success");
+					}
+					console.log("Preset applied successfully");
+				} catch (error) {
+					console.error("Preset error:", error);
+					if (cloakerResult) {
+						showResult(cloakerResult, `Error: ${error.message}`, "error");
+					}
+				}
+				setLoading(btn, false);
+			});
 		});
-	});
+	} else {
+		console.error("No preset buttons found");
+	}
 
 	// Search Engine functionality
 	const searchEngineBtn = document.getElementById("search-engine-btn");
