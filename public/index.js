@@ -1489,7 +1489,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			return "❌ No changes applied. Please provide a title or favicon URL.";
 		}
 
-		return `🕵️ Cloaking Applied Successfully!\n\n${changes.join("\n")}\n\n😎 Your browser tab now appears as a different website for privacy.\n\n⚠️ Remember to restore the original settings when you're done to avoid confusion.`;
+		return `����️ Cloaking Applied Successfully!\n\n${changes.join("\n")}\n\n😎 Your browser tab now appears as a different website for privacy.\n\n⚠️ Remember to restore the original settings when you're done to avoid confusion.`;
 	}
 
 	function restoreOriginal() {
@@ -2877,15 +2877,38 @@ setInterval(() => {
 		img.onload = () => {
 			console.log("✅ Favicon URL is accessible:", url);
 			console.log("Image dimensions:", img.width, "x", img.height);
+
+			// Try to apply it immediately for testing
+			const testFavicon = document.createElement("link");
+			testFavicon.rel = "icon";
+			testFavicon.href = url + "?test=" + Date.now();
+			document.head.appendChild(testFavicon);
+			console.log("Test favicon applied");
 		};
 
 		img.onerror = (e) => {
 			console.error("❌ Favicon URL failed to load:", url, e);
+			console.log("💡 Try using a different URL or check if the site allows external access");
 		};
 
 		img.src = url;
 
 		return "Check console for results...";
+	};
+
+	// Simple favicon setter for testing
+	window.setSimpleFavicon = function(url) {
+		// Remove existing favicons
+		document.querySelectorAll('link[rel*="icon"]').forEach(f => f.remove());
+
+		// Add new favicon
+		const favicon = document.createElement("link");
+		favicon.rel = "icon";
+		favicon.href = url + "?simple=" + Date.now();
+		document.head.appendChild(favicon);
+
+		console.log("Simple favicon set:", url);
+		return "Favicon set using simple method";
 	};
 
 	// Function to get current favicons
