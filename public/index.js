@@ -1620,6 +1620,13 @@ document.addEventListener("DOMContentLoaded", () => {
 			if (aboutBlankToggle) {
 				aboutBlankToggle.remove();
 			}
+
+			// Restore original title descriptor if it was overridden
+			if (window.originalTitleDescriptor) {
+				Object.defineProperty(document, 'title', window.originalTitleDescriptor);
+				window.originalTitleDescriptor = null;
+			}
+
 			window.isAboutBlankMode = false;
 			changes.push("✅ About:blank mode disabled");
 		}
