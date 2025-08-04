@@ -80,8 +80,8 @@
 							sessionStorage.setItem('vortex-original-title', document.title);
 							sessionStorage.setItem('vortex-aboutblank-active', 'true');
 
-							// Replace current history entry with Google
-							window.history.replaceState({}, 'Google', 'https://www.google.com/search?q=');
+							// Replace current URL with something innocent (same origin)
+							window.history.replaceState({}, '', '/search');
 
 							// Set blank title and apply styling
 							document.title = '';
@@ -866,7 +866,7 @@
 									<span class="rating-label">rating</span>
 								</div>
 								<button class="play-button">
-									<span class="play-icon">��</span>
+									<span class="play-icon">▶</span>
 									Play Now
 								</button>
 							</div>
@@ -898,7 +898,7 @@
 								</div>
 								<p class="game-description">Space tunnel runner</p>
 								<div class="game-rating">
-									<span class="star">★</span>
+									<span class="star">��</span>
 									<span class="rating-value">4.5</span>
 									<span class="rating-label">rating</span>
 								</div>
