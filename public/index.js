@@ -1033,6 +1033,16 @@ document.addEventListener("DOMContentLoaded", () => {
 				return;
 			}
 
+			// Give helpful suggestions for favicon URLs
+			if (newFavicon && !newFavicon.includes('favicon')) {
+				showResult(
+					cloakerResult,
+					"💡 Tip: For best results, try URLs that end with 'favicon.ico', 'favicon.png', or use the preset buttons below.",
+					"info"
+				);
+				await new Promise(resolve => setTimeout(resolve, 2000)); // Show tip for 2 seconds
+			}
+
 			setLoading(applyCloakerBtn, true);
 
 			if (newFavicon) {
@@ -1347,7 +1357,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Change page title
 		if (title) {
 			document.title = title;
-			changes.push(`�� Page title changed to: "${title}"`);
+			changes.push(`✅ Page title changed to: "${title}"`);
 		}
 
 		// Change favicon
@@ -1583,7 +1593,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			return "❌ No changes applied. Please provide a title or favicon URL.";
 		}
 
-		return `🕵️ Cloaking Applied Successfully!\n\n${changes.join("\n")}\n\n😎 Your browser tab now appears as a different website for privacy.\n\n⚠️ Remember to restore the original settings when you're done to avoid confusion.`;
+		return `🕵️ Cloaking Applied Successfully!\n\n${changes.join("\n")}\n\n�� Your browser tab now appears as a different website for privacy.\n\n⚠️ Remember to restore the original settings when you're done to avoid confusion.`;
 	}
 
 	function restoreOriginal() {
@@ -2806,7 +2816,7 @@ setInterval(() => {
 			// Show protection notification
 			if (typeof showNotification === "function") {
 				showNotification(
-					"🛡��� Tab closure blocked by Anti-GoGuardian protection",
+					"🛡️ Tab closure blocked by Anti-GoGuardian protection",
 					"warning"
 				);
 			}
