@@ -88,6 +88,123 @@ async function navigateToUrl(url, addToHistoryFlag = true) {
 	}
 }
 
+// Loading animation control
+let loadingTimeout;
+let progressInterval;
+let currentStep = 1;
+
+function showLoading(url = "") {
+	const loadingOverlay = document.getElementById("loading-overlay");
+	const loadingSubtitle = document.getElementById("loading-subtitle");
+	const progressFill = document.getElementById("progress-fill");
+
+	// Reset loading state
+	currentStep = 1;
+	resetLoadingSteps();
+
+	if (loadingOverlay) {
+		loadingOverlay.classList.remove("hidden");
+	}
+
+	// Update subtitle with URL info
+	if (loadingSubtitle) {
+		if (url) {
+			try {
+				const urlObj = new URL(url);
+				loadingSubtitle.textContent = `Loading ${urlObj.hostname}...`;
+			} catch (e) {
+				loadingSubtitle.textContent = `Loading ${url}...`;
+			}
+		} else {
+			loadingSubtitle.textContent = "Connecting through Vortex proxy";
+		}
+	}
+
+	// Start progress animation
+	if (progressFill) {
+		progressFill.style.width = "0%";
+
+		// Simulate loading progress
+		let progress = 0;
+		progressInterval = setInterval(() => {
+			progress += Math.random() * 15;
+			if (progress > 90) progress = 90; // Don't complete until actual load
+			progressFill.style.width = progress + "%";
+
+			// Update steps based on progress
+			if (progress > 30 && currentStep === 1) {
+				updateLoadingStep(2);
+			} else if (progress > 60 && currentStep === 2) {
+				updateLoadingStep(3);
+			}
+		}, 200);
+	}
+}
+
+function hideLoading() {
+	const loadingOverlay = document.getElementById("loading-overlay");
+	const progressFill = document.getElementById("progress-fill");
+
+	// Complete the progress bar
+	if (progressFill) {
+		progressFill.style.width = "100%";
+	}
+
+	// Mark final step as completed
+	updateLoadingStep(3, true);
+
+	// Hide loading overlay after a short delay
+	clearInterval(progressInterval);
+	loadingTimeout = setTimeout(() => {
+		if (loadingOverlay) {
+			loadingOverlay.classList.add("hidden");
+		}
+	}, 500);
+}
+
+function resetLoadingSteps() {
+	for (let i = 1; i <= 3; i++) {
+		const step = document.getElementById(`step-${i}`);
+		if (step) {
+			step.classList.remove("active", "completed");
+		}
+	}
+	// Activate first step
+	const step1 = document.getElementById("step-1");
+	if (step1) {
+		step1.classList.add("active");
+	}
+}
+
+function updateLoadingStep(stepNumber, completed = false) {
+	// Remove active from current step
+	const currentStepEl = document.getElementById(`step-${currentStep}`);
+	if (currentStepEl) {
+		currentStepEl.classList.remove("active");
+		if (currentStep < stepNumber || completed) {
+			currentStepEl.classList.add("completed");
+		}
+	}
+
+	// Activate new step (unless we're completing the final step)
+	if (!completed || stepNumber < 3) {
+		const newStepEl = document.getElementById(`step-${stepNumber}`);
+		if (newStepEl) {
+			newStepEl.classList.add("active");
+		}
+		currentStep = stepNumber;
+	}
+
+	// If completing final step, mark it as completed
+	if (completed && stepNumber === 3) {
+		const finalStep = document.getElementById(`step-${stepNumber}`);
+		if (finalStep) {
+			finalStep.classList.remove("active");
+			finalStep.classList.add("completed");
+		}
+	}
+}
+
 // Set loading state for navigation
 function setNavigationLoading(isLoading) {
 	const refreshBtn = document.getElementById("tab-refresh");
