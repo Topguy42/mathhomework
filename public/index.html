@@ -80,25 +80,33 @@
 							sessionStorage.setItem('vortex-original-title', document.title);
 							sessionStorage.setItem('vortex-aboutblank-active', 'true');
 
-							// Method 1: Try to open about:blank and replace current tab
+							// Safe URL replacement to hide proxy nature
 							try {
-								// Open about:blank in current window
-								window.location.replace('about:blank');
-								return;
+								// Change to an innocent path on same domain
+								const innocentUrl = window.location.origin + '/search';
+								window.history.replaceState({vortexStealth: true}, '', innocentUrl);
 							} catch (e) {
-								// Fallback if about:blank is blocked
+								// If that fails, just change the title
+								console.log('URL change blocked, using title-only stealth');
 							}
 
-							// Method 2: Replace with innocent URL path
-							try {
-								window.history.replaceState({}, '', '/');
-							} catch (e) {
-								// Even this failed, just continue with visual changes
-							}
-
-							// Set blank title and apply styling
+							// Set blank title and apply full stealth styling
 							document.title = '';
 							document.body.classList.add('aboutblank-mode');
+
+							// Add meta tag to make page appear as Google search
+							const metaDescription = document.querySelector('meta[name="description"]');
+							if (metaDescription) {
+								metaDescription.setAttribute('data-original', metaDescription.content);
+								metaDescription.content = 'Search the world\'s information, including webpages, images, videos and more.';
+							}
+
+							// Change favicon to Google's
+							const favicon = document.querySelector('link[rel*="icon"]');
+							if (favicon) {
+								favicon.setAttribute('data-original', favicon.href);
+								favicon.href = 'data:image/x-icon;base64,AAABAAEAEBAQAAAAAAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//AAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+							}
 
 							// Add discrete toggle button
 							let toggleBtn = document.getElementById('aboutblank-toggle');
