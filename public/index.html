@@ -75,40 +75,10 @@
 				if (aboutBlankToggle) {
 					aboutBlankToggle.addEventListener('change', function() {
 						if (this.checked) {
-							// Store original state
-							sessionStorage.setItem('vortex-original-url', window.location.href);
-							sessionStorage.setItem('vortex-original-title', document.title);
-							sessionStorage.setItem('vortex-aboutblank-active', 'true');
-
-							// Safe URL replacement to hide proxy nature
-							try {
-								// Change to an innocent path on same domain
-								const innocentUrl = window.location.origin + '/search';
-								window.history.replaceState({vortexStealth: true}, '', innocentUrl);
-							} catch (e) {
-								// If that fails, just change the title
-								console.log('URL change blocked, using title-only stealth');
-							}
-
-							// Set blank title and apply full stealth styling
-							document.title = '';
 							document.body.classList.add('aboutblank-mode');
+							document.title = '';
 
-							// Add meta tag to make page appear as Google search
-							const metaDescription = document.querySelector('meta[name="description"]');
-							if (metaDescription) {
-								metaDescription.setAttribute('data-original', metaDescription.content);
-								metaDescription.content = 'Search the world\'s information, including webpages, images, videos and more.';
-							}
-
-							// Change favicon to Google's
-							const favicon = document.querySelector('link[rel*="icon"]');
-							if (favicon) {
-								favicon.setAttribute('data-original', favicon.href);
-								favicon.href = 'data:image/x-icon;base64,AAABAAEAEBAQAAAAAAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//AAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
-							}
-
-							// Add discrete toggle button
+							// Add toggle button
 							let toggleBtn = document.getElementById('aboutblank-toggle');
 							if (!toggleBtn) {
 								toggleBtn = document.createElement('button');
@@ -127,106 +97,24 @@
 									cursor: pointer;
 									z-index: 10001;
 									border: 1px solid #ddd;
-									opacity: 0.3;
-									transition: opacity 0.3s;
 								`;
-								toggleBtn.title = 'Click to restore Vortex';
+								toggleBtn.title = 'Click to exit about:blank mode';
 								document.body.appendChild(toggleBtn);
 
-								// Make button more visible on hover
-								toggleBtn.addEventListener('mouseenter', function() {
-									this.style.opacity = '1';
-								});
-
-								toggleBtn.addEventListener('mouseleave', function() {
-									this.style.opacity = '0.3';
-								});
-
 								toggleBtn.addEventListener('click', function() {
-									// Restore original state
-									const originalUrl = sessionStorage.getItem('vortex-original-url');
-									const originalTitle = sessionStorage.getItem('vortex-original-title');
-
-									// Restore URL if we changed it
-									if (originalUrl) {
-										try {
-											window.history.replaceState({}, originalTitle || 'Vortex | Fast Web Access', originalUrl);
-										} catch (e) {
-											console.log('URL restoration blocked, continuing with other restoration');
-										}
-									}
-
-									// Restore meta description
-									const metaDescription = document.querySelector('meta[name="description"]');
-									if (metaDescription && metaDescription.getAttribute('data-original')) {
-										metaDescription.content = metaDescription.getAttribute('data-original');
-										metaDescription.removeAttribute('data-original');
-									}
-
-									// Restore favicon
-									const favicon = document.querySelector('link[rel*="icon"]');
-									if (favicon && favicon.getAttribute('data-original')) {
-										favicon.href = favicon.getAttribute('data-original');
-										favicon.removeAttribute('data-original');
-									}
-
-									// Clear session storage
-									sessionStorage.removeItem('vortex-original-url');
-									sessionStorage.removeItem('vortex-original-title');
-									sessionStorage.removeItem('vortex-aboutblank-active');
-
-									// Restore normal appearance
 									document.body.classList.remove('aboutblank-mode');
-									document.title = originalTitle || 'Vortex | Fast Web Access';
+									document.title = 'Vortex | Fast Web Access';
 									aboutBlankToggle.checked = false;
 									toggleBtn.remove();
 								});
 							}
 						} else {
-							// Manual toggle off
-							const originalUrl = sessionStorage.getItem('vortex-original-url');
-							const originalTitle = sessionStorage.getItem('vortex-original-title');
-
-							// Restore URL
-							if (originalUrl) {
-								try {
-									window.history.replaceState({}, originalTitle || 'Vortex | Fast Web Access', originalUrl);
-								} catch (e) {
-									console.log('URL restoration blocked');
-								}
-							}
-
-							// Restore meta description
-							const metaDescription = document.querySelector('meta[name="description"]');
-							if (metaDescription && metaDescription.getAttribute('data-original')) {
-								metaDescription.content = metaDescription.getAttribute('data-original');
-								metaDescription.removeAttribute('data-original');
-							}
-
-							// Restore favicon
-							const favicon = document.querySelector('link[rel*="icon"]');
-							if (favicon && favicon.getAttribute('data-original')) {
-								favicon.href = favicon.getAttribute('data-original');
-								favicon.removeAttribute('data-original');
-							}
-
-							sessionStorage.removeItem('vortex-original-url');
-							sessionStorage.removeItem('vortex-original-title');
-							sessionStorage.removeItem('vortex-aboutblank-active');
-
 							document.body.classList.remove('aboutblank-mode');
-							document.title = originalTitle || 'Vortex | Fast Web Access';
+							document.title = 'Vortex | Fast Web Access';
 							const toggleBtn = document.getElementById('aboutblank-toggle');
 							if (toggleBtn) toggleBtn.remove();
 						}
 					});
-				}
-
-				// Restore about blank mode on page reload if it was active
-				if (sessionStorage.getItem('vortex-aboutblank-active') === 'true') {
-					document.body.classList.add('aboutblank-mode');
-					document.title = '';
-					if (aboutBlankToggle) aboutBlankToggle.checked = true;
 				}
 			});
 		</script>
@@ -1335,7 +1223,7 @@
 									<span class="rating-label">rating</span>
 								</div>
 								<button class="launch-button">
-									<span class="launch-icon">🚀</span>
+									<span class="launch-icon">���</span>
 									Launch App
 								</button>
 							</div>
