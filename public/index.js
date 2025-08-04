@@ -1416,57 +1416,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// About:blank mode functions
 	function enableAboutBlankMode() {
-		// Create about:blank version of the proxy
-		const aboutBlankContent = createAboutBlankProxy();
-
-		// Open new tab with about:blank appearance but functional proxy
-		const newTab = window.open('about:blank', '_blank');
+		// Open new tab with the current proxy URL but with special about:blank styling
+		const newTab = window.open(window.location.href + '?aboutblank=true', '_blank');
 
 		if (newTab) {
-			// Wait for the new tab to load
-			setTimeout(() => {
-				try {
-					// Set up the new tab with hidden proxy functionality
-					newTab.document.documentElement.innerHTML = aboutBlankContent;
-
-					// Set title and favicon to appear as about:blank
-					newTab.document.title = "";
-
-					// Remove any existing favicon
-					const existingFavicons = newTab.document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
-					existingFavicons.forEach(favicon => favicon.remove());
-
-					// Add completely transparent favicon
-					const blankFavicon = newTab.document.createElement('link');
-					blankFavicon.rel = 'icon';
-					blankFavicon.href = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"></svg>';
-					newTab.document.head.appendChild(blankFavicon);
-
-					// Copy all the necessary scripts and functionality
-					setupAboutBlankProxy(newTab);
-
-					// Show success notification
-					showNotification("About:blank proxy tab opened! The new tab appears blank but is fully functional.", "success");
-
-				} catch (error) {
-					console.error('Error setting up about:blank tab:', error);
-					// Fallback: provide instructions
-					newTab.document.write(`
-						<html>
-						<head><title></title></head>
-						<body style="margin:0;padding:20px;font-family:Arial,sans-serif;background:#fff;">
-							<div style="max-width:600px;margin:50px auto;text-align:center;">
-								<h2>About:Blank Proxy</h2>
-								<p>Navigate to: <code>${window.location.origin}</code></p>
-								<p>This tab appears as about:blank but you can access the proxy by typing the URL above.</p>
-								<p>Press F5 to refresh and access the full proxy interface.</p>
-							</div>
-						</body>
-						</html>
-					`);
-					newTab.document.close();
-				}
-			}, 100);
+			// Show success notification
+			showNotification("About:blank proxy tab opened! The new tab appears blank but is fully functional.", "success");
 		} else {
 			showNotification("Please allow pop-ups to use about:blank mode", "error");
 		}
