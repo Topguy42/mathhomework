@@ -26,13 +26,25 @@
 			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
 			rel="stylesheet"
 		/>
-		<script src="baremux/index.js" defer></script>
-		<script src="epoxy/index.js" defer></script>
-		<script src="uv/uv.bundle.js" defer></script>
-		<script src="uv/uv.config.js" defer></script>
-		<script src="register-sw.js" defer></script>
-		<script src="search.js" defer></script>
-		<script src="index.js" defer></script>
+		<script src="baremux/index.js"></script>
+		<script src="epoxy/index.js"></script>
+		<script src="uv/uv.bundle.js"></script>
+		<script src="uv/uv.config.js"></script>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				var script1 = document.createElement('script');
+				script1.src = 'register-sw.js';
+				document.head.appendChild(script1);
+
+				var script2 = document.createElement('script');
+				script2.src = 'search.js';
+				document.head.appendChild(script2);
+
+				var script3 = document.createElement('script');
+				script3.src = 'index.js';
+				document.head.appendChild(script3);
+			});
+		</script>
 	</head>
 
 	<body>
