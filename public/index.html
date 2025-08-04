@@ -69,6 +69,53 @@
 						}
 					});
 				});
+
+				// About blank mode toggle
+				const aboutBlankToggle = document.getElementById('aboutblank-mode');
+				if (aboutBlankToggle) {
+					aboutBlankToggle.addEventListener('change', function() {
+						if (this.checked) {
+							document.body.classList.add('aboutblank-mode');
+							document.title = '';
+
+							// Add toggle button
+							let toggleBtn = document.getElementById('aboutblank-toggle');
+							if (!toggleBtn) {
+								toggleBtn = document.createElement('button');
+								toggleBtn.id = 'aboutblank-toggle';
+								toggleBtn.innerHTML = '👁️';
+								toggleBtn.style.cssText = `
+									position: fixed;
+									top: 10px;
+									left: 10px;
+									width: 32px;
+									height: 32px;
+									border: none;
+									border-radius: 50%;
+									background: #f8f9fa;
+									color: #666;
+									cursor: pointer;
+									z-index: 10001;
+									border: 1px solid #ddd;
+								`;
+								toggleBtn.title = 'Click to exit about:blank mode';
+								document.body.appendChild(toggleBtn);
+
+								toggleBtn.addEventListener('click', function() {
+									document.body.classList.remove('aboutblank-mode');
+									document.title = 'Vortex | Fast Web Access';
+									aboutBlankToggle.checked = false;
+									toggleBtn.remove();
+								});
+							}
+						} else {
+							document.body.classList.remove('aboutblank-mode');
+							document.title = 'Vortex | Fast Web Access';
+							const toggleBtn = document.getElementById('aboutblank-toggle');
+							if (toggleBtn) toggleBtn.remove();
+						}
+					});
+				}
 			});
 		</script>
 	</head>
@@ -1176,7 +1223,7 @@
 									<span class="rating-label">rating</span>
 								</div>
 								<button class="launch-button">
-									<span class="launch-icon">🚀</span>
+									<span class="launch-icon">���</span>
 									Launch App
 								</button>
 							</div>
