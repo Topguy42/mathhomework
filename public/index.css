@@ -3660,6 +3660,65 @@ body.red-theme .launch-button:hover {
 	background: var(--primary-dark);
 }
 
+body.red-theme {
+	background:
+		radial-gradient(
+			circle at 20% 20%,
+			rgba(231, 76, 60, 0.15) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 80% 80%,
+			rgba(255, 118, 117, 0.15) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 40% 60%,
+			rgba(214, 48, 49, 0.1) 0%,
+			transparent 50%
+		),
+		linear-gradient(
+			135deg,
+			#3d1414 0%,
+			#5a1f1f 50%,
+			#3d1414 100%
+		);
+}
+
+body.red-theme .background-animation {
+	background:
+		radial-gradient(
+			circle at 30% 30%,
+			rgba(231, 76, 60, 0.08) 0%,
+			transparent 60%
+		),
+		radial-gradient(
+			circle at 70% 70%,
+			rgba(255, 118, 117, 0.08) 0%,
+			transparent 60%
+		);
+}
+
+body.red-theme .gradient-overlay {
+	background:
+		radial-gradient(
+			ellipse at 25% 25%,
+			rgba(231, 76, 60, 0.12) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			ellipse at 75% 75%,
+			rgba(214, 48, 49, 0.08) 0%,
+			transparent 50%
+		),
+		linear-gradient(
+			180deg,
+			rgba(231, 76, 60, 0.03) 0%,
+			transparent 50%,
+			rgba(231, 76, 60, 0.03) 100%
+		);
+}
+
 body.red-theme .nav-logo {
 	background: linear-gradient(135deg, #e74c3c, #ff7675);
 	box-shadow:
