@@ -881,30 +881,78 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	// Website Unblocker functionality
-	const websiteUnblockerBtn = document.getElementById("website-unblocker-btn");
-	const websiteUnblockerInput = document.getElementById("website-unblocker-input");
-	const unblockerMethod = document.getElementById("unblocker-method");
-	const websiteUnblockerResult = document.getElementById("website-unblocker-result");
+	// Password Generator functionality
+	const generatePasswordBtn = document.getElementById("generate-password-btn");
+	const copyPasswordBtn = document.getElementById("copy-password-btn");
+	const passwordDisplay = document.getElementById("password-display");
+	const passwordStrength = document.getElementById("password-strength");
+	const lengthSlider = document.getElementById("password-length");
+	const lengthDisplay = document.getElementById("length-display");
 
-	if (websiteUnblockerBtn) {
-		websiteUnblockerBtn.addEventListener("click", async () => {
-			const url = websiteUnblockerInput.value.trim();
-			const method = unblockerMethod.value;
+	// Checkboxes
+	const includeUppercase = document.getElementById("include-uppercase");
+	const includeLowercase = document.getElementById("include-lowercase");
+	const includeNumbers = document.getElementById("include-numbers");
+	const includeSymbols = document.getElementById("include-symbols");
+	const excludeAmbiguous = document.getElementById("exclude-ambiguous");
 
-			if (!url) {
-				showResult(websiteUnblockerResult, "Please enter a website URL to unblock", "error");
-				return;
-			}
+	let currentPassword = "";
 
-			setLoading(websiteUnblockerBtn, true);
+	// Update length display
+	if (lengthSlider && lengthDisplay) {
+		lengthSlider.addEventListener("input", () => {
+			lengthDisplay.textContent = lengthSlider.value;
+		});
+	}
+
+	// Generate password
+	if (generatePasswordBtn) {
+		generatePasswordBtn.addEventListener("click", () => {
+			const options = {
+				length: parseInt(lengthSlider?.value || 16),
+				uppercase: includeUppercase?.checked || false,
+				lowercase: includeLowercase?.checked || false,
+				numbers: includeNumbers?.checked || false,
+				symbols: includeSymbols?.checked || false,
+				excludeAmbiguous: excludeAmbiguous?.checked || false
+			};
+
+			setLoading(generatePasswordBtn, true);
 			try {
-				const result = await generateUnblockMethods(url, method);
-				showResult(websiteUnblockerResult, result, "success");
+				const password = generateSecurePassword(options);
+				currentPassword = password;
+				displayPassword(password);
+				updatePasswordStrength(password);
+				if (copyPasswordBtn) {
+					copyPasswordBtn.disabled = false;
+				}
 			} catch (error) {
-				showResult(websiteUnblockerResult, `Error: ${error.message}`, "error");
+				displayPassword(`Error: ${error.message}`, true);
 			}
-			setLoading(websiteUnblockerBtn, false);
+			setLoading(generatePasswordBtn, false);
+		});
+	}
+
+	// Copy password
+	if (copyPasswordBtn) {
+		copyPasswordBtn.addEventListener("click", async () => {
+			if (!currentPassword) return;
+
+			try {
+				await navigator.clipboard.writeText(currentPassword);
+				copyPasswordBtn.textContent = "✅ Copied!";
+				copyPasswordBtn.classList.add("success");
+
+				setTimeout(() => {
+					copyPasswordBtn.textContent = "📋 Copy Password";
+					copyPasswordBtn.classList.remove("success");
+				}, 2000);
+			} catch (error) {
+				copyPasswordBtn.textContent = "❌ Failed";
+				setTimeout(() => {
+					copyPasswordBtn.textContent = "📋 Copy Password";
+				}, 2000);
+			}
 		});
 	}
 
@@ -1871,7 +1919,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Wait a bit to ensure everything is applied
 		await new Promise((resolve) => setTimeout(resolve, 500));
 
-		return `🕵️ About:Blank Mode Activated!\n\n✅ Page title cleared and locked\n✅ Favicon made completely invisible\n✅ Aggressive title/favicon clearing enabled\n\n😎 Your browser tab now appears completely blank for maximum stealth.\n\n💡 Click the toggle in the top-right corner to hide/show the indicator.\n\n⚠️ Remember to restore original settings when done.`;
+		return `����️ About:Blank Mode Activated!\n\n✅ Page title cleared and locked\n✅ Favicon made completely invisible\n✅ Aggressive title/favicon clearing enabled\n\n😎 Your browser tab now appears completely blank for maximum stealth.\n\n💡 Click the toggle in the top-right corner to hide/show the indicator.\n\n⚠️ Remember to restore original settings when done.`;
 	}
 
 	function addAboutBlankToggle() {
