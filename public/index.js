@@ -274,18 +274,205 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	// Close frame functionality
-	const closeFrameButton = document.getElementById("close-frame");
-	if (closeFrameButton) {
-		closeFrameButton.addEventListener("click", () => {
-			const frameContainer = document.getElementById("frame-container");
-			const frame = document.getElementById("uv-frame");
+	// Browser Tab System
+	let browserHistory = [];
+	let historyIndex = -1;
+	let currentUrl = "";
 
-			// Hide frame and restore background
-			frameContainer.style.display = "none";
-			frame.src = "";
-			document.body.classList.remove("frame-active");
+	// Tab control buttons
+	const tabBack = document.getElementById("tab-back");
+	const tabForward = document.getElementById("tab-forward");
+	const tabRefresh = document.getElementById("tab-refresh");
+	const tabHome = document.getElementById("tab-home");
+	const newTab = document.getElementById("new-tab");
+	const closeFrameButton = document.getElementById("close-frame");
+
+	// Address bar elements
+	const tabAddressInput = document.getElementById("tab-address-input");
+	const tabGo = document.getElementById("tab-go");
+	const tabUrlDisplay = document.getElementById("tab-url-display");
+	const tabSecurity = document.getElementById("tab-security");
+
+	// Update navigation button states
+	function updateNavigationButtons() {
+		if (tabBack) tabBack.disabled = historyIndex <= 0;
+		if (tabForward) tabForward.disabled = historyIndex >= browserHistory.length - 1;
+	}
+
+	// Update URL display and security indicator
+	function updateUrlDisplay(url) {
+		currentUrl = url;
+		const displayUrl = url || "vortex://home";
+
+		if (tabUrlDisplay) {
+			tabUrlDisplay.textContent = displayUrl;
+		}
+
+		if (tabAddressInput) {
+			tabAddressInput.value = url || "";
+		}
+
+		// Update security indicator
+		if (tabSecurity) {
+			if (url && url.startsWith("https://")) {
+				tabSecurity.classList.remove("insecure");
+				tabSecurity.title = "Secure connection";
+			} else if (url && url.startsWith("http://")) {
+				tabSecurity.classList.add("insecure");
+				tabSecurity.title = "Insecure connection";
+			} else {
+				tabSecurity.classList.remove("insecure");
+				tabSecurity.title = "Vortex proxy connection";
+			}
+		}
+	}
+
+	// Add URL to history
+	function addToHistory(url) {
+		if (url && url !== currentUrl) {
+			// Remove any forward history if we're navigating to a new page
+			if (historyIndex < browserHistory.length - 1) {
+				browserHistory = browserHistory.slice(0, historyIndex + 1);
+			}
+
+			browserHistory.push(url);
+			historyIndex = browserHistory.length - 1;
+			updateNavigationButtons();
+			updateUrlDisplay(url);
+		}
+	}
+
+	// Navigate to URL through proxy
+	async function navigateToUrl(url, addToHistoryFlag = true) {
+		if (!url) return;
+
+		try {
+			await registerSW();
+		} catch (err) {
+			console.error("Failed to register service worker:", err);
+			return;
+		}
+
+		const frameContainer = document.getElementById("frame-container");
+		const frame = document.getElementById("uv-frame");
+
+		// Show frame container
+		frameContainer.style.display = "flex";
+		document.body.classList.add("frame-active");
+
+		let wispUrl =
+			(location.protocol === "https:" ? "wss" : "ws") +
+			"://" +
+			location.host +
+			"/wisp/";
+
+		if ((await connection.getTransport()) !== "/epoxy/index.mjs") {
+			await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
+		}
+
+		// Use the same search logic as the main form
+		const searchEngine = document.getElementById("uv-search-engine")?.value || "https://www.google.com/search?q=%s";
+		const finalUrl = search(url, searchEngine);
+		const proxyUrl = __uv$config.prefix + __uv$config.encodeUrl(finalUrl);
+
+		frame.src = proxyUrl;
+
+		if (addToHistoryFlag) {
+			addToHistory(finalUrl);
+		} else {
+			updateUrlDisplay(finalUrl);
+		}
+	}
+
+	// Back navigation
+	if (tabBack) {
+		tabBack.addEventListener("click", () => {
+			if (historyIndex > 0) {
+				historyIndex--;
+				const url = browserHistory[historyIndex];
+				navigateToUrl(url, false);
+				updateNavigationButtons();
+			}
 		});
+	}
+
+	// Forward navigation
+	if (tabForward) {
+		tabForward.addEventListener("click", () => {
+			if (historyIndex < browserHistory.length - 1) {
+				historyIndex++;
+				const url = browserHistory[historyIndex];
+				navigateToUrl(url, false);
+				updateNavigationButtons();
+			}
+		});
+	}
+
+	// Refresh page
+	if (tabRefresh) {
+		tabRefresh.addEventListener("click", () => {
+			const frame = document.getElementById("uv-frame");
+			if (frame && frame.src) {
+				// Add a timestamp to force refresh
+				const currentSrc = frame.src;
+				const separator = currentSrc.includes('?') ? '&' : '?';
+				frame.src = currentSrc + separator + '_refresh=' + Date.now();
+			}
+		});
+	}
+
+	// Home navigation
+	if (tabHome) {
+		tabHome.addEventListener("click", () => {
+			closeFrame();
+		});
+	}
+
+	// New tab (for now, just goes home)
+	if (newTab) {
+		newTab.addEventListener("click", () => {
+			closeFrame();
+		});
+	}
+
+	// Address bar navigation
+	if (tabGo && tabAddressInput) {
+		function handleAddressBarNavigation() {
+			const url = tabAddressInput.value.trim();
+			if (url) {
+				navigateToUrl(url);
+			}
+		}
+
+		tabGo.addEventListener("click", handleAddressBarNavigation);
+
+		tabAddressInput.addEventListener("keydown", (event) => {
+			if (event.key === "Enter") {
+				handleAddressBarNavigation();
+			}
+		});
+	}
+
+	// Close frame functionality
+	function closeFrame() {
+		const frameContainer = document.getElementById("frame-container");
+		const frame = document.getElementById("uv-frame");
+
+		// Hide frame and restore background
+		frameContainer.style.display = "none";
+		frame.src = "";
+		document.body.classList.remove("frame-active");
+
+		// Reset browser state
+		browserHistory = [];
+		historyIndex = -1;
+		currentUrl = "";
+		updateNavigationButtons();
+		updateUrlDisplay("");
+	}
+
+	if (closeFrameButton) {
+		closeFrameButton.addEventListener("click", closeFrame);
 	}
 
 	// Also allow ESC key to close frame
@@ -1892,7 +2079,7 @@ setInterval(() => {
 					} catch (error) {
 						console.error('Error loading proxy:', error);
 						const loadingText = document.getElementById('loadingText');
-						loadingText.textContent = 'Proxy failed to load. Click ≡ to hide this message.';
+						loadingText.textContent = 'Proxy failed to load. Click �� to hide this message.';
 						loadingText.className = 'error';
 
 						// Show a simple manual access option
