@@ -1416,12 +1416,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// About:blank mode functions
 	function enableAboutBlankMode() {
-		// Open new tab with the current proxy URL but with special about:blank styling
-		const newTab = window.open(window.location.href + '?aboutblank=true', '_blank');
+		// Open true about:blank tab
+		const newTab = window.open('about:blank', '_blank');
 
 		if (newTab) {
+			// Create simple HTML that loads proxy in hidden iframe
+			const htmlContent = `<!DOCTYPE html>
+<html>
+<head><title></title>
+<style>
+body { margin: 0; padding: 0; background: white; overflow: hidden; }
+.proxy-frame { width: 100vw; height: 100vh; border: none; display: none; }
+.toggle-btn { position: fixed; bottom: 20px; right: 20px; background: #f8f9fa; border: 1px solid #ddd; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; color: #666; z-index: 10001; opacity: 0.2; transition: opacity 0.3s ease; }
+.toggle-btn:hover { opacity: 1; }
+</style>
+</head>
+<body>
+<iframe id="proxyFrame" class="proxy-frame" src="${window.location.origin}"></iframe>
+<button id="toggleBtn" class="toggle-btn">≡</button>
+<script>
+const frame = document.getElementById('proxyFrame');
+const btn = document.getElementById('toggleBtn');
+let isVisible = false;
+btn.addEventListener('click', () => {
+if (isVisible) {
+frame.style.display = 'none';
+btn.innerHTML = '≡';
+btn.style.opacity = '0.2';
+document.title = '';
+} else {
+frame.style.display = 'block';
+btn.innerHTML = '×';
+btn.style.opacity = '1';
+}
+isVisible = !isVisible;
+});
+setInterval(() => {
+if (!isVisible) document.title = '';
+}, 1000);
+</script>
+</body>
+</html>`;
+
+			// Write to about:blank tab
+			newTab.document.open();
+			newTab.document.write(htmlContent);
+			newTab.document.close();
+
 			// Show success notification
-			showNotification("About:blank proxy tab opened! The new tab appears blank but is fully functional.", "success");
+			showNotification("About:blank proxy opened! URL shows about:blank. Click ≡ to access proxy.", "success");
 		} else {
 			showNotification("Please allow pop-ups to use about:blank mode", "error");
 		}
