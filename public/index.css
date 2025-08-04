@@ -3864,6 +3864,65 @@ body.pink-theme .launch-button:hover {
 	background: var(--primary-dark);
 }
 
+body.pink-theme {
+	background:
+		radial-gradient(
+			circle at 20% 20%,
+			rgba(232, 67, 147, 0.15) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 80% 80%,
+			rgba(253, 121, 168, 0.15) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 40% 60%,
+			rgba(243, 104, 224, 0.1) 0%,
+			transparent 50%
+		),
+		linear-gradient(
+			135deg,
+			#3d1428 0%,
+			#5a1f3c 50%,
+			#3d1428 100%
+		);
+}
+
+body.pink-theme .background-animation {
+	background:
+		radial-gradient(
+			circle at 30% 30%,
+			rgba(232, 67, 147, 0.08) 0%,
+			transparent 60%
+		),
+		radial-gradient(
+			circle at 70% 70%,
+			rgba(253, 121, 168, 0.08) 0%,
+			transparent 60%
+		);
+}
+
+body.pink-theme .gradient-overlay {
+	background:
+		radial-gradient(
+			ellipse at 25% 25%,
+			rgba(232, 67, 147, 0.12) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			ellipse at 75% 75%,
+			rgba(243, 104, 224, 0.08) 0%,
+			transparent 50%
+		),
+		linear-gradient(
+			180deg,
+			rgba(232, 67, 147, 0.03) 0%,
+			transparent 50%,
+			rgba(232, 67, 147, 0.03) 100%
+		);
+}
+
 body.pink-theme .nav-logo {
 	background: linear-gradient(135deg, #e84393, #fd79a8);
 	box-shadow:
