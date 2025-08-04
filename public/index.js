@@ -2094,14 +2094,28 @@ setInterval(() => {
 			beforeUnloadHandler = null;
 		}
 
-		// Restore original close function
-		delete window.close;
+		// Restore original functions
+		if (window.antiGoGuardianOriginals) {
+			window.close = window.antiGoGuardianOriginals.close;
+			window.location.assign = window.antiGoGuardianOriginals.assign;
+			window.location.replace = window.antiGoGuardianOriginals.replace;
+			window.location.reload = window.antiGoGuardianOriginals.reload;
+			window.antiGoGuardianOriginals = null;
+		}
 
-		// Disconnect observer
+		// Remove mutation observer
 		if (window.antiGoGuardianObserver) {
 			window.antiGoGuardianObserver.disconnect();
-			delete window.antiGoGuardianObserver;
+			window.antiGoGuardianObserver = null;
 		}
+
+		// Remove visual indicator
+		const indicator = document.getElementById('anti-goguardian-indicator');
+		if (indicator) {
+			indicator.remove();
+		}
+
+		console.log("Anti-GoGuardian protection deactivated");
 	}
 
 	// Tab protection functions
