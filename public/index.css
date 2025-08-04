@@ -1388,9 +1388,37 @@ body {
 	border: 1px solid var(--glass-border);
 	border-radius: 20px;
 	padding: 0.5rem 1rem;
-	max-width: 400px;
+	max-width: 500px;
 	width: 100%;
 	backdrop-filter: blur(20px);
+	cursor: text;
+	transition: all 0.3s ease;
+}
+
+.tab-url-container:hover {
+	border-color: var(--glass-border-light);
+	background: var(--glass-bg-strong);
+}
+
+.tab-url-container:focus-within {
+	border-color: var(--primary-color);
+	box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.2);
+}
+
+.tab-address-input {
+	flex: 1;
+	background: transparent;
+	border: none;
+	outline: none;
+	color: var(--text-primary);
+	font-size: 0.875rem;
+	font-weight: 500;
+	min-width: 0;
+}
+
+.tab-address-input::placeholder {
+	color: var(--text-muted);
+	opacity: 0.8;
 }
 
 .tab-url {
@@ -1402,6 +1430,11 @@ body {
 	text-overflow: ellipsis;
 	flex: 1;
 	min-width: 0;
+	cursor: pointer;
+}
+
+.tab-url:hover {
+	color: var(--text-primary);
 }
 
 .tab-security-indicator {
