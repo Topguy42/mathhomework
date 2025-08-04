@@ -1321,45 +1321,83 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		// Change favicon
 		if (faviconUrl) {
-			// Validate favicon URL first
 			console.log('Setting favicon:', faviconUrl);
-			await setFavicon(faviconUrl);
 
-			// Remove existing favicon
+			// Remove ALL existing favicons first
 			const existingFavicons = document.querySelectorAll(
-				'link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]'
+				'link[rel*="icon"]'
 			);
 			existingFavicons.forEach((favicon) => favicon.remove());
 
-			// Force browser to reload favicon by adding cache-busting parameter
-			const cacheBustUrl = faviconUrl + (faviconUrl.includes('?') ? '&' : '?') + '_cb=' + Date.now();
+			// Force immediate favicon change using multiple aggressive techniques
+			const timestamp = Date.now();
+			const random = Math.random().toString(36).substring(7);
+			const cacheBustUrl = faviconUrl + (faviconUrl.includes('?') ? '&' : '?') + `_t=${timestamp}&_r=${random}`;
 
-			// Add new favicon with multiple formats for better compatibility
-			const faviconTypes = [
-				{ rel: "icon", type: "image/x-icon" },
-				{ rel: "shortcut icon", type: "image/x-icon" },
-				{ rel: "icon", type: "image/png", sizes: "32x32" },
-				{ rel: "icon", type: "image/png", sizes: "16x16" }
-			];
+			// Method 1: Standard favicon with cache busting
+			const favicon1 = document.createElement("link");
+			favicon1.rel = "icon";
+			favicon1.type = "image/x-icon";
+			favicon1.href = cacheBustUrl;
+			document.head.appendChild(favicon1);
 
-			faviconTypes.forEach(iconType => {
-				const newFavicon = document.createElement("link");
-				newFavicon.rel = iconType.rel;
-				newFavicon.type = iconType.type;
-				if (iconType.sizes) newFavicon.sizes = iconType.sizes;
-				newFavicon.href = cacheBustUrl;
-				document.head.appendChild(newFavicon);
-			});
+			// Method 2: Shortcut icon with cache busting
+			const favicon2 = document.createElement("link");
+			favicon2.rel = "shortcut icon";
+			favicon2.type = "image/x-icon";
+			favicon2.href = cacheBustUrl;
+			document.head.appendChild(favicon2);
 
-			// Additional force refresh by manipulating link in head
+			// Method 3: Force refresh by creating temporary blank favicon first
+			const blankFavicon = document.createElement("link");
+			blankFavicon.rel = "icon";
+			blankFavicon.href = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"></svg>';
+			document.head.appendChild(blankFavicon);
+
+			// Method 4: Remove blank and add real favicon after short delay
 			setTimeout(() => {
-				const forceRefresh = document.createElement("link");
-				forceRefresh.rel = "icon";
-				forceRefresh.href = cacheBustUrl + "&_force=" + Math.random();
-				document.head.appendChild(forceRefresh);
+				blankFavicon.remove();
+
+				const finalFavicon = document.createElement("link");
+				finalFavicon.rel = "icon";
+				finalFavicon.href = cacheBustUrl + `&_final=${Date.now()}`;
+				document.head.appendChild(finalFavicon);
+			}, 50);
+
+			// Method 5: Force browser to refresh favicon by manipulating head
+			setTimeout(() => {
+				// Remove all and re-add with new timestamp
+				document.querySelectorAll('link[rel*="icon"]').forEach(f => f.remove());
+
+				const ultimateFavicon = document.createElement("link");
+				ultimateFavicon.rel = "shortcut icon";
+				ultimateFavicon.type = "image/x-icon";
+				ultimateFavicon.href = faviconUrl + (faviconUrl.includes('?') ? '&' : '?') + `_ultimate=${Date.now()}`;
+				document.head.appendChild(ultimateFavicon);
+
+				// Also add standard icon
+				const standardIcon = document.createElement("link");
+				standardIcon.rel = "icon";
+				standardIcon.href = ultimateFavicon.href;
+				document.head.appendChild(standardIcon);
+			}, 200);
+
+			// Method 6: Try to force favicon refresh using window focus trick
+			setTimeout(() => {
+				if (document.hidden) {
+					document.addEventListener('visibilitychange', function handler() {
+						if (!document.hidden) {
+							const refreshIcon = document.createElement("link");
+							refreshIcon.rel = "icon";
+							refreshIcon.href = faviconUrl + (faviconUrl.includes('?') ? '&' : '?') + `_focus=${Date.now()}`;
+							document.head.appendChild(refreshIcon);
+							document.removeEventListener('visibilitychange', handler);
+						}
+					});
+				}
 			}, 100);
 
-			changes.push(`✅ Favicon changed to: ${faviconUrl}`);
+			changes.push(`✅ Favicon changed to: ${faviconUrl} (using aggressive refresh)`);
 		}
 
 		if (changes.length === 0) {
@@ -2387,7 +2425,7 @@ setInterval(() => {
 				<button onclick="closeFrame()" style="position: fixed; top: 10px; right: 10px; z-index: 10000; background: white; border: 1px solid #ddd; padding: 8px 12px; border-radius: 4px; cursor: pointer;">Close</button>
 			</div>
 
-			<button class="toggle-btn" onclick="toggleProxy()">��</button>
+			<button class="toggle-btn" onclick="toggleProxy()">≡</button>
 
 			<script>
 				// Store origin and config
