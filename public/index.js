@@ -495,23 +495,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	// Address bar navigation
-	if (tabGo && tabAddressInput) {
-		function handleAddressBarNavigation() {
-			const url = tabAddressInput.value.trim();
-			if (url) {
-				navigateToUrl(url);
-			}
-		}
 
-		tabGo.addEventListener("click", handleAddressBarNavigation);
-
-		tabAddressInput.addEventListener("keydown", (event) => {
-			if (event.key === "Enter") {
-				handleAddressBarNavigation();
-			}
-		});
-	}
 
 	// Close frame functionality
 	function closeFrame() {
