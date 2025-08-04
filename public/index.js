@@ -1354,6 +1354,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	async function applyCloaking(title, faviconUrl) {
 		const changes = [];
 
+		// Special handling for about:blank mode
+		if (faviconUrl === "about:blank" || (title === "" && faviconUrl === "about:blank")) {
+			return await enableAboutBlankCloaking();
+		}
+
 		// Change page title
 		if (title) {
 			document.title = title;
