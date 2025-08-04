@@ -30,41 +30,85 @@ let currentUrl = "";
 async function navigateToUrl(url, addToHistoryFlag = true) {
 	if (!url) return;
 
-	try {
-		await registerSW();
-	} catch (err) {
-		console.error("Failed to register service worker:", err);
-		return;
-	}
-
 	const frameContainer = document.getElementById("frame-container");
 	const frame = document.getElementById("uv-frame");
 
-	// Show frame container
-	frameContainer.style.display = "flex";
-	document.body.classList.add("frame-active");
+	// Show loading state
+	setNavigationLoading(true);
 
-	let wispUrl =
-		(location.protocol === "https:" ? "wss" : "ws") +
-		"://" +
-		location.host +
-		"/wisp/";
+	try {
+		await registerSW();
 
-	if ((await connection.getTransport()) !== "/epoxy/index.mjs") {
-		await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
+		// Show frame container
+		frameContainer.style.display = "flex";
+		document.body.classList.add("frame-active");
+
+		let wispUrl =
+			(location.protocol === "https:" ? "wss" : "ws") +
+			"://" +
+			location.host +
+			"/wisp/";
+
+		if ((await connection.getTransport()) !== "/epoxy/index.mjs") {
+			await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
+		}
+
+		// Use the same search logic as the main form
+		const searchEngine = document.getElementById("uv-search-engine")?.value || "https://www.google.com/search?q=%s";
+		const finalUrl = search(url, searchEngine);
+		const proxyUrl = __uv$config.prefix + __uv$config.encodeUrl(finalUrl);
+
+		frame.src = proxyUrl;
+
+		if (addToHistoryFlag) {
+			addToHistory(finalUrl);
+		} else {
+			updateUrlDisplay(finalUrl);
+		}
+
+		// Set up frame load event listeners
+		frame.onload = () => {
+			setNavigationLoading(false);
+		};
+
+		frame.onerror = () => {
+			setNavigationLoading(false);
+			console.error("Failed to load URL:", finalUrl);
+		};
+
+	} catch (err) {
+		console.error("Failed to navigate:", err);
+		setNavigationLoading(false);
+
+		// Show error in address bar or status
+		const tabUrlDisplay = document.getElementById("tab-url-display");
+		if (tabUrlDisplay) {
+			tabUrlDisplay.textContent = "Failed to load: " + url;
+		}
+	}
+}
+
+// Set loading state for navigation
+function setNavigationLoading(isLoading) {
+	const refreshBtn = document.getElementById("tab-refresh");
+	const goBtn = document.getElementById("tab-go");
+
+	if (refreshBtn) {
+		if (isLoading) {
+			refreshBtn.classList.add("loading");
+		} else {
+			refreshBtn.classList.remove("loading");
+		}
 	}
 
-	// Use the same search logic as the main form
-	const searchEngine = document.getElementById("uv-search-engine")?.value || "https://www.google.com/search?q=%s";
-	const finalUrl = search(url, searchEngine);
-	const proxyUrl = __uv$config.prefix + __uv$config.encodeUrl(finalUrl);
-
-	frame.src = proxyUrl;
-
-	if (addToHistoryFlag) {
-		addToHistory(finalUrl);
-	} else {
-		updateUrlDisplay(finalUrl);
+	if (goBtn) {
+		if (isLoading) {
+			goBtn.textContent = "...";
+			goBtn.disabled = true;
+		} else {
+			goBtn.textContent = "Go";
+			goBtn.disabled = false;
+		}
 	}
 }
 
