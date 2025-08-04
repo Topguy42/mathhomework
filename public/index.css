@@ -3458,6 +3458,23 @@ body.red-theme {
 	--error: #e74c3c;
 }
 
+body.red-theme .search-button,
+body.red-theme .play-button,
+body.red-theme .launch-button {
+	background: var(--primary-color);
+	border-color: var(--primary-dark);
+}
+
+body.red-theme .search-button:hover,
+body.red-theme .play-button:hover,
+body.red-theme .launch-button:hover {
+	background: var(--primary-dark);
+}
+
+body.red-theme .nav-logo {
+	background: var(--gradient-primary);
+}
+
 /* Orange Theme */
 body.orange-theme {
 	--primary-color: #f39c12;
