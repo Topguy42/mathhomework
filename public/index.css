@@ -3772,6 +3772,36 @@ body.cyber-theme .settings-btn:hover {
 		inset 0 0 20px rgba(0, 255, 255, 0.2);
 }
 
+body.cyber-theme .search-button,
+body.cyber-theme .play-button,
+body.cyber-theme .launch-button {
+	background: var(--primary-color);
+	border: 2px solid var(--primary-color);
+	color: #000;
+	box-shadow:
+		0 0 15px var(--primary-color),
+		inset 0 0 15px rgba(0, 255, 255, 0.1);
+}
+
+body.cyber-theme .search-button:hover,
+body.cyber-theme .play-button:hover,
+body.cyber-theme .launch-button:hover {
+	background: var(--secondary-color);
+	border-color: var(--secondary-color);
+	box-shadow:
+		0 0 25px var(--primary-color),
+		0 0 35px var(--secondary-color),
+		inset 0 0 20px rgba(255, 0, 255, 0.2);
+}
+
+body.cyber-theme .nav-logo {
+	background: var(--gradient-primary);
+	border: 2px solid var(--primary-color);
+	box-shadow:
+		0 0 15px var(--primary-color),
+		inset 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
 body.matrix-theme .tool-button,
 body.matrix-theme .settings-btn {
 	border: 1px solid var(--primary-color);
