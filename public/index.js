@@ -443,8 +443,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	const tabHome = document.getElementById("tab-home");
 	const newTab = document.getElementById("new-tab");
 	const closeFrameButton = document.getElementById("close-frame");
-	const tabAddressInput = document.getElementById("tab-address-input");
-	const tabGo = document.getElementById("tab-go");
 
 	// Back navigation
 	if (tabBack) {
