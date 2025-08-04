@@ -573,32 +573,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Back navigation
 	if (tabBack) {
-		tabBack.addEventListener("click", () => {
-			console.log("Back button clicked - Current index:", historyIndex, "History:", browserHistory);
-			if (historyIndex > 0) {
+		tabBack.addEventListener("click", (event) => {
+			event.preventDefault();
+			if (historyIndex > 0 && !tabBack.disabled) {
 				historyIndex--;
 				const url = browserHistory[historyIndex];
-				console.log("Going back to:", url, "New index:", historyIndex);
-				navigateToUrl(url, false);
-				updateNavigationButtons();
-			} else {
-				console.log("Cannot go back - at beginning of history");
+				if (url) {
+					// Navigate without adding to history
+					navigateToUrl(url, false);
+					updateNavigationButtons();
+				}
 			}
 		});
 	}
 
 	// Forward navigation
 	if (tabForward) {
-		tabForward.addEventListener("click", () => {
-			console.log("Forward button clicked - Current index:", historyIndex, "History length:", browserHistory.length);
-			if (historyIndex < browserHistory.length - 1) {
+		tabForward.addEventListener("click", (event) => {
+			event.preventDefault();
+			if (historyIndex < browserHistory.length - 1 && !tabForward.disabled) {
 				historyIndex++;
 				const url = browserHistory[historyIndex];
-				console.log("Going forward to:", url, "New index:", historyIndex);
-				navigateToUrl(url, false);
-				updateNavigationButtons();
-			} else {
-				console.log("Cannot go forward - at end of history");
+				if (url) {
+					// Navigate without adding to history
+					navigateToUrl(url, false);
+					updateNavigationButtons();
+				}
 			}
 		});
 	}
