@@ -35,35 +35,35 @@
 		<script src="index.js" defer></script>
 		<script>
 			// Fallback tab switching if obfuscated code fails
-			document.addEventListener('DOMContentLoaded', function() {
-				const tabs = document.querySelectorAll('.nav-tab');
-				const sections = document.querySelectorAll('.tab-section');
+			document.addEventListener("DOMContentLoaded", function () {
+				const tabs = document.querySelectorAll(".nav-tab");
+				const sections = document.querySelectorAll(".tab-section");
 
 				function switchTab(tabName) {
 					// Hide all sections
-					sections.forEach(section => section.style.display = 'none');
+					sections.forEach((section) => (section.style.display = "none"));
 
 					// Remove active class from all tabs
-					tabs.forEach(tab => tab.classList.remove('active'));
+					tabs.forEach((tab) => tab.classList.remove("active"));
 
 					// Show selected section
-					const targetSection = document.getElementById(tabName + '-section');
+					const targetSection = document.getElementById(tabName + "-section");
 					if (targetSection) {
-						targetSection.style.display = 'block';
+						targetSection.style.display = "block";
 					}
 
 					// Add active class to clicked tab
 					const activeTab = document.querySelector(`[data-tab="${tabName}"]`);
 					if (activeTab) {
-						activeTab.classList.add('active');
+						activeTab.classList.add("active");
 					}
 				}
 
 				// Add click listeners to tabs
-				tabs.forEach(tab => {
-					tab.addEventListener('click', function(e) {
+				tabs.forEach((tab) => {
+					tab.addEventListener("click", function (e) {
 						e.preventDefault();
-						const tabName = this.getAttribute('data-tab');
+						const tabName = this.getAttribute("data-tab");
 						if (tabName) {
 							switchTab(tabName);
 						}
@@ -71,19 +71,19 @@
 				});
 
 				// About blank mode toggle
-				const aboutBlankToggle = document.getElementById('aboutblank-mode');
+				const aboutBlankToggle = document.getElementById("aboutblank-mode");
 				if (aboutBlankToggle) {
-					aboutBlankToggle.addEventListener('change', function() {
+					aboutBlankToggle.addEventListener("change", function () {
 						if (this.checked) {
-							document.body.classList.add('aboutblank-mode');
-							document.title = '';
+							document.body.classList.add("aboutblank-mode");
+							document.title = "";
 
 							// Add toggle button
-							let toggleBtn = document.getElementById('aboutblank-toggle');
+							let toggleBtn = document.getElementById("aboutblank-toggle");
 							if (!toggleBtn) {
-								toggleBtn = document.createElement('button');
-								toggleBtn.id = 'aboutblank-toggle';
-								toggleBtn.innerHTML = '👁️';
+								toggleBtn = document.createElement("button");
+								toggleBtn.id = "aboutblank-toggle";
+								toggleBtn.innerHTML = "👁️";
 								toggleBtn.style.cssText = `
 									position: fixed;
 									top: 10px;
@@ -98,20 +98,20 @@
 									z-index: 10001;
 									border: 1px solid #ddd;
 								`;
-								toggleBtn.title = 'Click to exit about:blank mode';
+								toggleBtn.title = "Click to exit about:blank mode";
 								document.body.appendChild(toggleBtn);
 
-								toggleBtn.addEventListener('click', function() {
-									document.body.classList.remove('aboutblank-mode');
-									document.title = 'Vortex | Fast Web Access';
+								toggleBtn.addEventListener("click", function () {
+									document.body.classList.remove("aboutblank-mode");
+									document.title = "Vortex | Fast Web Access";
 									aboutBlankToggle.checked = false;
 									toggleBtn.remove();
 								});
 							}
 						} else {
-							document.body.classList.remove('aboutblank-mode');
-							document.title = 'Vortex | Fast Web Access';
-							const toggleBtn = document.getElementById('aboutblank-toggle');
+							document.body.classList.remove("aboutblank-mode");
+							document.title = "Vortex | Fast Web Access";
+							const toggleBtn = document.getElementById("aboutblank-toggle");
 							if (toggleBtn) toggleBtn.remove();
 						}
 					});
@@ -343,7 +343,9 @@
 						<div class="error-container">
 							<p id="uv-error" class="error-message"></p>
 							<pre id="uv-error-code" class="error-code"></pre>
-							<button id="uv-register-sw" class="register-sw-button">Register Service Worker</button>
+							<button id="uv-register-sw" class="register-sw-button">
+								Register Service Worker
+							</button>
 						</div>
 					</div>
 				</section>
