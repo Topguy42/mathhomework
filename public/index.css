@@ -871,13 +871,10 @@ body.light-theme .theme-toggle:hover {
 	background: var(--glass-bg-light);
 	border-color: var(--glass-border-light);
 	box-shadow:
-		0 16px 48px var(--glass-shadow-strong),
-		0 8px 24px rgba(0, 0, 0, 0.12),
-		0 4px 12px rgba(0, 0, 0, 0.08),
-		inset 0 3px 0 rgba(255, 255, 255, 0.15),
-		inset 0 -2px 0 rgba(0, 0, 0, 0.05);
-	transform: translateY(-6px) scale(1.05);
-	backdrop-filter: blur(40px) saturate(180%);
+		0 8px 24px var(--glass-shadow-strong),
+		0 4px 12px rgba(0, 0, 0, 0.1),
+		inset 0 2px 0 rgba(255, 255, 255, 0.15);
+	transform: translateY(-3px) scale(1.02);
 }
 
 .quick-access-item:hover .quick-access-icon {
