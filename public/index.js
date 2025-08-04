@@ -468,13 +468,23 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-	// Cloaker functionality
+	// Cloaker functionality with debugging
 	const applyCloakerBtn = document.getElementById("apply-cloaker-btn");
 	const restoreOriginalBtn = document.getElementById("restore-original-btn");
 	const websiteTitleInput = document.getElementById("website-title");
 	const faviconUrlInput = document.getElementById("favicon-url");
 	const cloakerResult = document.getElementById("cloaker-result");
 	const presetButtons = document.querySelectorAll(".preset-btn");
+
+	// Debug logging
+	console.log("Cloaker elements found:", {
+		applyCloakerBtn: !!applyCloakerBtn,
+		restoreOriginalBtn: !!restoreOriginalBtn,
+		websiteTitleInput: !!websiteTitleInput,
+		faviconUrlInput: !!faviconUrlInput,
+		cloakerResult: !!cloakerResult,
+		presetButtons: presetButtons.length,
+	});
 
 	// Store original values
 	let originalTitle = document.title;
@@ -489,10 +499,14 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	// Apply cloaker
-	if (applyCloakerBtn) {
+	if (applyCloakerBtn && cloakerResult) {
 		applyCloakerBtn.addEventListener("click", () => {
-			const newTitle = websiteTitleInput.value.trim();
-			const newFavicon = faviconUrlInput.value.trim();
+			console.log("Apply cloaker button clicked");
+
+			const newTitle = websiteTitleInput ? websiteTitleInput.value.trim() : "";
+			const newFavicon = faviconUrlInput ? faviconUrlInput.value.trim() : "";
+
+			console.log("Cloaker inputs:", { newTitle, newFavicon });
 
 			if (!newTitle && !newFavicon) {
 				showResult(
@@ -507,50 +521,73 @@ document.addEventListener("DOMContentLoaded", () => {
 			try {
 				const result = applyCloaking(newTitle, newFavicon);
 				showResult(cloakerResult, result, "success");
+				console.log("Cloaking applied successfully");
 			} catch (error) {
+				console.error("Cloaking error:", error);
 				showResult(cloakerResult, `Error: ${error.message}`, "error");
 			}
 			setLoading(applyCloakerBtn, false);
 		});
+	} else {
+		console.error("Cloaker button or result element not found");
 	}
 
 	// Restore original
-	if (restoreOriginalBtn) {
+	if (restoreOriginalBtn && cloakerResult) {
 		restoreOriginalBtn.addEventListener("click", () => {
+			console.log("Restore original button clicked");
 			setLoading(restoreOriginalBtn, true);
 			try {
 				const result = restoreOriginal();
 				showResult(cloakerResult, result, "success");
 				// Clear input fields
-				websiteTitleInput.value = "";
-				faviconUrlInput.value = "";
+				if (websiteTitleInput) websiteTitleInput.value = "";
+				if (faviconUrlInput) faviconUrlInput.value = "";
+				console.log("Original settings restored");
 			} catch (error) {
+				console.error("Restore error:", error);
 				showResult(cloakerResult, `Error: ${error.message}`, "error");
 			}
 			setLoading(restoreOriginalBtn, false);
 		});
+	} else {
+		console.error("Restore button or result element not found");
 	}
 
 	// Preset buttons
-	presetButtons.forEach((btn) => {
-		btn.addEventListener("click", () => {
-			const title = btn.getAttribute("data-title");
-			const favicon = btn.getAttribute("data-favicon");
+	if (presetButtons.length > 0) {
+		console.log(`Found ${presetButtons.length} preset buttons`);
+		presetButtons.forEach((btn, index) => {
+			btn.addEventListener("click", () => {
+				console.log(`Preset button ${index} clicked`);
+				const title = btn.getAttribute("data-title");
+				const favicon = btn.getAttribute("data-favicon");
 
-			websiteTitleInput.value = title;
-			faviconUrlInput.value = favicon;
+				console.log("Preset data:", { title, favicon });
 
-			// Auto-apply the preset
-			setLoading(btn, true);
-			try {
-				const result = applyCloaking(title, favicon);
-				showResult(cloakerResult, result, "success");
-			} catch (error) {
-				showResult(cloakerResult, `Error: ${error.message}`, "error");
-			}
-			setLoading(btn, false);
+				if (websiteTitleInput) websiteTitleInput.value = title || "";
+				if (faviconUrlInput) faviconUrlInput.value = favicon || "";
+
+				// Auto-apply the preset
+				setLoading(btn, true);
+				try {
+					const result = applyCloaking(title, favicon);
+					if (cloakerResult) {
+						showResult(cloakerResult, result, "success");
+					}
+					console.log("Preset applied successfully");
+				} catch (error) {
+					console.error("Preset error:", error);
+					if (cloakerResult) {
+						showResult(cloakerResult, `Error: ${error.message}`, "error");
+					}
+				}
+				setLoading(btn, false);
+			});
 		});
-	});
+	} else {
+		console.error("No preset buttons found");
+	}
 
 	// Search Engine functionality
 	const searchEngineBtn = document.getElementById("search-engine-btn");
@@ -1273,6 +1310,25 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
+	// Add immediate trigger for anti-GoGuardian mode
+	const antiGoGuardianToggle = document.getElementById("anti-goguardian");
+	if (antiGoGuardianToggle) {
+		antiGoGuardianToggle.addEventListener("change", (e) => {
+			if (e.target.checked) {
+				// Immediately enable anti-GoGuardian protection
+				enableAntiGoGuardian();
+				showNotification(
+					"🛡️ Anti-GoGuardian protection enabled! Tab closure will now require confirmation.",
+					"success"
+				);
+			} else {
+				// Disable protection when toggled off
+				disableAntiGoGuardian();
+				showNotification("Anti-GoGuardian protection disabled", "info");
+			}
+		});
+	}
+
 	// Theme preview functionality - always visible now
 	if (themePreviewBtn) {
 		themePreviewBtn.addEventListener("click", () => {
@@ -1944,23 +2000,88 @@ setInterval(() => {
 		if (antiGoGuardianActive) return;
 		antiGoGuardianActive = true;
 
-		// Prevent tab closure
+		// Enhanced tab closure prevention with save dialog
 		beforeUnloadHandler = function (e) {
 			e.preventDefault();
-			e.returnValue = "";
-			return "";
+			// Custom message that appears as "Do you want to save your changes?"
+			const message =
+				"You have unsaved changes. Are you sure you want to leave this page?";
+			e.returnValue = message;
+			return message;
 		};
 
 		window.addEventListener("beforeunload", beforeUnloadHandler);
 
-		// Override close functions
+		// Enhanced close functions override
 		const originalClose = window.close;
 		window.close = function () {
 			console.log("Tab close attempt blocked by Anti-GoGuardian");
-			return false;
+			// Show protection notification
+			if (typeof showNotification === "function") {
+				showNotification(
+					"🛡️ Tab closure blocked by Anti-GoGuardian protection",
+					"warning"
+				);
+			}
+			// Show confirmation dialog
+			const userConfirm = confirm(
+				"You have unsaved work. Are you sure you want to close this tab?"
+			);
+			if (!userConfirm) {
+				return false;
+			}
+			// If user confirms, temporarily disable protection and close
+			disableAntiGoGuardian();
+			originalClose.call(window);
 		};
 
-		// Prevent GoGuardian scripts from running
+		// Override page navigation attempts
+		const originalAssign = window.location.assign;
+		const originalReplace = window.location.replace;
+		const originalReload = window.location.reload;
+
+		window.location.assign = function (url) {
+			const userConfirm = confirm(
+				"You have unsaved work. Are you sure you want to navigate away from this page?"
+			);
+			if (userConfirm) {
+				originalAssign.call(window.location, url);
+			}
+		};
+
+		window.location.replace = function (url) {
+			const userConfirm = confirm(
+				"You have unsaved work. Are you sure you want to navigate away from this page?"
+			);
+			if (userConfirm) {
+				originalReplace.call(window.location, url);
+			}
+		};
+
+		window.location.reload = function (forceReload) {
+			const userConfirm = confirm(
+				"You have unsaved work. Are you sure you want to reload this page?"
+			);
+			if (userConfirm) {
+				originalReload.call(window.location, forceReload);
+			}
+		};
+
+		// Prevent back/forward navigation
+		window.addEventListener("popstate", function (e) {
+			const userConfirm = confirm(
+				"You have unsaved work. Are you sure you want to navigate away from this page?"
+			);
+			if (!userConfirm) {
+				// Push current state back to prevent navigation
+				history.pushState(null, null, window.location.href);
+			}
+		});
+
+		// Push initial state to enable popstate blocking
+		history.pushState(null, null, window.location.href);
+
+		// Prevent GoGuardian and other monitoring scripts from running
 		const observer = new MutationObserver(function (mutations) {
 			mutations.forEach(function (mutation) {
 				mutation.addedNodes.forEach(function (node) {
@@ -1970,11 +2091,18 @@ setInterval(() => {
 						if (
 							src.includes("goguardian") ||
 							src.includes("securly") ||
+							src.includes("lightspeed") ||
+							src.includes("linewize") ||
+							src.includes("contentkeeper") ||
+							src.includes("iboss") ||
 							content.includes("goguardian") ||
-							content.includes("securly")
+							content.includes("securly") ||
+							content.includes("lightspeed") ||
+							content.includes("monitoring") ||
+							content.includes("contentkeeper")
 						) {
 							node.remove();
-							console.log("Blocked monitoring script");
+							console.log("Blocked monitoring script:", src || "inline script");
 						}
 					}
 				});
@@ -1986,8 +2114,77 @@ setInterval(() => {
 			subtree: true,
 		});
 
+		// Store references for cleanup
 		window.antiGoGuardianObserver = observer;
+		window.antiGoGuardianOriginals = {
+			close: originalClose,
+			assign: originalAssign,
+			replace: originalReplace,
+			reload: originalReload,
+		};
+
+		// Add visual indicator that protection is active
+		const indicator = document.createElement("div");
+		indicator.id = "anti-goguardian-indicator";
+		indicator.innerHTML = "🛡️ Protection Active";
+		indicator.style.cssText = `
+			position: fixed;
+			top: 10px;
+			right: 10px;
+			background: rgba(0, 212, 170, 0.9);
+			color: white;
+			padding: 5px 10px;
+			border-radius: 15px;
+			font-size: 12px;
+			font-weight: bold;
+			z-index: 9999;
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+			animation: fadeIn 0.5s ease;
+		`;
+
+		// Add CSS animation
+		const style = document.createElement("style");
+		style.textContent = `
+			@keyframes fadeIn {
+				from { opacity: 0; transform: translateY(-10px); }
+				to { opacity: 1; transform: translateY(0); }
+			}
+		`;
+		document.head.appendChild(style);
+		document.body.appendChild(indicator);
+
+		console.log("Enhanced Anti-GoGuardian protection activated");
 	}
+
+	// Manual test function for cloaker (accessible via console)
+	window.testCloaker = function (
+		title = "Google Classroom",
+		favicon = "https://classroom.google.com/favicon.ico"
+	) {
+		console.log("Testing cloaker with:", { title, favicon });
+		try {
+			const result = applyCloaking(title, favicon);
+			console.log("Cloaker test result:", result);
+			return result;
+		} catch (error) {
+			console.error("Cloaker test error:", error);
+			return error.message;
+		}
+	};
+
+	window.testRestore = function () {
+		console.log("Testing restore original");
+		try {
+			const result = restoreOriginal();
+			console.log("Restore test result:", result);
+			return result;
+		} catch (error) {
+			console.error("Restore test error:", error);
+			return error.message;
+		}
+	};
 
 	function disableAntiGoGuardian() {
 		if (!antiGoGuardianActive) return;
@@ -1999,14 +2196,28 @@ setInterval(() => {
 			beforeUnloadHandler = null;
 		}
 
-		// Restore original close function
-		delete window.close;
+		// Restore original functions
+		if (window.antiGoGuardianOriginals) {
+			window.close = window.antiGoGuardianOriginals.close;
+			window.location.assign = window.antiGoGuardianOriginals.assign;
+			window.location.replace = window.antiGoGuardianOriginals.replace;
+			window.location.reload = window.antiGoGuardianOriginals.reload;
+			window.antiGoGuardianOriginals = null;
+		}
 
-		// Disconnect observer
+		// Remove mutation observer
 		if (window.antiGoGuardianObserver) {
 			window.antiGoGuardianObserver.disconnect();
-			delete window.antiGoGuardianObserver;
+			window.antiGoGuardianObserver = null;
 		}
+
+		// Remove visual indicator
+		const indicator = document.getElementById("anti-goguardian-indicator");
+		if (indicator) {
+			indicator.remove();
+		}
+
+		console.log("Anti-GoGuardian protection deactivated");
 	}
 
 	// Tab protection functions
