@@ -1527,10 +1527,6 @@ body {
 	.tab-url {
 		font-size: 0.75rem;
 	}
-
-	.tab-address-bar {
-		padding: 0 0.5rem 0.5rem;
-	}
 }
 
 /* Prevent scrolling when frame is active */
