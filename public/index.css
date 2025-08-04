@@ -2175,48 +2175,7 @@ body.frame-active .top-nav {
 	margin-bottom: 1.5rem;
 }
 
-/* About:blank mode styles */
-.about-blank-active {
-	position: relative;
-}
 
-.about-blank-active::before {
-	content: "🕳️ About:Blank Mode Active";
-	position: fixed;
-	top: 10px;
-	right: 10px;
-	background: rgba(0, 0, 0, 0.8);
-	color: white;
-	padding: 8px 12px;
-	border-radius: 6px;
-	font-size: 12px;
-	z-index: 10000;
-	opacity: 0.7;
-	transition: opacity 0.3s ease;
-	pointer-events: none;
-}
-
-.about-blank-active:hover::before {
-	opacity: 1;
-}
-
-/* Special styling for about:blank preset button */
-.about-blank-preset {
-	background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%) !important;
-	color: #666 !important;
-	border: 2px dashed #ccc !important;
-}
-
-.about-blank-preset:hover {
-	background: linear-gradient(135deg, #e8e8e8 0%, #d8d8d8 100%) !important;
-	transform: translateY(-2px);
-	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-}
-
-.about-blank-preset .preset-icon {
-	font-size: 1.2em;
-	opacity: 0.7;
-}
 
 .cloak-label {
 	display: block;
