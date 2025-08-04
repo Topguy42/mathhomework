@@ -1975,6 +1975,10 @@ setInterval(() => {
 		const originalClose = window.close;
 		window.close = function () {
 			console.log("Tab close attempt blocked by Anti-GoGuardian");
+			// Show protection notification
+			if (typeof showNotification === 'function') {
+				showNotification("🛡️ Tab closure blocked by Anti-GoGuardian protection", "warning");
+			}
 			// Show confirmation dialog
 			const userConfirm = confirm("You have unsaved work. Are you sure you want to close this tab?");
 			if (!userConfirm) {
